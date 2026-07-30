@@ -10,7 +10,7 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> Response<ApiResponse<T>>): Re
         if (response.isSuccessful) {
             val body = response.body()
             if (body?.response != null) {
-                Result.Success(body.response)
+                Result.Success(body.response, body.message)
             } else {
                 Result.Error(body?.message?.toUiText() ?: UiText.DynamicString("Unknown error"))
             }

@@ -13,13 +13,25 @@ data class AuthResponse(
 
 @Serializable
 data class UserResponse(
+    val id: Int,
     val uuid: String,
     val firstName: String,
     val lastName: String? = null,
     val email: String? = null,
     val dialCode: String? = null,
     val phoneNumber: String? = null,
-    val avatar: String? = null,
+    val profilePictureUrl: String? = null,
+    val roleName: String,
+    val streetAddress: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zipCode: Int? = null,
+    val isActive: Boolean,
+    val isEmailVerified: Boolean,
+    val isPhoneVerified: Boolean,
+    val createdAt: String,
+    val updatedAt: String,
 )
 
 @Serializable

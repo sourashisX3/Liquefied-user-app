@@ -13,11 +13,23 @@ fun AuthResponse.toDomain(): AuthTokens = AuthTokens(
 )
 
 fun UserResponse.toDomain(): User = User(
+    id = id,
     uuid = uuid,
     firstName = firstName,
     lastName = lastName,
     email = email,
     dialCode = dialCode,
     phoneNumber = phoneNumber,
-    avatar = avatar,
+    profilePictureUrl = profilePictureUrl,
+    roleName = roleName,
+    streetAddress = streetAddress,
+    city = city,
+    state = state,
+    country = country,
+    zipCode = zipCode,
+    isActive = isActive,
+    isEmailVerified = isEmailVerified,
+    isPhoneVerified = isPhoneVerified,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
 )

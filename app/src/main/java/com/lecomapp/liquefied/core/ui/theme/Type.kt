@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.lecomapp.liquefied.R
 
 private val LobsterFamily = FontFamily(Font(R.font.lobster_regular))
-private val LatoFamily = FontFamily(Font(R.font.lato_regular), Font(R.font.lato_bold, FontWeight.Bold))
+private val OutfitFamily = FontFamily(Font(R.font.outfit_regular), Font(R.font.outfit_bold, FontWeight.Bold))
 
 val LiquefiedTypography = Typography(
     displayLarge = TextStyle(
@@ -76,42 +76,42 @@ val LiquefiedTypography = Typography(
         letterSpacing = 1.sp,
     ),
     bodyLarge = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp,
     ),
     bodyMedium = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp,
     ),
     bodySmall = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp,
     ),
     labelLarge = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp,
     ),
     labelMedium = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
     ),
     labelSmall = TextStyle(
-        fontFamily = LatoFamily,
+        fontFamily = OutfitFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,

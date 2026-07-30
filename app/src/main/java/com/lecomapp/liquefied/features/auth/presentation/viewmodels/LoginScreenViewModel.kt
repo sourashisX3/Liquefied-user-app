@@ -100,7 +100,7 @@ class LoginScreenViewModel @Inject constructor(
                     _events.send(AuthenticationEvent.LoginSuccess)
                     _events.send(
                         AuthenticationEvent.ShowSnackbar(
-                            SnackbarEvent(message = result.data?.let { UiText.DynamicString("Welcome back!") } ?: UiText.DynamicString("Login successful"), type = SnackbarType.SUCCESS)
+                            SnackbarEvent(message = UiText.DynamicString(result.data.message), type = SnackbarType.SUCCESS)
                         )
                     )
                     _events.send(AuthenticationEvent.NavigateToHome)
