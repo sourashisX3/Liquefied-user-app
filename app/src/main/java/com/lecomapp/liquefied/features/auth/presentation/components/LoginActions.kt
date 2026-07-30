@@ -59,7 +59,7 @@ fun LoginActions(
                 Text(
                     text = stringResource(R.string.login_sign_up),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.secondary,
                 )
             }
         }

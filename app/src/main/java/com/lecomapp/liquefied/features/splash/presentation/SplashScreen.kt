@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.lecomapp.liquefied.core.config.navigation.Route
+import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.features.splash.presentation.animation.animateSequence
@@ -34,6 +35,7 @@ fun SplashScreen(navController: NavController) {
             .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
+        AnimatedDiamonds(modifier = Modifier.matchParentSize())
         AppLogoSection(
             appNameAlpha = anim.logoAlpha.value,
             appNameScale = anim.logoScale.value,

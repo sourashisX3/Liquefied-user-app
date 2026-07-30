@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.core.ui.theme.AppButton
 import com.lecomapp.liquefied.core.ui.theme.AppElevation
@@ -29,7 +31,7 @@ import com.lecomapp.liquefied.core.ui.theme.ComponentSize
 import com.lecomapp.liquefied.core.ui.theme.ShapeTokens
 
 enum class ButtonVariant {
-    PRIMARY, SECONDARY, TERTIARY, DANGER, OUTLINE
+    PRIMARY, SECONDARY, TERTIARY, DANGER, OUTLINE, SECONDARY_OUTLINE
 }
 
 enum class ButtonSize {
@@ -69,6 +71,11 @@ fun AppButton(
             MaterialTheme.colorScheme.onError,
             Color.Transparent
         )
+        ButtonVariant.SECONDARY_OUTLINE -> Triple(
+            Color.Transparent,
+            MaterialTheme.colorScheme.secondary,
+            MaterialTheme.colorScheme.secondary
+        )
         ButtonVariant.OUTLINE -> Triple(
             Color.Transparent,
             MaterialTheme.colorScheme.primary,
@@ -91,8 +98,13 @@ fun AppButton(
     val disabledBg = if (variant == ButtonVariant.PRIMARY) backgroundColor.copy(alpha = 0.38f) else backgroundColor
     val disabledContent = contentColor.copy(alpha = 0.38f)
 
+    val haptic = LocalHapticFeedback.current
+
     Button(
-        onClick = onClick,
+        onClick = {
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            onClick()
+        },
         enabled = enabled && !isLoading,
         modifier = modifier.height(buttonHeight),
         shape = ShapeTokens.button,
@@ -103,7 +115,7 @@ fun AppButton(
             disabledContentColor = disabledContent,
         ),
         border = when (variant) {
-            ButtonVariant.OUTLINE -> BorderStroke(1.5.dp, borderColor)
+            ButtonVariant.OUTLINE, ButtonVariant.SECONDARY_OUTLINE -> BorderStroke(1.5.dp, borderColor)
             else -> null
         },
         contentPadding = PaddingValues(horizontal = AppSpacing.xl),

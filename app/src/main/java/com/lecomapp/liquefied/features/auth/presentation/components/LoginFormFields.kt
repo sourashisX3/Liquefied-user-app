@@ -85,7 +85,7 @@ fun LoginFormFields(
         Text(
             text = stringResource(R.string.login_forgot_password),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.secondary,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .fillMaxWidth()

@@ -2,13 +2,11 @@ package com.lecomapp.liquefied.features.auth.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,10 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackbarHostState
@@ -36,7 +36,6 @@ import com.lecomapp.liquefied.features.auth.presentation.components.LoginHeader
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginSocialButtons
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.LoginScreenViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.AuthenticationEvent
-import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.LoginAction
 
 @Composable
 fun LoginScreen(
@@ -82,10 +81,11 @@ fun LoginScreen(
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center,
         ) {
+            AnimatedDiamonds(modifier = Modifier.matchParentSize())
             AppLogoSection(
-                appNameAlpha = anim.titleAlpha.value,
-                appNameScale = anim.titleScale.value,
-                taglineAlpha = anim.titleAlpha.value,
+                appNameAlpha = 1f,
+                appNameScale = 1f,
+                taglineAlpha = 1f,
                 taglineOffsetY = 0f,
             )
         }
@@ -95,7 +95,6 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .weight(2f)
                 .alpha(anim.cardAlpha.value)
-                .offset(y = (80 * anim.cardOffsetY.value).dp)
                 .clip(RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp))
                 .background(
                     color = MaterialTheme.colorScheme.surface,

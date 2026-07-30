@@ -1,5 +1,9 @@
 package com.lecomapp.liquefied.core.config.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -63,109 +67,95 @@ fun AppNavGraph() {
                     startDestination = Route.Splash,
                     modifier = Modifier.padding(innerPadding),
                 ) {
-                // Splash
-                composable<Route.Splash> {
-                    SplashScreen(navController = navController)
-                }
+                    // Splash
+                    composable<Route.Splash>(
+                        exitTransition = { fadeOut(animationSpec = tween(500)) },
+                    ) {
+                        SplashScreen(navController = navController)
+                    }
 
-                // Auth Graph
-                composable<Route.Login> {
-                    LoginScreen(
-                        onNavigateToHome = { navController.navigate(Route.Home) },
-                        onNavigateToRegister = { navController.navigate(Route.Register) },
-                        onNavigateToForgotPassword = { navController.navigate(Route.ForgotPassword) },
-                    )
-                }
-                composable<Route.Register> {
-                    // TODO: RegisterScreen(navController)
-                    Text("Register Screen")
-                }
-                composable<Route.OtpVerification> {
-                    // TODO: OtpVerificationScreen(navController)
-                    Text("OTP Screen")
-                }
-                composable<Route.ForgotPassword> {
-                    // TODO: ForgotPasswordScreen(navController)
-                    Text("Forgot Password Screen")
-                }
+                    // Auth Graph
+                    composable<Route.Login>(
+                        enterTransition = {
+                            slideInVertically(animationSpec = tween(600)) { it / 4 } + fadeIn(animationSpec = tween(600))
+                        },
+                    ) {
+                        LoginScreen(
+                            onNavigateToHome = { navController.navigate(Route.Home) },
+                            onNavigateToRegister = { navController.navigate(Route.Register) },
+                            onNavigateToForgotPassword = { navController.navigate(Route.ForgotPassword) },
+                        )
+                    }
+                    composable<Route.Register> {
+                        Text("Register Screen")
+                    }
+                    composable<Route.OtpVerification> {
+                        Text("OTP Screen")
+                    }
+                    composable<Route.ForgotPassword> {
+                        Text("Forgot Password Screen")
+                    }
 
-                // Main Graph
-                composable<Route.Home> {
-                    // TODO: HomeScreen(navController)
-                    Text("Home Screen")
-                }
-                composable<Route.ProductDetail> { backStackEntry ->
-                    val route = backStackEntry.toRoute<Route.ProductDetail>()
-                    // TODO: ProductDetailScreen(uuid = route.uuid)
-                    Text("Product Detail: ${route.uuid}")
-                }
-                composable<Route.ProductSearch> {
-                    // TODO: ProductSearchScreen(navController)
-                    Text("Search Screen")
-                }
-                composable<Route.Cart> {
-                    // TODO: CartScreen(navController)
-                    Text("Cart Screen")
-                }
-                composable<Route.Checkout> {
-                    // TODO: CheckoutScreen(navController)
-                    Text("Checkout Screen")
-                }
-                composable<Route.Orders> {
-                    // TODO: OrderListScreen(navController)
-                    Text("Orders Screen")
-                }
-                composable<Route.OrderDetail> { backStackEntry ->
-                    val route = backStackEntry.toRoute<Route.OrderDetail>()
-                    // TODO: OrderDetailScreen(uuid = route.uuid)
-                    Text("Order Detail: ${route.uuid}")
-                }
-                composable<Route.Wishlist> {
-                    // TODO: WishlistScreen(navController)
-                    Text("Wishlist Screen")
-                }
-                composable<Route.WriteReview> { backStackEntry ->
-                    val route = backStackEntry.toRoute<Route.WriteReview>()
-                    // TODO: WriteReviewScreen(productUuid = route.productUuid)
-                    Text("Write Review: ${route.productUuid}")
-                }
-                composable<Route.AddressList> {
-                    // TODO: AddressListScreen(navController)
-                    Text("Address List")
-                }
-                composable<Route.AddressForm> { backStackEntry ->
-                    val route = backStackEntry.toRoute<Route.AddressForm>()
-                    // TODO: AddressFormScreen(uuid = route.uuid)
-                    Text("Address Form: ${route.uuid}")
-                }
-                composable<Route.Wallet> {
-                    // TODO: WalletScreen(navController)
-                    Text("Wallet Screen")
-                }
-                composable<Route.Notifications> {
-                    // TODO: NotificationScreen(navController)
-                    Text("Notifications")
-                }
-                composable<Route.ChatList> {
-                    // TODO: ChatListScreen(navController)
-                    Text("Chat List")
-                }
-                composable<Route.ChatDetail> { backStackEntry ->
-                    val route = backStackEntry.toRoute<Route.ChatDetail>()
-                    // TODO: ChatDetailScreen(roomUuid = route.roomUuid)
-                    Text("Chat Detail: ${route.roomUuid}")
-                }
-                composable<Route.Profile> {
-                    // TODO: ProfileScreen(navController)
-                    Text("Profile Screen")
-                }
-                composable<Route.EditProfile> {
-                    // TODO: EditProfileScreen(navController)
-                    Text("Edit Profile")
+                    // Main Graph
+                    composable<Route.Home> {
+                        Text("Home Screen")
+                    }
+                    composable<Route.ProductDetail> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Route.ProductDetail>()
+                        Text("Product Detail: ${route.uuid}")
+                    }
+                    composable<Route.ProductSearch> {
+                        Text("Search Screen")
+                    }
+                    composable<Route.Cart> {
+                        Text("Cart Screen")
+                    }
+                    composable<Route.Checkout> {
+                        Text("Checkout Screen")
+                    }
+                    composable<Route.Orders> {
+                        Text("Orders Screen")
+                    }
+                    composable<Route.OrderDetail> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Route.OrderDetail>()
+                        Text("Order Detail: ${route.uuid}")
+                    }
+                    composable<Route.Wishlist> {
+                        Text("Wishlist Screen")
+                    }
+                    composable<Route.WriteReview> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Route.WriteReview>()
+                        Text("Write Review: ${route.productUuid}")
+                    }
+                    composable<Route.AddressList> {
+                        Text("Address List")
+                    }
+                    composable<Route.AddressForm> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Route.AddressForm>()
+                        Text("Address Form: ${route.uuid}")
+                    }
+                    composable<Route.Wallet> {
+                        Text("Wallet Screen")
+                    }
+                    composable<Route.Notifications> {
+                        Text("Notifications")
+                    }
+                    composable<Route.ChatList> {
+                        Text("Chat List")
+                    }
+                    composable<Route.ChatDetail> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Route.ChatDetail>()
+                        Text("Chat Detail: ${route.roomUuid}")
+                    }
+                    composable<Route.Profile> {
+                        Text("Profile Screen")
+                    }
+                    composable<Route.EditProfile> {
+                        Text("Edit Profile")
+                    }
                 }
             }
         }
-    }
     }
 }
 

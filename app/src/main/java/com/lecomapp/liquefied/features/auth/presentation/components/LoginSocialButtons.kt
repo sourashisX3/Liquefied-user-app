@@ -51,8 +51,8 @@ fun LoginSocialButtons(
 
         AppButton(
             onClick = { onAction(LoginAction.OnGoogleSignIn) },
-            variant = ButtonVariant.OUTLINE,
-            text = stringResource(R.string.login_google),
+        variant = ButtonVariant.SECONDARY_OUTLINE,
+        text = stringResource(R.string.login_google),
             leadingIcon = Icons.Filled.AccountCircle,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -61,8 +61,8 @@ fun LoginSocialButtons(
 
         AppButton(
             onClick = { onAction(LoginAction.OnFacebookSignIn) },
-            variant = ButtonVariant.OUTLINE,
-            text = stringResource(R.string.login_facebook),
+        variant = ButtonVariant.SECONDARY_OUTLINE,
+        text = stringResource(R.string.login_facebook),
             leadingIcon = Icons.Filled.AccountCircle,
             modifier = Modifier.fillMaxWidth(),
         )
