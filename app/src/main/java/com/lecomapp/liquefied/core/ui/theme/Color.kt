@@ -1,96 +1,145 @@
 package com.lecomapp.liquefied.core.ui.theme
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.lecomapp.liquefied.R
 
-@Composable fun md_primary(): Color = colorResource(R.color.primary)
-@Composable fun md_onPrimary(): Color = colorResource(R.color.on_primary)
-@Composable fun md_primaryContainer(): Color = colorResource(R.color.primary_container)
-@Composable fun md_onPrimaryContainer(): Color = colorResource(R.color.on_primary_container)
-@Composable fun md_secondary(): Color = colorResource(R.color.secondary)
-@Composable fun md_onSecondary(): Color = colorResource(R.color.on_secondary)
-@Composable fun md_secondaryContainer(): Color = colorResource(R.color.secondary_container)
-@Composable fun md_onSecondaryContainer(): Color = colorResource(R.color.on_secondary_container)
-@Composable fun md_tertiary(): Color = colorResource(R.color.tertiary)
-@Composable fun md_onTertiary(): Color = colorResource(R.color.on_tertiary)
-@Composable fun md_tertiaryContainer(): Color = colorResource(R.color.tertiary_container)
-@Composable fun md_onTertiaryContainer(): Color = colorResource(R.color.on_tertiary_container)
-@Composable fun md_error(): Color = colorResource(R.color.error)
-@Composable fun md_onError(): Color = colorResource(R.color.on_error)
-@Composable fun md_errorContainer(): Color = colorResource(R.color.error_container)
-@Composable fun md_onErrorContainer(): Color = colorResource(R.color.on_error_container)
-@Composable fun md_background(): Color = colorResource(R.color.background)
-@Composable fun md_onBackground(): Color = colorResource(R.color.on_background)
-@Composable fun md_surface(): Color = colorResource(R.color.surface)
-@Composable fun md_onSurface(): Color = colorResource(R.color.on_surface)
-@Composable fun md_surfaceVariant(): Color = colorResource(R.color.surface_variant)
-@Composable fun md_onSurfaceVariant(): Color = colorResource(R.color.on_surface_variant)
-@Composable fun md_outline(): Color = colorResource(R.color.outline)
-@Composable fun md_outlineVariant(): Color = colorResource(R.color.outline_variant)
-@Composable fun md_inverseSurface(): Color = colorResource(R.color.inverse_surface)
-@Composable fun md_inverseOnSurface(): Color = colorResource(R.color.inverse_on_surface)
-@Composable fun md_inversePrimary(): Color = colorResource(R.color.inverse_primary)
-@Composable fun md_surfaceTint(): Color = colorResource(R.color.surface_tint)
-@Composable fun md_scrim(): Color = colorResource(R.color.scrim)
+object LiquefiedColors {
 
-@Composable fun md_primaryDark(): Color = colorResource(R.color.primary_dark)
-@Composable fun md_onPrimaryDark(): Color = colorResource(R.color.on_primary_dark)
-@Composable fun md_primaryContainerDark(): Color = colorResource(R.color.primary_container_dark)
-@Composable fun md_onPrimaryContainerDark(): Color = colorResource(R.color.on_primary_container_dark)
-@Composable fun md_secondaryDark(): Color = colorResource(R.color.secondary_dark)
-@Composable fun md_onSecondaryDark(): Color = colorResource(R.color.on_secondary_dark)
-@Composable fun md_secondaryContainerDark(): Color = colorResource(R.color.secondary_container_dark)
-@Composable fun md_onSecondaryContainerDark(): Color = colorResource(R.color.on_secondary_container_dark)
-@Composable fun md_tertiaryDark(): Color = colorResource(R.color.tertiary_dark)
-@Composable fun md_onTertiaryDark(): Color = colorResource(R.color.on_tertiary_dark)
-@Composable fun md_tertiaryContainerDark(): Color = colorResource(R.color.tertiary_container_dark)
-@Composable fun md_onTertiaryContainerDark(): Color = colorResource(R.color.on_tertiary_container_dark)
-@Composable fun md_errorDark(): Color = colorResource(R.color.error_dark)
-@Composable fun md_onErrorDark(): Color = colorResource(R.color.on_error_dark)
-@Composable fun md_errorContainerDark(): Color = colorResource(R.color.error_container_dark)
-@Composable fun md_onErrorContainerDark(): Color = colorResource(R.color.on_error_container_dark)
-@Composable fun md_backgroundDark(): Color = colorResource(R.color.background_dark)
-@Composable fun md_onBackgroundDark(): Color = colorResource(R.color.on_background_dark)
-@Composable fun md_surfaceDark(): Color = colorResource(R.color.surface_dark)
-@Composable fun md_onSurfaceDark(): Color = colorResource(R.color.on_surface_dark)
-@Composable fun md_surfaceVariantDark(): Color = colorResource(R.color.surface_variant_dark)
-@Composable fun md_onSurfaceVariantDark(): Color = colorResource(R.color.on_surface_variant_dark)
-@Composable fun md_outlineDark(): Color = colorResource(R.color.outline_dark)
-@Composable fun md_outlineVariantDark(): Color = colorResource(R.color.outline_variant_dark)
-@Composable fun md_inverseSurfaceDark(): Color = colorResource(R.color.inverse_surface_dark)
-@Composable fun md_inverseOnSurfaceDark(): Color = colorResource(R.color.inverse_on_surface_dark)
-@Composable fun md_inversePrimaryDark(): Color = colorResource(R.color.inverse_primary_dark)
-@Composable fun md_surfaceTintDark(): Color = colorResource(R.color.surface_tint_dark)
-@Composable fun md_scrimDark(): Color = colorResource(R.color.scrim_dark)
+    object Primary {
+        val primary = Color(0xFFDB4460)
+        val onPrimary = Color(0xFFFFFFFF)
+        val primaryContainer = Color(0xFFFFD9E0)
+        val onPrimaryContainer = Color(0xFF3E0013)
+    }
 
-@Composable fun md_success(): Color = colorResource(R.color.success)
-@Composable fun md_onSuccess(): Color = colorResource(R.color.on_success)
-@Composable fun md_successContainer(): Color = colorResource(R.color.success_container)
-@Composable fun md_onSuccessContainer(): Color = colorResource(R.color.on_success_container)
+    object PrimaryDark {
+        val primary = Color(0xFFFF8A9E)
+        val onPrimary = Color(0xFF1C1B1F)
+        val primaryContainer = Color(0xFFB00020)
+        val onPrimaryContainer = Color(0xFFFFD9E0)
+    }
 
-@Composable fun md_warning(): Color = colorResource(R.color.warning)
-@Composable fun md_onWarning(): Color = colorResource(R.color.on_warning)
-@Composable fun md_warningContainer(): Color = colorResource(R.color.warning_container)
-@Composable fun md_onWarningContainer(): Color = colorResource(R.color.on_warning_container)
+    object Secondary {
+        val secondary = Color(0xFF3B3A5A)
+        val onSecondary = Color(0xFFFFFFFF)
+        val secondaryContainer = Color(0xFFDFDEFB)
+        val onSecondaryContainer = Color(0xFF262547)
+    }
 
-@Composable fun md_info(): Color = colorResource(R.color.info)
-@Composable fun md_onInfo(): Color = colorResource(R.color.on_info)
-@Composable fun md_infoContainer(): Color = colorResource(R.color.info_container)
-@Composable fun md_onInfoContainer(): Color = colorResource(R.color.on_info_container)
+    object SecondaryDark {
+        val secondary = Color(0xFFC3C2E0)
+        val onSecondary = Color(0xFF1D1B31)
+        val secondaryContainer = Color(0xFF2E2D4D)
+        val onSecondaryContainer = Color(0xFFDFDEFB)
+    }
 
-@Composable fun md_successDark(): Color = colorResource(R.color.success_dark)
-@Composable fun md_onSuccessDark(): Color = colorResource(R.color.on_success_dark)
-@Composable fun md_successContainerDark(): Color = colorResource(R.color.success_container_dark)
-@Composable fun md_onSuccessContainerDark(): Color = colorResource(R.color.on_success_container_dark)
+    object Tertiary {
+        val tertiary = Color(0xFF4285F4)
+        val onTertiary = Color(0xFFFFFFFF)
+        val tertiaryContainer = Color(0xFFD6E3FF)
+        val onTertiaryContainer = Color(0xFF001B3E)
+    }
 
-@Composable fun md_warningDark(): Color = colorResource(R.color.warning_dark)
-@Composable fun md_onWarningDark(): Color = colorResource(R.color.on_warning_dark)
-@Composable fun md_warningContainerDark(): Color = colorResource(R.color.warning_container_dark)
-@Composable fun md_onWarningContainerDark(): Color = colorResource(R.color.on_warning_container_dark)
+    object TertiaryDark {
+        val tertiary = Color(0xFF8AB4F8)
+        val onTertiary = Color(0xFF003258)
+        val tertiaryContainer = Color(0xFF1A4A7A)
+        val onTertiaryContainer = Color(0xFFD6E3FF)
+    }
 
-@Composable fun md_infoDark(): Color = colorResource(R.color.info_dark)
-@Composable fun md_onInfoDark(): Color = colorResource(R.color.on_info_dark)
-@Composable fun md_infoContainerDark(): Color = colorResource(R.color.info_container_dark)
-@Composable fun md_onInfoContainerDark(): Color = colorResource(R.color.on_info_container_dark)
+    object Error {
+        val error = Color(0xFFEA4335)
+        val onError = Color(0xFFFFFFFF)
+        val errorContainer = Color(0xFFFFDAD6)
+        val onErrorContainer = Color(0xFF410002)
+    }
+
+    object ErrorDark {
+        val error = Color(0xFFF28B82)
+        val onError = Color(0xFF601410)
+        val errorContainer = Color(0xFF93000A)
+        val onErrorContainer = Color(0xFFFFDAD6)
+    }
+
+    object Neutral {
+        val background = Color(0xFFFEFAF6)
+        val onBackground = Color(0xFF1C1B1F)
+        val surface = Color(0xFFFEFAF6)
+        val onSurface = Color(0xFF1C1B1F)
+        val surfaceVariant = Color(0xFFE7E0EC)
+        val onSurfaceVariant = Color(0xFF666666)
+        val outline = Color(0xFF79747E)
+        val outlineVariant = Color(0xFFCAC4D0)
+        val inverseSurface = Color(0xFF313033)
+        val inverseOnSurface = Color(0xFFF4EFF4)
+        val inversePrimary = Color(0xFFFFB1BE)
+        val surfaceTint = Color(0xFFDB4460)
+        val scrim = Color(0xFF000000)
+    }
+
+    object NeutralDark {
+        val background = Color(0xFF111215)
+        val onBackground = Color(0xFFE6E1E5)
+        val surface = Color(0xFF111215)
+        val onSurface = Color(0xFFE6E1E5)
+        val surfaceVariant = Color(0xFF1E1E1E)
+        val onSurfaceVariant = Color(0xFF999999)
+        val outline = Color(0xFF938F99)
+        val outlineVariant = Color(0xFF49454F)
+        val inverseSurface = Color(0xFFE6E1E5)
+        val inverseOnSurface = Color(0xFF313033)
+        val inversePrimary = Color(0xFFDB4460)
+        val surfaceTint = Color(0xFFFF8A9E)
+        val scrim = Color(0xFF000000)
+    }
+
+    object Success {
+        val color = Color(0xFF34A853)
+        val onColor = Color(0xFFFFFFFF)
+        val container = Color(0xFFCEEAD6)
+        val onContainer = Color(0xFF00210D)
+    }
+
+    object SuccessDark {
+        val color = Color(0xFF81C995)
+        val onColor = Color(0xFF003917)
+        val container = Color(0xFF1B6D34)
+        val onContainer = Color(0xFFCEEAD6)
+    }
+
+    object Warning {
+        val color = Color(0xFFF9AB00)
+        val onColor = Color(0xFFFFFFFF)
+        val container = Color(0xFFFFE8B3)
+        val onContainer = Color(0xFF3E2D00)
+    }
+
+    object WarningDark {
+        val color = Color(0xFFFFD966)
+        val onColor = Color(0xFF4A3700)
+        val container = Color(0xFF7A5C00)
+        val onContainer = Color(0xFFFFE8B3)
+    }
+
+    object Info {
+        val color = Color(0xFF4285F4)
+        val onColor = Color(0xFFFFFFFF)
+        val container = Color(0xFFD6E3FF)
+        val onContainer = Color(0xFF001B3E)
+    }
+
+    object InfoDark {
+        val color = Color(0xFF8AB4F8)
+        val onColor = Color(0xFF003258)
+        val container = Color(0xFF1A4A7A)
+        val onContainer = Color(0xFFD6E3FF)
+    }
+
+    object Utility {
+        val black = Color(0xFF000000)
+        val white = Color(0xFFFFFFFF)
+        val transparent = Color(0x00000000)
+        val semiTransparent = Color(0x80000000)
+        val ratingStar = Color(0xFFFFB800)
+        val shimmer = Color(0xFFE0E0E0)
+    }
+}

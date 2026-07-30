@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Liquefied</string>
+    <string name="splash_tagline">Premium Spirits &amp; Fine Wines</string>
+
+    <string name="login_welcome_back">Welcome Back</string>
+    <string name="login_sign_in_continue">Sign in to continue</string>
+    <string name="login_email_or_phone">Email or Phone</string>
+    <string name="login_email_or_phone_hint">Enter your email or phone</string>
+    <string name="login_password">Password</string>
+    <string name="login_password_hint">Enter your password</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_sign_up_prompt">Don\'t have an account? Sign Up</string>
+    <string name="login_error_email_required">Email or phone is required</string>
+    <string name="login_error_password_required">Password is required</string>
+    <string name="login_error_password_min">Password must be at least 6 characters</string>
 </resources>

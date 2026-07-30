@@ -6,83 +6,81 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.colorResource
 import androidx.core.view.WindowCompat
-import com.lecomapp.liquefied.R
+
+private val LightColorScheme = lightColorScheme(
+    primary = LiquefiedColors.Primary.primary,
+    onPrimary = LiquefiedColors.Primary.onPrimary,
+    primaryContainer = LiquefiedColors.Primary.primaryContainer,
+    onPrimaryContainer = LiquefiedColors.Primary.onPrimaryContainer,
+    secondary = LiquefiedColors.Secondary.secondary,
+    onSecondary = LiquefiedColors.Secondary.onSecondary,
+    secondaryContainer = LiquefiedColors.Secondary.secondaryContainer,
+    onSecondaryContainer = LiquefiedColors.Secondary.onSecondaryContainer,
+    tertiary = LiquefiedColors.Tertiary.tertiary,
+    onTertiary = LiquefiedColors.Tertiary.onTertiary,
+    tertiaryContainer = LiquefiedColors.Tertiary.tertiaryContainer,
+    onTertiaryContainer = LiquefiedColors.Tertiary.onTertiaryContainer,
+    error = LiquefiedColors.Error.error,
+    onError = LiquefiedColors.Error.onError,
+    errorContainer = LiquefiedColors.Error.errorContainer,
+    onErrorContainer = LiquefiedColors.Error.onErrorContainer,
+    background = LiquefiedColors.Neutral.background,
+    onBackground = LiquefiedColors.Neutral.onBackground,
+    surface = LiquefiedColors.Neutral.surface,
+    onSurface = LiquefiedColors.Neutral.onSurface,
+    surfaceVariant = LiquefiedColors.Neutral.surfaceVariant,
+    onSurfaceVariant = LiquefiedColors.Neutral.onSurfaceVariant,
+    outline = LiquefiedColors.Neutral.outline,
+    outlineVariant = LiquefiedColors.Neutral.outlineVariant,
+    inverseSurface = LiquefiedColors.Neutral.inverseSurface,
+    inverseOnSurface = LiquefiedColors.Neutral.inverseOnSurface,
+    inversePrimary = LiquefiedColors.Neutral.inversePrimary,
+    surfaceTint = LiquefiedColors.Neutral.surfaceTint,
+    scrim = LiquefiedColors.Neutral.scrim,
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = LiquefiedColors.PrimaryDark.primary,
+    onPrimary = LiquefiedColors.PrimaryDark.onPrimary,
+    primaryContainer = LiquefiedColors.PrimaryDark.primaryContainer,
+    onPrimaryContainer = LiquefiedColors.PrimaryDark.onPrimaryContainer,
+    secondary = LiquefiedColors.SecondaryDark.secondary,
+    onSecondary = LiquefiedColors.SecondaryDark.onSecondary,
+    secondaryContainer = LiquefiedColors.SecondaryDark.secondaryContainer,
+    onSecondaryContainer = LiquefiedColors.SecondaryDark.onSecondaryContainer,
+    tertiary = LiquefiedColors.TertiaryDark.tertiary,
+    onTertiary = LiquefiedColors.TertiaryDark.onTertiary,
+    tertiaryContainer = LiquefiedColors.TertiaryDark.tertiaryContainer,
+    onTertiaryContainer = LiquefiedColors.TertiaryDark.onTertiaryContainer,
+    error = LiquefiedColors.ErrorDark.error,
+    onError = LiquefiedColors.ErrorDark.onError,
+    errorContainer = LiquefiedColors.ErrorDark.errorContainer,
+    onErrorContainer = LiquefiedColors.ErrorDark.onErrorContainer,
+    background = LiquefiedColors.NeutralDark.background,
+    onBackground = LiquefiedColors.NeutralDark.onBackground,
+    surface = LiquefiedColors.NeutralDark.surface,
+    onSurface = LiquefiedColors.NeutralDark.onSurface,
+    surfaceVariant = LiquefiedColors.NeutralDark.surfaceVariant,
+    onSurfaceVariant = LiquefiedColors.NeutralDark.onSurfaceVariant,
+    outline = LiquefiedColors.NeutralDark.outline,
+    outlineVariant = LiquefiedColors.NeutralDark.outlineVariant,
+    inverseSurface = LiquefiedColors.NeutralDark.inverseSurface,
+    inverseOnSurface = LiquefiedColors.NeutralDark.inverseOnSurface,
+    inversePrimary = LiquefiedColors.NeutralDark.inversePrimary,
+    surfaceTint = LiquefiedColors.NeutralDark.surfaceTint,
+    scrim = LiquefiedColors.NeutralDark.scrim,
+)
 
 @Composable
 fun LiquefiedTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) {
-        darkColorScheme(
-            primary = colorResource(R.color.primary_dark),
-            onPrimary = colorResource(R.color.on_primary_dark),
-            primaryContainer = colorResource(R.color.primary_container_dark),
-            onPrimaryContainer = colorResource(R.color.on_primary_container_dark),
-            secondary = colorResource(R.color.secondary_dark),
-            onSecondary = colorResource(R.color.on_secondary_dark),
-            secondaryContainer = colorResource(R.color.secondary_container_dark),
-            onSecondaryContainer = colorResource(R.color.on_secondary_container_dark),
-            tertiary = colorResource(R.color.tertiary_dark),
-            onTertiary = colorResource(R.color.on_tertiary_dark),
-            tertiaryContainer = colorResource(R.color.tertiary_container_dark),
-            onTertiaryContainer = colorResource(R.color.on_tertiary_container_dark),
-            error = colorResource(R.color.error_dark),
-            onError = colorResource(R.color.on_error_dark),
-            errorContainer = colorResource(R.color.error_container_dark),
-            onErrorContainer = colorResource(R.color.on_error_container_dark),
-            background = colorResource(R.color.background_dark),
-            onBackground = colorResource(R.color.on_background_dark),
-            surface = colorResource(R.color.surface_dark),
-            onSurface = colorResource(R.color.on_surface_dark),
-            surfaceVariant = colorResource(R.color.surface_variant_dark),
-            onSurfaceVariant = colorResource(R.color.on_surface_variant_dark),
-            outline = colorResource(R.color.outline_dark),
-            outlineVariant = colorResource(R.color.outline_variant_dark),
-            inverseSurface = colorResource(R.color.inverse_surface_dark),
-            inverseOnSurface = colorResource(R.color.inverse_on_surface_dark),
-            inversePrimary = colorResource(R.color.inverse_primary_dark),
-            surfaceTint = colorResource(R.color.surface_tint_dark),
-            scrim = colorResource(R.color.scrim_dark),
-        )
-    } else {
-        lightColorScheme(
-            primary = colorResource(R.color.primary),
-            onPrimary = colorResource(R.color.on_primary),
-            primaryContainer = colorResource(R.color.primary_container),
-            onPrimaryContainer = colorResource(R.color.on_primary_container),
-            secondary = colorResource(R.color.secondary),
-            onSecondary = colorResource(R.color.on_secondary),
-            secondaryContainer = colorResource(R.color.secondary_container),
-            onSecondaryContainer = colorResource(R.color.on_secondary_container),
-            tertiary = colorResource(R.color.tertiary),
-            onTertiary = colorResource(R.color.on_tertiary),
-            tertiaryContainer = colorResource(R.color.tertiary_container),
-            onTertiaryContainer = colorResource(R.color.on_tertiary_container),
-            error = colorResource(R.color.error),
-            onError = colorResource(R.color.on_error),
-            errorContainer = colorResource(R.color.error_container),
-            onErrorContainer = colorResource(R.color.on_error_container),
-            background = colorResource(R.color.background),
-            onBackground = colorResource(R.color.on_background),
-            surface = colorResource(R.color.surface),
-            onSurface = colorResource(R.color.on_surface),
-            surfaceVariant = colorResource(R.color.surface_variant),
-            onSurfaceVariant = colorResource(R.color.on_surface_variant),
-            outline = colorResource(R.color.outline),
-            outlineVariant = colorResource(R.color.outline_variant),
-            inverseSurface = colorResource(R.color.inverse_surface),
-            inverseOnSurface = colorResource(R.color.inverse_on_surface),
-            inversePrimary = colorResource(R.color.inverse_primary),
-            surfaceTint = colorResource(R.color.surface_tint),
-            scrim = colorResource(R.color.scrim),
-        )
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -92,10 +90,17 @@ fun LiquefiedTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = LiquefiedTypography,
-        shapes = LiquefiedShapes,
-        content = content
-    )
+    val snackbarColors = if (darkTheme) DarkSnackbarColors else LightSnackbarColors
+
+    CompositionLocalProvider(
+        LocalDimensionTokens provides DimensionTokens(),
+        LocalSnackbarColors provides snackbarColors,
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = LiquefiedTypography,
+            shapes = LiquefiedShapes,
+            content = content
+        )
+    }
 }
