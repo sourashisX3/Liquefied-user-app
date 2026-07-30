@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Brand Colors (user-defined, kept for reference) -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="brand_primary_light">#FFDB4460</color>
+    <color name="brand_primary_dark">#FFB00020</color>
+    <color name="brand_secondary_light">#FF3B3A5A</color>
+    <color name="brand_secondary_dark">#FF1D1B31</color>
+    <color name="brand_accent_light">#FF4285F4</color>
+    <color name="brand_accent_dark">#FF8AB4F8</color>
+    <color name="brand_success_light">#FF34A853</color>
+    <color name="brand_success_dark">#FF81C995</color>
+    <color name="brand_error_light">#FFEA4335</color>
+    <color name="brand_error_dark">#FFF28B82</color>
+    <color name="brand_warning_light">#FFF9AB00</color>
+    <color name="brand_warning_dark">#FFFFD966</color>
+    <color name="brand_card_light">#FFD9D9D9</color>
+    <color name="brand_card_dark">#FF1E1E1E</color>
+    <color name="brand_background_light">#FFFFFFFF</color>
+    <color name="brand_background_dark">#FF000000</color>
+    <color name="brand_primary_text_light">#FF000000</color>
+    <color name="brand_secondary_text_light">#FF666666</color>
+    <color name="brand_primary_text_dark">#FFFFFFFF</color>
+    <color name="brand_secondary_text_dark">#FF999999</color>
+    <color name="brand_primary_icon_dark">#FF000000</color>
+    <color name="brand_secondary_icon_dark">#FF666666</color>
+    <color name="brand_primary_icon_light">#FFFFFFFF</color>
+    <color name="brand_secondary_icon_light">#FF999999</color>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Material 3 - Light Theme Color Scheme       -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="primary">#FFDB4460</color>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="primary_container">#FFFFD9E0</color>
+    <color name="on_primary_container">#FF3E0013</color>
+
+    <color name="secondary">#FF3B3A5A</color>
+    <color name="on_secondary">#FFFFFFFF</color>
+    <color name="secondary_container">#FFDFDEFB</color>
+    <color name="on_secondary_container">#FF262547</color>
+
+    <color name="tertiary">#FF4285F4</color>
+    <color name="on_tertiary">#FFFFFFFF</color>
+    <color name="tertiary_container">#FFD6E3FF</color>
+    <color name="on_tertiary_container">#FF001B3E</color>
+
+    <color name="error">#FFEA4335</color>
+    <color name="on_error">#FFFFFFFF</color>
+    <color name="error_container">#FFFFDAD6</color>
+    <color name="on_error_container">#FF410002</color>
+
+    <color name="background">#FFFEFAF6</color>
+    <color name="on_background">#FF1C1B1F</color>
+
+    <color name="surface">#FFFEFAF6</color>
+    <color name="on_surface">#FF1C1B1F</color>
+    <color name="surface_variant">#FFE7E0EC</color>
+    <color name="on_surface_variant">#FF666666</color>
+
+    <color name="outline">#FF79747E</color>
+    <color name="outline_variant">#FFCAC4D0</color>
+
+    <color name="inverse_surface">#FF313033</color>
+    <color name="inverse_on_surface">#FFF4EFF4</color>
+    <color name="inverse_primary">#FFFFB1BE</color>
+
+    <color name="surface_tint">#FFDB4460</color>
+    <color name="scrim">#FF000000</color>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Material 3 - Dark Theme Color Scheme        -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="primary_dark">#FFFF8A9E</color>
+    <color name="on_primary_dark">#FF56001E</color>
+    <color name="primary_container_dark">#FFB00020</color>
+    <color name="on_primary_container_dark">#FFFFD9E0</color>
+
+    <color name="secondary_dark">#FFC3C2E0</color>
+    <color name="on_secondary_dark">#FF1D1B31</color>
+    <color name="secondary_container_dark">#FF2E2D4D</color>
+    <color name="on_secondary_container_dark">#FFDFDEFB</color>
+
+    <color name="tertiary_dark">#FF8AB4F8</color>
+    <color name="on_tertiary_dark">#FF003258</color>
+    <color name="tertiary_container_dark">#FF1A4A7A</color>
+    <color name="on_tertiary_container_dark">#FFD6E3FF</color>
+
+    <color name="error_dark">#FFF28B82</color>
+    <color name="on_error_dark">#FF601410</color>
+    <color name="error_container_dark">#FF93000A</color>
+    <color name="on_error_container_dark">#FFFFDAD6</color>
+
+    <color name="background_dark">#FF111215</color>
+    <color name="on_background_dark">#FFE6E1E5</color>
+
+    <color name="surface_dark">#FF111215</color>
+    <color name="on_surface_dark">#FFE6E1E5</color>
+    <color name="surface_variant_dark">#FF1E1E1E</color>
+    <color name="on_surface_variant_dark">#FF999999</color>
+
+    <color name="outline_dark">#FF938F99</color>
+    <color name="outline_variant_dark">#FF49454F</color>
+
+    <color name="inverse_surface_dark">#FFE6E1E5</color>
+    <color name="inverse_on_surface_dark">#FF313033</color>
+    <color name="inverse_primary_dark">#FFDB4460</color>
+
+    <color name="surface_tint_dark">#FFFF8A9E</color>
+    <color name="scrim_dark">#FF000000</color>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Semantic Colors - Light                     -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="success">#FF34A853</color>
+    <color name="on_success">#FFFFFFFF</color>
+    <color name="success_container">#FFCEEAD6</color>
+    <color name="on_success_container">#FF00210D</color>
+
+    <color name="warning">#FFF9AB00</color>
+    <color name="on_warning">#FFFFFFFF</color>
+    <color name="warning_container">#FFFFE8B3</color>
+    <color name="on_warning_container">#FF3E2D00</color>
+
+    <color name="info">#FF4285F4</color>
+    <color name="on_info">#FFFFFFFF</color>
+    <color name="info_container">#FFD6E3FF</color>
+    <color name="on_info_container">#FF001B3E</color>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Semantic Colors - Dark                      -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="success_dark">#FF81C995</color>
+    <color name="on_success_dark">#FF003917</color>
+    <color name="success_container_dark">#FF1B6D34</color>
+    <color name="on_success_container_dark">#FFCEEAD6</color>
+
+    <color name="warning_dark">#FFFFD966</color>
+    <color name="on_warning_dark">#FF4A3700</color>
+    <color name="warning_container_dark">#FF7A5C00</color>
+    <color name="on_warning_container_dark">#FFFFE8B3</color>
+
+    <color name="info_dark">#FF8AB4F8</color>
+    <color name="on_info_dark">#FF003258</color>
+    <color name="info_container_dark">#FF1A4A7A</color>
+    <color name="on_info_container_dark">#FFD6E3FF</color>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Utility Colors                              -->
+    <!-- ════════════════════════════════════════════ -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent">#80000000</color>
+</resources>
