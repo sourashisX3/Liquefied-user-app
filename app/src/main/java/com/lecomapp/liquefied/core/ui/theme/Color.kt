@@ -12,9 +12,9 @@ object LiquefiedColors {
     }
 
     object PrimaryDark {
-        val primary = Color(0xFFFF8A9E)
-        val onPrimary = Color(0xFF1C1B1F)
-        val primaryContainer = Color(0xFFB00020)
+        val primary = Color(0xFFFF5C77)
+        val onPrimary = Color(0xFF000000)
+        val primaryContainer = Color(0xFF8C0026)
         val onPrimaryContainer = Color(0xFFFFD9E0)
     }
 
@@ -88,7 +88,7 @@ object LiquefiedColors {
         val inverseSurface = Color(0xFFE6E1E5)
         val inverseOnSurface = Color(0xFF313033)
         val inversePrimary = Color(0xFFDB4460)
-        val surfaceTint = Color(0xFFFF8A9E)
+        val surfaceTint = Color(0xFFFF5C77)
         val scrim = Color(0xFF000000)
     }
 
@@ -108,7 +108,7 @@ object LiquefiedColors {
 
     object Warning {
         val color = Color(0xFFF9AB00)
-        val onColor = Color(0xFFFFFFFF)
+        val onColor = Color(0xFF3E2D00)
         val container = Color(0xFFFFE8B3)
         val onContainer = Color(0xFF3E2D00)
     }

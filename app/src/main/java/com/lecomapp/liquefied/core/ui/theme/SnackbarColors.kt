@@ -28,14 +28,14 @@ val LocalSnackbarColors = compositionLocalOf {
 }
 
 val LightSnackbarColors = SnackbarColors(
-    successContainer = LiquefiedColors.Success.container,
-    onSuccessContainer = LiquefiedColors.Success.onContainer,
-    errorContainer = LiquefiedColors.Error.errorContainer,
-    onErrorContainer = LiquefiedColors.Error.onErrorContainer,
-    warningContainer = LiquefiedColors.Warning.container,
-    onWarningContainer = LiquefiedColors.Warning.onContainer,
-    infoContainer = LiquefiedColors.Info.container,
-    onInfoContainer = LiquefiedColors.Info.onContainer,
+    successContainer = LiquefiedColors.Success.color,
+    onSuccessContainer = LiquefiedColors.Success.onColor,
+    errorContainer = LiquefiedColors.Error.error,
+    onErrorContainer = LiquefiedColors.Error.onError,
+    warningContainer = LiquefiedColors.Warning.color,
+    onWarningContainer = LiquefiedColors.Warning.onColor,
+    infoContainer = LiquefiedColors.Info.color,
+    onInfoContainer = LiquefiedColors.Info.onColor,
 )
 
 val DarkSnackbarColors = SnackbarColors(

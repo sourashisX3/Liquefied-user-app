@@ -4,7 +4,7 @@
     <!-- Brand Colors (user-defined, kept for reference) -->
     <!-- ════════════════════════════════════════════ -->
     <color name="brand_primary_light">#FFDB4460</color>
-    <color name="brand_primary_dark">#FFB00020</color>
+    <color name="brand_primary_dark">#FFFF5C77</color>
     <color name="brand_secondary_light">#FF3B3A5A</color>
     <color name="brand_secondary_dark">#FF1D1B31</color>
     <color name="brand_accent_light">#FF4285F4</color>
@@ -72,9 +72,9 @@
     <!-- ════════════════════════════════════════════ -->
     <!-- Material 3 - Dark Theme Color Scheme        -->
     <!-- ════════════════════════════════════════════ -->
-    <color name="primary_dark">#FFFF8A9E</color>
-    <color name="on_primary_dark">#FF56001E</color>
-    <color name="primary_container_dark">#FFB00020</color>
+    <color name="primary_dark">#FFFF5C77</color>
+    <color name="on_primary_dark">#FF000000</color>
+    <color name="primary_container_dark">#FF8C0026</color>
     <color name="on_primary_container_dark">#FFFFD9E0</color>
 
     <color name="secondary_dark">#FFC3C2E0</color>
@@ -107,7 +107,7 @@
     <color name="inverse_on_surface_dark">#FF313033</color>
     <color name="inverse_primary_dark">#FFDB4460</color>
 
-    <color name="surface_tint_dark">#FFFF8A9E</color>
+    <color name="surface_tint_dark">#FFFF5C77</color>
     <color name="scrim_dark">#FF000000</color>
 
     <!-- ════════════════════════════════════════════ -->
@@ -119,7 +119,7 @@
     <color name="on_success_container">#FF00210D</color>
 
     <color name="warning">#FFF9AB00</color>
-    <color name="on_warning">#FFFFFFFF</color>
+    <color name="on_warning">#FF3E2D00</color>
     <color name="warning_container">#FFFFE8B3</color>
     <color name="on_warning_container">#FF3E2D00</color>
 
