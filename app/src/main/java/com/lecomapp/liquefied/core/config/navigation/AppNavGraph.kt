@@ -88,7 +88,13 @@ fun AppNavGraph() {
                         composable<Route.Splash>(
                             exitTransition = { fadeOut(animationSpec = tween(500)) },
                         ) {
-                            SplashScreen(navController = navController)
+                            SplashScreen(
+                                onFinished = {
+                                    navController.navigate(Route.Onboarding) {
+                                        popUpTo(Route.Splash) { inclusive = true }
+                                    }
+                                },
+                            )
                         }
 
                         // Onboarding

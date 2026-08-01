@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +26,7 @@ import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.components.inputs.OtpInput
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
@@ -33,6 +35,7 @@ import com.lecomapp.liquefied.features.auth.presentation.components.AuthScreenLa
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.OtpVerificationViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.OtpVerificationAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.OtpVerificationEvent
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.OtpVerificationState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,12 +49,6 @@ fun OtpVerificationScreen(
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    val anim = rememberAuthAnimState()
-
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
-    }
 
     LaunchedEffect(Unit) {
         viewModel.onAction(OtpVerificationAction.StartCooldown)
@@ -74,6 +71,25 @@ fun OtpVerificationScreen(
                 }
             }
         }
+    }
+
+    OtpVerificationScreenContent(
+        identifier = identifier,
+        state = state,
+        onAction = viewModel::onAction,
+    )
+}
+
+@Composable
+fun OtpVerificationScreenContent(
+    identifier: String,
+    state: OtpVerificationState,
+    onAction: (OtpVerificationAction) -> Unit,
+) {
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
     }
 
     AuthScreenLayout {
@@ -105,7 +121,7 @@ fun OtpVerificationScreen(
 
         OtpInput(
             value = state.otp,
-            onValueChange = { viewModel.onAction(OtpVerificationAction.OnOtpChange(it)) },
+            onValueChange = { onAction(OtpVerificationAction.OnOtpChange(it)) },
             isError = state.otpError != null,
             errorMessage = state.otpError?.asString(),
             autoFocus = true,
@@ -124,7 +140,7 @@ fun OtpVerificationScreen(
                 .offset(y = (24 * anim.buttonOffsetY.value).dp),
         ) {
             AppButton(
-                onClick = { viewModel.onAction(OtpVerificationAction.Submit) },
+                onClick = { onAction(OtpVerificationAction.Submit) },
                 enabled = state.isFormValid && !state.isLoading,
                 isLoading = state.isLoading,
                 text = stringResource(R.string.otp_verify),
@@ -134,7 +150,7 @@ fun OtpVerificationScreen(
             Spacer(modifier = Modifier.height(AppSpacing.sm))
 
             TextButton(
-                onClick = { viewModel.onAction(OtpVerificationAction.Resend) },
+                onClick = { onAction(OtpVerificationAction.Resend) },
                 enabled = state.isResendEnabled && !state.isLoading,
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -153,5 +169,29 @@ fun OtpVerificationScreen(
                 )
             }
         }
+    }
+}
+
+@Preview(name = "OTP Verification - Light", showBackground = true)
+@Composable
+private fun OtpVerificationScreenLightPreview() {
+    LiquefiedTheme {
+        OtpVerificationScreenContent(
+            identifier = "+91 98765 43210",
+            state = OtpVerificationState(),
+            onAction = {},
+        )
+    }
+}
+
+@Preview(name = "OTP Verification - Dark", showBackground = true)
+@Composable
+private fun OtpVerificationScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        OtpVerificationScreenContent(
+            identifier = "+91 98765 43210",
+            state = OtpVerificationState(),
+            onAction = {},
+        )
     }
 }

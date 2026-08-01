@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +32,7 @@ import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
 import com.lecomapp.liquefied.core.ui.components.common.LanguageSelector
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
@@ -41,6 +43,8 @@ import com.lecomapp.liquefied.features.auth.presentation.components.LoginHeader
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginSocialButtons
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.LoginScreenViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.AuthenticationEvent
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.LoginAction
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.AuthenticationState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,12 +59,6 @@ fun LoginScreen(
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    val anim = rememberAuthAnimState()
-
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
-    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -80,6 +78,23 @@ fun LoginScreen(
                 else -> {}
             }
         }
+    }
+
+    LoginScreenContent(
+        state = state,
+        onAction = viewModel::onAction,
+    )
+}
+
+@Composable
+fun LoginScreenContent(
+    state: AuthenticationState,
+    onAction: (LoginAction) -> Unit,
+) {
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
     }
 
     Column(
@@ -142,7 +157,7 @@ fun LoginScreen(
                 LoginFormFields(
                     formAlpha = anim.formAlpha.value,
                     state = state,
-                    onAction = { viewModel.onAction(it) },
+                    onAction = onAction,
                     modifier = Modifier.offset(y = (24 * anim.formOffsetY.value).dp),
                 )
 
@@ -151,7 +166,7 @@ fun LoginScreen(
                 LoginActions(
                     buttonAlpha = anim.buttonAlpha.value,
                     state = state,
-                    onAction = { viewModel.onAction(it) },
+                    onAction = onAction,
                     modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
                 )
 
@@ -159,10 +174,32 @@ fun LoginScreen(
 
                 LoginSocialButtons(
                     buttonAlpha = anim.buttonAlpha.value,
-                    onAction = { viewModel.onAction(it) },
+                    onAction = onAction,
                     modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
                 )
             }
         }
+    }
+}
+
+@Preview(name = "Login - Light", showBackground = true)
+@Composable
+private fun LoginScreenLightPreview() {
+    LiquefiedTheme {
+        LoginScreenContent(
+            state = AuthenticationState(),
+            onAction = {},
+        )
+    }
+}
+
+@Preview(name = "Login - Dark", showBackground = true)
+@Composable
+private fun LoginScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        LoginScreenContent(
+            state = AuthenticationState(),
+            onAction = {},
+        )
     }
 }

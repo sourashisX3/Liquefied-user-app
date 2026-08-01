@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +32,7 @@ import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.components.inputs.AppTextField
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
@@ -39,6 +41,7 @@ import com.lecomapp.liquefied.features.auth.presentation.components.AuthScreenLa
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.ForgotPasswordViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.ForgotPasswordAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.ForgotPasswordEvent
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.ForgotPasswordState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,12 +55,6 @@ fun ForgotPasswordScreen(
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    val anim = rememberAuthAnimState()
-
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
-    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -75,6 +72,23 @@ fun ForgotPasswordScreen(
                 }
             }
         }
+    }
+
+    ForgotPasswordScreenContent(
+        state = state,
+        onAction = viewModel::onAction,
+    )
+}
+
+@Composable
+fun ForgotPasswordScreenContent(
+    state: ForgotPasswordState,
+    onAction: (ForgotPasswordAction) -> Unit,
+) {
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
     }
 
     AuthScreenLayout {
@@ -106,7 +120,7 @@ fun ForgotPasswordScreen(
 
         AppTextField(
             value = state.identifier,
-            onValueChange = { viewModel.onAction(ForgotPasswordAction.OnIdentifierChange(it)) },
+            onValueChange = { onAction(ForgotPasswordAction.OnIdentifierChange(it)) },
             label = stringResource(R.string.forgot_email_or_phone),
             placeholder = stringResource(R.string.forgot_email_or_phone_hint),
             leadingIcon = Icons.Filled.Email,
@@ -131,7 +145,7 @@ fun ForgotPasswordScreen(
                 .offset(y = (24 * anim.buttonOffsetY.value).dp),
         ) {
             AppButton(
-                onClick = { viewModel.onAction(ForgotPasswordAction.Submit) },
+                onClick = { onAction(ForgotPasswordAction.Submit) },
                 enabled = state.isFormValid && !state.isLoading,
                 isLoading = state.isLoading,
                 text = stringResource(R.string.forgot_send_code),
@@ -147,9 +161,31 @@ fun ForgotPasswordScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { viewModel.onAction(ForgotPasswordAction.BackToLogin) }
+                    .clickable { onAction(ForgotPasswordAction.BackToLogin) }
                     .padding(AppSpacing.sm),
             )
         }
+    }
+}
+
+@Preview(name = "Forgot Password - Light", showBackground = true)
+@Composable
+private fun ForgotPasswordScreenLightPreview() {
+    LiquefiedTheme {
+        ForgotPasswordScreenContent(
+            state = ForgotPasswordState(),
+            onAction = {},
+        )
+    }
+}
+
+@Preview(name = "Forgot Password - Dark", showBackground = true)
+@Composable
+private fun ForgotPasswordScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        ForgotPasswordScreenContent(
+            state = ForgotPasswordState(),
+            onAction = {},
+        )
     }
 }

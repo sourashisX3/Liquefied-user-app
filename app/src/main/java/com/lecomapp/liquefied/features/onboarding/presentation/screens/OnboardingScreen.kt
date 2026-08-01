@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -42,6 +43,7 @@ import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -210,5 +212,21 @@ private fun OnboardingPageContent(page: OnboardingPage) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(start = AppSpacing.md, top = AppSpacing.sm, end = AppSpacing.md),
         )
+    }
+}
+
+@Preview(name = "Onboarding - Light", showBackground = true)
+@Composable
+private fun OnboardingScreenLightPreview() {
+    LiquefiedTheme {
+        OnboardingScreen(onFinish = {})
+    }
+}
+
+@Preview(name = "Onboarding - Dark", showBackground = true)
+@Composable
+private fun OnboardingScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        OnboardingScreen(onFinish = {})
     }
 }

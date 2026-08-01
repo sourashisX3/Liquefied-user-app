@@ -9,12 +9,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.joelkanyi.jcomposecountrycodepicker.component.CountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
@@ -26,6 +29,7 @@ import com.lecomapp.liquefied.features.auth.presentation.components.RegisterHead
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.RegisterViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.RegisterAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.RegisterEvent
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.RegisterState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,12 +45,6 @@ fun RegisterScreen(
     val scope = rememberCoroutineScope()
 
     val pickerState = rememberKomposeCountryCodePickerState(defaultCountryCode = "IN")
-
-    val anim = rememberAuthAnimState()
-
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
-    }
 
     LaunchedEffect(pickerState.countryCode) {
         viewModel.onAction(RegisterAction.OnDialCodeChange(pickerState.getCountryPhoneCode()))
@@ -69,6 +67,27 @@ fun RegisterScreen(
         }
     }
 
+    RegisterScreenContent(
+        state = state,
+        pickerState = pickerState,
+        onAction = viewModel::onAction,
+        onNavigateToLogin = onNavigateToLogin,
+    )
+}
+
+@Composable
+fun RegisterScreenContent(
+    state: RegisterState,
+    pickerState: CountryCodePicker,
+    onAction: (RegisterAction) -> Unit,
+    onNavigateToLogin: () -> Unit,
+) {
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
+    }
+
     AuthScreenLayout {
         RegisterHeader(
             headerAlpha = anim.headerAlpha.value,
@@ -81,7 +100,7 @@ fun RegisterScreen(
             formAlpha = anim.formAlpha.value,
             state = state,
             pickerState = pickerState,
-            onAction = viewModel::onAction,
+            onAction = onAction,
             modifier = Modifier.offset(y = (24 * anim.formOffsetY.value).dp),
         )
 
@@ -92,7 +111,7 @@ fun RegisterScreen(
             isLoading = state.isLoading,
             isFormValid = state.isFormValid,
             onRegister = {
-                viewModel.onAction(
+                onAction(
                     RegisterAction.Register(
                         dialCode = pickerState.getCountryPhoneCode(),
                         phoneNumber = pickerState.getPhoneNumberWithoutPrefix(),
@@ -101,6 +120,32 @@ fun RegisterScreen(
             },
             onNavigateToLogin = onNavigateToLogin,
             modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
+        )
+    }
+}
+
+@Preview(name = "Register - Light", showBackground = true)
+@Composable
+private fun RegisterScreenLightPreview() {
+    LiquefiedTheme {
+        RegisterScreenContent(
+            state = RegisterState(),
+            pickerState = rememberKomposeCountryCodePickerState(defaultCountryCode = "IN"),
+            onAction = {},
+            onNavigateToLogin = {},
+        )
+    }
+}
+
+@Preview(name = "Register - Dark", showBackground = true)
+@Composable
+private fun RegisterScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        RegisterScreenContent(
+            state = RegisterState(),
+            pickerState = rememberKomposeCountryCodePickerState(defaultCountryCode = "IN"),
+            onAction = {},
+            onNavigateToLogin = {},
         )
     }
 }

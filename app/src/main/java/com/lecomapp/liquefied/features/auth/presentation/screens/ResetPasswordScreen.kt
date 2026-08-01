@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,6 +30,7 @@ import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.components.inputs.AppPasswordTextField
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
@@ -37,6 +39,7 @@ import com.lecomapp.liquefied.features.auth.presentation.components.AuthScreenLa
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.ResetPasswordViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.ResetPasswordAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.ResetPasswordEvent
+import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.ResetPasswordState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -49,12 +52,6 @@ fun ResetPasswordScreen(
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    val anim = rememberAuthAnimState()
-
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
-    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -71,6 +68,23 @@ fun ResetPasswordScreen(
                 }
             }
         }
+    }
+
+    ResetPasswordScreenContent(
+        state = state,
+        onAction = viewModel::onAction,
+    )
+}
+
+@Composable
+fun ResetPasswordScreenContent(
+    state: ResetPasswordState,
+    onAction: (ResetPasswordAction) -> Unit,
+) {
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
     }
 
     AuthScreenLayout {
@@ -108,7 +122,7 @@ fun ResetPasswordScreen(
         ) {
             AppPasswordTextField(
                 value = state.newPassword,
-                onValueChange = { viewModel.onAction(ResetPasswordAction.OnNewPasswordChange(it)) },
+                onValueChange = { onAction(ResetPasswordAction.OnNewPasswordChange(it)) },
                 label = stringResource(R.string.reset_new_password),
                 placeholder = stringResource(R.string.reset_new_password_hint),
                 leadingIcon = Icons.Filled.Lock,
@@ -116,7 +130,7 @@ fun ResetPasswordScreen(
                 errorMessage = state.newPasswordError?.asString(),
                 showPassword = state.showNewPassword,
                 onTogglePassword = {
-                    viewModel.onAction(ResetPasswordAction.ToggleNewPasswordVisibility)
+                    onAction(ResetPasswordAction.ToggleNewPasswordVisibility)
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -130,7 +144,7 @@ fun ResetPasswordScreen(
             AppPasswordTextField(
                 value = state.confirmPassword,
                 onValueChange = {
-                    viewModel.onAction(ResetPasswordAction.OnConfirmPasswordChange(it))
+                    onAction(ResetPasswordAction.OnConfirmPasswordChange(it))
                 },
                 label = stringResource(R.string.reset_confirm_password),
                 placeholder = stringResource(R.string.reset_confirm_password_hint),
@@ -139,7 +153,7 @@ fun ResetPasswordScreen(
                 errorMessage = state.confirmPasswordError?.asString(),
                 showPassword = state.showConfirmPassword,
                 onTogglePassword = {
-                    viewModel.onAction(ResetPasswordAction.ToggleConfirmPasswordVisibility)
+                    onAction(ResetPasswordAction.ToggleConfirmPasswordVisibility)
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -158,12 +172,34 @@ fun ResetPasswordScreen(
                 .offset(y = (24 * anim.buttonOffsetY.value).dp),
         ) {
             AppButton(
-                onClick = { viewModel.onAction(ResetPasswordAction.Submit) },
+                onClick = { onAction(ResetPasswordAction.Submit) },
                 enabled = state.isFormValid && !state.isLoading,
                 isLoading = state.isLoading,
                 text = stringResource(R.string.reset_update_password),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+    }
+}
+
+@Preview(name = "Reset Password - Light", showBackground = true)
+@Composable
+private fun ResetPasswordScreenLightPreview() {
+    LiquefiedTheme {
+        ResetPasswordScreenContent(
+            state = ResetPasswordState(),
+            onAction = {},
+        )
+    }
+}
+
+@Preview(name = "Reset Password - Dark", showBackground = true)
+@Composable
+private fun ResetPasswordScreenDarkPreview() {
+    LiquefiedTheme(darkTheme = true) {
+        ResetPasswordScreenContent(
+            state = ResetPasswordState(),
+            onAction = {},
+        )
     }
 }
