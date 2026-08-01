@@ -3,11 +3,16 @@ package com.lecomapp.liquefied.features.auth.data.repository
 import com.lecomapp.liquefied.core.config.network.models.Result
 import com.lecomapp.liquefied.core.config.network.models.map
 import com.lecomapp.liquefied.core.config.network.models.safeApiCall
+import com.lecomapp.liquefied.core.config.network.models.safeApiCallUnit
 import com.lecomapp.liquefied.features.auth.data.datasources.local.AuthLocalDataSource
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.AuthApiService
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.LoginRequest
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.RefreshTokenRequest
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.RegisterRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.ResetPasswordRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.SendOtpRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.SendOtpResponse
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.VerifyOtpRequest
 import com.lecomapp.liquefied.features.auth.data.mappers.toDomain
 import com.lecomapp.liquefied.features.auth.domain.models.AuthTokens
 import com.lecomapp.liquefied.features.auth.domain.models.LoginResult
@@ -48,6 +53,22 @@ class AuthRepositoryImpl @Inject constructor(
             local.saveTokens(result.data.token, result.data.refreshToken)
         }
         return result.map { it.toDomain() }
+    }
+
+    override suspend fun sendOtp(emailOrPhone: String): Result<SendOtpResponse> {
+        return safeApiCall { api.sendOtp(SendOtpRequest(emailOrPhone)) }
+    }
+
+    override suspend fun verifyOtp(emailOrPhone: String, otp: String): Result<AuthTokens> {
+        val result = safeApiCall { api.verifyOtp(VerifyOtpRequest(emailOrPhone, otp)) }
+        if (result is Result.Success) {
+            local.saveTokens(result.data.token, result.data.refreshToken)
+        }
+        return result.map { it.toDomain() }
+    }
+
+    override suspend fun resetPassword(emailOrPhone: String, otp: String, newPassword: String): Result<Unit> {
+        return safeApiCallUnit { api.resetPassword(ResetPasswordRequest(emailOrPhone, otp, newPassword)) }
     }
 
     override suspend fun logout() {

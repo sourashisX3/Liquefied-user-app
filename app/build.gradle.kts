@@ -102,6 +102,8 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.placeholder)
 
+    implementation(libs.kompose.country.code.picker)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.android)
     testImplementation(libs.mockk)

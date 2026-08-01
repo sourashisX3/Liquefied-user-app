@@ -19,7 +19,6 @@ import androidx.compose.material.icons.outlined.Payment
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.SearchOff
-import androidx.compose.material.icons.outlined.SmsFailed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -45,7 +44,11 @@ import com.lecomapp.liquefied.core.ui.components.feedback.rememberTypedSnackBarS
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
+import com.lecomapp.liquefied.features.auth.presentation.screens.ForgotPasswordScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.LoginScreen
+import com.lecomapp.liquefied.features.auth.presentation.screens.OtpVerificationScreen
+import com.lecomapp.liquefied.features.auth.presentation.screens.RegisterScreen
+import com.lecomapp.liquefied.features.auth.presentation.screens.ResetPasswordScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
 
 @Composable
@@ -99,23 +102,35 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Register> {
-                            ErrorView(
-                                title = "Registration Unavailable",
-                                subtitle = "Sign-up isn't available yet. Please try again later.",
-                            )
-                        }
-                        composable<Route.OtpVerification> {
-                            ErrorView(
-                                title = "Verification Error",
-                                subtitle = "We couldn't send or verify your OTP. Please try again.",
-                                icon = Icons.Outlined.SmsFailed,
-                                lottieRawRes = null,
+                            RegisterScreen(
+                                onNavigateToHome = { navController.navigate(Route.Home) },
+                                onNavigateToLogin = { navController.popBackStack() },
                             )
                         }
                         composable<Route.ForgotPassword> {
-                            ErrorView(
-                                title = "Password Reset Unavailable",
-                                subtitle = "Password reset isn't available yet. Please try again later.",
+                            ForgotPasswordScreen(
+                                onNavigateToOtp = { identifier ->
+                                    navController.navigate(Route.OtpVerification(identifier))
+                                },
+                                onNavigateToLogin = { navController.popBackStack() },
+                            )
+                        }
+                        composable<Route.OtpVerification> { backStackEntry ->
+                            OtpVerificationScreen(
+                                identifier = backStackEntry.arguments?.getString("identifier").orEmpty(),
+                                onNavigateToResetPassword = { identifier, otp ->
+                                    navController.navigate(Route.ResetPassword(identifier, otp))
+                                },
+                            )
+                        }
+                        composable<Route.ResetPassword> {
+                            ResetPasswordScreen(
+                                onNavigateToLogin = {
+                                    navController.navigate(Route.Login) {
+                                        popUpTo(Route.ForgotPassword) { inclusive = true }
+                                        launchSingleTop = true
+                                    }
+                                },
                             )
                         }
 

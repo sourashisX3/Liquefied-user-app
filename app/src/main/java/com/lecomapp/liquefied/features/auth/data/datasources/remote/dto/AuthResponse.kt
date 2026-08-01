@@ -37,10 +37,10 @@ data class UserResponse(
 @Serializable
 data class RegisterRequest(
     val firstName: String,
-    val lastName: String? = null,
-    val email: String? = null,
-    val dialCode: String? = null,
-    val phoneNumber: String? = null,
+    val lastName: String,
+    val email: String,
+    val dialCode: String,
+    val phoneNumber: String,
     val password: String,
 )
 

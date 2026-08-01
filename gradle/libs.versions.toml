@@ -20,6 +20,7 @@ coil = "2.7.0"
 coroutinesAndroid = "1.9.0"
 lottie = "6.6.2"
 accompanist = "0.36.0"
+komposeCountryCodePicker = "1.2.9"
 
 junit = "4.13.2"
 junitExt = "1.2.1"
@@ -72,6 +73,8 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 
 accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "accompanist" }
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
+
+kompose-country-code-picker = { group = "io.github.joelkanyi", name = "komposecountrycodepicker", version.ref = "komposeCountryCodePicker" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }

@@ -50,7 +50,7 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = LocalSnackBarHostState.current
+    val snackBarHostState = LocalSnackBarHostState.current
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -69,7 +69,7 @@ fun LoginScreen(
                 is AuthenticationEvent.NavigateToForgotPassword -> onNavigateToForgotPassword()
                 is AuthenticationEvent.ShowSnackBar -> {
                     scope.launch {
-                        snackbarHostState.showTypedSnackBar(
+                        snackBarHostState.showTypedSnackBar(
                             event = event.event,
                             context = context,
                             typeState = typedSnackBarState,

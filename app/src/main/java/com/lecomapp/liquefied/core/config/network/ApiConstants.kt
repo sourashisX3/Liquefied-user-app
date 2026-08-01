@@ -10,6 +10,7 @@ object ApiConstants {
         const val REFRESH = "auth/refresh"
         const val SEND_OTP = "auth/send-otp"
         const val VERIFY_OTP = "auth/verify-otp"
+        const val RESET_PASSWORD = "auth/reset-password"
         const val LOGOUT = "auth/logout"
     }
 

@@ -15,10 +15,13 @@ sealed interface Route {
     data object Register : Route
 
     @Serializable
-    data object OtpVerification : Route
+    data object ForgotPassword : Route
 
     @Serializable
-    data object ForgotPassword : Route
+    data class OtpVerification(val identifier: String) : Route
+
+    @Serializable
+    data class ResetPassword(val identifier: String, val otp: String) : Route
 
     @Serializable
     data object Home : Route

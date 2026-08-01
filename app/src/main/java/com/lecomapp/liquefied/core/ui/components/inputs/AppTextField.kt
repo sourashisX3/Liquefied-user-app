@@ -45,6 +45,7 @@ fun AppTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     leadingIcon: ImageVector? = null,
+    leadingContent: (@Composable () -> Unit)? = null,
     trailingIcon: ImageVector? = null,
     onTrailingIconClick: (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -77,9 +78,20 @@ fun AppTextField(
             placeholder = if (placeholder.isNotEmpty()) {{ Text(placeholder) }} else null,
             enabled = enabled,
             isError = finalIsError,
-            leadingIcon = if (leadingIcon != null) {
-                { Icon(leadingIcon, null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant) }
-            } else null,
+            leadingIcon = when {
+                leadingContent != null -> leadingContent
+                leadingIcon != null -> {
+                    {
+                        Icon(
+                            leadingIcon,
+                            null,
+                            modifier = Modifier.size(20.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                else -> null
+            },
             trailingIcon = if (trailingIcon != null) {
                 {
                     IconButton(onClick = { onTrailingIconClick?.invoke() }) {

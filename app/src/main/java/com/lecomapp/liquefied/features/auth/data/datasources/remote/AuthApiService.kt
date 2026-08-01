@@ -6,6 +6,10 @@ import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.AuthResp
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.LoginRequest
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.RefreshTokenRequest
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.RegisterRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.ResetPasswordRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.SendOtpRequest
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.SendOtpResponse
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.VerifyOtpRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -20,6 +24,15 @@ interface AuthApiService {
 
     @POST(ApiConstants.Auth.REFRESH)
     suspend fun refreshToken(@Body request: RefreshTokenRequest): Response<ApiResponse<AuthResponse>>
+
+    @POST(ApiConstants.Auth.SEND_OTP)
+    suspend fun sendOtp(@Body request: SendOtpRequest): Response<ApiResponse<SendOtpResponse>>
+
+    @POST(ApiConstants.Auth.VERIFY_OTP)
+    suspend fun verifyOtp(@Body request: VerifyOtpRequest): Response<ApiResponse<AuthResponse>>
+
+    @POST(ApiConstants.Auth.RESET_PASSWORD)
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ApiResponse<Unit>>
 
     @POST(ApiConstants.Auth.LOGOUT)
     suspend fun logout(): Response<ApiResponse<Unit>>

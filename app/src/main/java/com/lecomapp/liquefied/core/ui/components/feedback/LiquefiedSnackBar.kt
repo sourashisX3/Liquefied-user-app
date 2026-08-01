@@ -1,4 +1,4 @@
-package com.lecomapp.liquefied.core.ui.components.feedback
+﻿package com.lecomapp.liquefied.core.ui.components.feedback
 
 import android.content.Context
 import androidx.compose.foundation.layout.Row
@@ -49,6 +49,7 @@ suspend fun SnackbarHostState.showTypedSnackBar(
     context: Context,
     typeState: TypedSnackBarState,
 ) {
+    currentSnackbarData?.dismiss()
     typeState.currentType = event.type
     showSnackbar(message = event.message.asString(context))
 }

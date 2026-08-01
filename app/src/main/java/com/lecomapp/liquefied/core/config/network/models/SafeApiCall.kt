@@ -37,3 +37,30 @@ suspend fun <T> safeApiCall(
         Result.Error(e.toUiText())
     }
 }
+
+suspend fun safeApiCallUnit(
+    json: Json = Json { ignoreUnknownKeys = true },
+    apiCall: suspend () -> Response<ApiResponse<Unit>>,
+): Result<Unit> {
+    return try {
+        val response = apiCall()
+        if (response.isSuccessful && response.body() != null) {
+            Result.Success(Unit, response.body()?.message)
+        } else {
+            val bodyMessage = try {
+                response.errorBody()?.string()
+                    ?.let { json.decodeFromString<ApiErrorResponse>(it).message }
+            } catch (e: Exception) {
+                null
+            }
+            Result.Error(
+                (bodyMessage ?: response.message())
+                    .takeIf { !it.isNullOrBlank() }
+                    ?.toUiText()
+                    ?: UiText.DynamicString("Unknown error")
+            )
+        }
+    } catch (e: Exception) {
+        Result.Error(e.toUiText())
+    }
+}
