@@ -85,4 +85,13 @@
     <string name="reset_success">Password updated successfully. Please sign in.</string>
     <string name="reset_error_confirm_required">Confirm your new password</string>
     <string name="reset_error_confirm_mismatch">Passwords do not match</string>
+
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_categories">Categories</string>
+    <string name="bottom_nav_cart">Cart</string>
+    <string name="bottom_nav_orders">Orders</string>
+    <string name="bottom_nav_profile">Profile</string>
+
+    <string name="language_selector">Change Language</string>
+    <string name="language_selector_title">Select Language</string>
 </resources>

@@ -1,0 +1,96 @@
+<resources>
+    <string name="splash_tagline">प्रीमियम स्पिरिट्स और बेहतरीन वाइन</string>
+
+    <string name="login_welcome_back">वापसी पर स्वागत है</string>
+    <string name="login_sign_in_continue">जारी रखने के लिए साइन इन करें</string>
+    <string name="login_email_or_phone">ईमेल या फ़ोन</string>
+    <string name="login_email_or_phone_hint">अपना ईमेल या फ़ोन दर्ज करें</string>
+    <string name="login_password">पासवर्ड</string>
+    <string name="login_password_hint">अपना पासवर्ड दर्ज करें</string>
+    <string name="login_forgot_password">पासवर्ड भूल गए?</string>
+    <string name="login_sign_in">साइन इन</string>
+    <string name="login_dont_have_account">खाता नहीं है? </string>
+    <string name="login_sign_up">साइन अप</string>
+    <string name="login_error_email_required">ईमेल या फ़ोन आवश्यक है</string>
+    <string name="login_error_password_required">पासवर्ड आवश्यक है</string>
+    <string name="login_error_password_min">कम से कम 8 अक्षर</string>
+    <string name="login_error_password_uppercase">कम से कम 1 बड़ा अक्षर</string>
+    <string name="login_error_password_lowercase">कम से कम 1 छोटा अक्षर</string>
+    <string name="login_error_password_digit">कम से कम 1 अंक</string>
+    <string name="login_error_password_special">कम से कम 1 विशेष वर्ण</string>
+    <string name="login_google">Google से जारी रखें</string>
+    <string name="login_facebook">Facebook से जारी रखें</string>
+
+    <string name="register_title">खाता बनाएं</string>
+    <string name="register_subtitle">हमसे जुड़ें और प्रीमियम स्पिरिट्स और बेहतरीन वाइन का अन्वेषण करें</string>
+    <string name="register_first_name">पहला नाम</string>
+    <string name="register_first_name_hint">अपना पहला नाम दर्ज करें</string>
+    <string name="register_last_name">अंतिम नाम</string>
+    <string name="register_last_name_hint">अपना अंतिम नाम दर्ज करें</string>
+    <string name="register_email">ईमेल</string>
+    <string name="register_email_hint">अपना ईमेल दर्ज करें</string>
+    <string name="register_phone">फ़ोन नंबर</string>
+    <string name="register_phone_hint">अपना फ़ोन नंबर दर्ज करें</string>
+    <string name="register_password">पासवर्ड</string>
+    <string name="register_password_hint">अपना पासवर्ड दर्ज करें</string>
+    <string name="register_confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="register_confirm_password_hint">अपना पासवर्ड फिर से दर्ज करें</string>
+    <string name="register_create_account">खाता बनाएं</string>
+    <string name="register_already_have_account">क्या आपके पास पहले से खाता है? </string>
+    <string name="register_sign_in">साइन इन</string>
+    <string name="register_success">खाता सफलतापूर्वक बनाया गया</string>
+    <string name="register_error_first_name_required">पहला नाम आवश्यक है</string>
+    <string name="register_error_last_name_required">अंतिम नाम आवश्यक है</string>
+    <string name="register_error_email_required">ईमेल आवश्यक है</string>
+    <string name="register_error_email_invalid">मान्य ईमेल पता दर्ज करें</string>
+    <string name="register_error_dial_code_required">देश कोड चुनें</string>
+    <string name="register_error_phone_required">फ़ोन नंबर आवश्यक है</string>
+    <string name="register_error_phone_invalid">मान्य फ़ोन नंबर दर्ज करें</string>
+    <string name="register_error_password_required">पासवर्ड आवश्यक है</string>
+    <string name="register_error_password_min">कम से कम 8 अक्षर</string>
+    <string name="register_error_password_uppercase">कम से कम 1 बड़ा अक्षर</string>
+    <string name="register_error_password_lowercase">कम से कम 1 छोटा अक्षर</string>
+    <string name="register_error_password_digit">कम से कम 1 अंक</string>
+    <string name="register_error_password_special">कम से कम 1 विशेष वर्ण</string>
+    <string name="register_error_confirm_required">अपने पासवर्ड की पुष्टि करें</string>
+    <string name="register_error_confirm_mismatch">पासवर्ड मेल नहीं खाते</string>
+
+    <string name="forgot_title">पासवर्ड भूल गए</string>
+    <string name="forgot_subtitle">एक-बार का कोड प्राप्त करने के लिए अपना ईमेल या फ़ोन नंबर दर्ज करें</string>
+    <string name="forgot_email_or_phone">ईमेल या फ़ोन</string>
+    <string name="forgot_email_or_phone_hint">अपना ईमेल या फ़ोन दर्ज करें</string>
+    <string name="forgot_send_code">कोड भेजें</string>
+    <string name="forgot_back_to_login">लॉगिन पर वापस जाएं</string>
+    <string name="forgot_error_identifier_required">ईमेल या फ़ोन आवश्यक है</string>
+    <string name="forgot_otp_sent">सत्यापन कोड भेजा गया। OTP उपयोग करें: %1$s</string>
+
+    <string name="otp_title">OTP सत्यापित करें</string>
+    <string name="otp_subtitle">%1$s पर भेजा गया 6-अंकीय कोड दर्ज करें</string>
+    <string name="otp_code_hint">6-अंकीय कोड दर्ज करें</string>
+    <string name="otp_verify">सत्यापित करें</string>
+    <string name="otp_resend">कोड फिर से भेजें</string>
+    <string name="otp_resend_cooldown">कोड फिर से भेजें (%1$d सेकंड)</string>
+    <string name="otp_error_required">कोड दर्ज करें</string>
+    <string name="otp_error_invalid">कोड 6 अंकों का होना चाहिए</string>
+    <string name="otp_resend_sent">नया कोड भेजा गया है। OTP उपयोग करें: %1$s</string>
+
+    <string name="reset_title">पासवर्ड रीसेट करें</string>
+    <string name="reset_subtitle">अपने खाते के लिए नया पासवर्ड चुनें</string>
+    <string name="reset_new_password">नया पासवर्ड</string>
+    <string name="reset_new_password_hint">नया पासवर्ड दर्ज करें</string>
+    <string name="reset_confirm_password">नए पासवर्ड की पुष्टि करें</string>
+    <string name="reset_confirm_password_hint">नया पासवर्ड फिर से दर्ज करें</string>
+    <string name="reset_update_password">पासवर्ड अपडेट करें</string>
+    <string name="reset_success">पासवर्ड सफलतापूर्वक अपडेट हुआ। कृपया साइन इन करें।</string>
+    <string name="reset_error_confirm_required">अपने नए पासवर्ड की पुष्टि करें</string>
+    <string name="reset_error_confirm_mismatch">पासवर्ड मेल नहीं खाते</string>
+
+    <string name="bottom_nav_home">होम</string>
+    <string name="bottom_nav_categories">श्रेणियाँ</string>
+    <string name="bottom_nav_cart">कार्ट</string>
+    <string name="bottom_nav_orders">ऑर्डर</string>
+    <string name="bottom_nav_profile">प्रोफ़ाइल</string>
+
+    <string name="language_selector">भाषा बदलें</string>
+    <string name="language_selector_title">भाषा चुनें</string>
+</resources>

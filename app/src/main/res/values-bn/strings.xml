@@ -1,0 +1,96 @@
+<resources>
+    <string name="splash_tagline">প্রিমিয়াম স্পিরিট এবং সেরা ওয়াইন</string>
+
+    <string name="login_welcome_back">ফিরে আসায় স্বাগতম</string>
+    <string name="login_sign_in_continue">চালিয়ে যেতে সাইন ইন করুন</string>
+    <string name="login_email_or_phone">ইমেইল বা ফোন</string>
+    <string name="login_email_or_phone_hint">আপনার ইমেইল বা ফোন লিখুন</string>
+    <string name="login_password">পাসওয়ার্ড</string>
+    <string name="login_password_hint">আপনার পাসওয়ার্ড লিখুন</string>
+    <string name="login_forgot_password">পাসওয়ার্ড ভুলে গেছেন?</string>
+    <string name="login_sign_in">সাইন ইন</string>
+    <string name="login_dont_have_account">অ্যাকাউন্ট নেই? </string>
+    <string name="login_sign_up">সাইন আপ</string>
+    <string name="login_error_email_required">ইমেইল বা ফোন প্রয়োজন</string>
+    <string name="login_error_password_required">পাসওয়ার্ড প্রয়োজন</string>
+    <string name="login_error_password_min">কমপক্ষে ৮ অক্ষর</string>
+    <string name="login_error_password_uppercase">কমপক্ষে ১টি বড় হাতের অক্ষর</string>
+    <string name="login_error_password_lowercase">কমপক্ষে ১টি ছোট হাতের অক্ষর</string>
+    <string name="login_error_password_digit">কমপক্ষে ১টি সংখ্যা</string>
+    <string name="login_error_password_special">কমপক্ষে ১টি বিশেষ চিহ্ন</string>
+    <string name="login_google">Google দিয়ে চালিয়ে যান</string>
+    <string name="login_facebook">Facebook দিয়ে চালিয়ে যান</string>
+
+    <string name="register_title">অ্যাকাউন্ট তৈরি করুন</string>
+    <string name="register_subtitle">আমাদের সাথে যোগ দিন এবং প্রিমিয়াম স্পিরিট ও সেরা ওয়াইন ঘুরে দেখুন</string>
+    <string name="register_first_name">প্রথম নাম</string>
+    <string name="register_first_name_hint">আপনার প্রথম নাম লিখুন</string>
+    <string name="register_last_name">শেষ নাম</string>
+    <string name="register_last_name_hint">আপনার শেষ নাম লিখুন</string>
+    <string name="register_email">ইমেইল</string>
+    <string name="register_email_hint">আপনার ইমেইল লিখুন</string>
+    <string name="register_phone">ফোন নম্বর</string>
+    <string name="register_phone_hint">আপনার ফোন নম্বর লিখুন</string>
+    <string name="register_password">পাসওয়ার্ড</string>
+    <string name="register_password_hint">আপনার পাসওয়ার্ড লিখুন</string>
+    <string name="register_confirm_password">পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="register_confirm_password_hint">আপনার পাসওয়ার্ড আবার লিখুন</string>
+    <string name="register_create_account">অ্যাকাউন্ট তৈরি করুন</string>
+    <string name="register_already_have_account">আপনার কি অ্যাকাউন্ট আছে? </string>
+    <string name="register_sign_in">সাইন ইন</string>
+    <string name="register_success">অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে</string>
+    <string name="register_error_first_name_required">প্রথম নাম প্রয়োজন</string>
+    <string name="register_error_last_name_required">শেষ নাম প্রয়োজন</string>
+    <string name="register_error_email_required">ইমেইল প্রয়োজন</string>
+    <string name="register_error_email_invalid">সঠিক ইমেইল ঠিকানা লিখুন</string>
+    <string name="register_error_dial_code_required">দেশের কোড নির্বাচন করুন</string>
+    <string name="register_error_phone_required">ফোন নম্বর প্রয়োজন</string>
+    <string name="register_error_phone_invalid">সঠিক ফোন নম্বর লিখুন</string>
+    <string name="register_error_password_required">পাসওয়ার্ড প্রয়োজন</string>
+    <string name="register_error_password_min">কমপক্ষে ৮ অক্ষর</string>
+    <string name="register_error_password_uppercase">কমপক্ষে ১টি বড় হাতের অক্ষর</string>
+    <string name="register_error_password_lowercase">কমপক্ষে ১টি ছোট হাতের অক্ষর</string>
+    <string name="register_error_password_digit">কমপক্ষে ১টি সংখ্যা</string>
+    <string name="register_error_password_special">কমপক্ষে ১টি বিশেষ চিহ্ন</string>
+    <string name="register_error_confirm_required">আপনার পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="register_error_confirm_mismatch">পাসওয়ার্ড মেলেনি</string>
+
+    <string name="forgot_title">পাসওয়ার্ড ভুলে গেছেন</string>
+    <string name="forgot_subtitle">এক-বারের কোড পেতে আপনার ইমেইল বা ফোন নম্বর লিখুন</string>
+    <string name="forgot_email_or_phone">ইমেইল বা ফোন</string>
+    <string name="forgot_email_or_phone_hint">আপনার ইমেইল বা ফোন লিখুন</string>
+    <string name="forgot_send_code">কোড পাঠান</string>
+    <string name="forgot_back_to_login">লগইনে ফিরে যান</string>
+    <string name="forgot_error_identifier_required">ইমেইল বা ফোন প্রয়োজন</string>
+    <string name="forgot_otp_sent">যাচাইকরণ কোড পাঠানো হয়েছে। OTP ব্যবহার করুন: %1$s</string>
+
+    <string name="otp_title">OTP যাচাই করুন</string>
+    <string name="otp_subtitle">%1$s-এ পাঠানো ৬ অঙ্কের কোড লিখুন</string>
+    <string name="otp_code_hint">৬ অঙ্কের কোড লিখুন</string>
+    <string name="otp_verify">যাচাই করুন</string>
+    <string name="otp_resend">কোড আবার পাঠান</string>
+    <string name="otp_resend_cooldown">কোড আবার পাঠান (%1$d সেকেন্ড)</string>
+    <string name="otp_error_required">কোড লিখুন</string>
+    <string name="otp_error_invalid">কোড ৬ অঙ্কের হতে হবে</string>
+    <string name="otp_resend_sent">নতুন কোড পাঠানো হয়েছে। OTP ব্যবহার করুন: %1$s</string>
+
+    <string name="reset_title">পাসওয়ার্ড রিসেট করুন</string>
+    <string name="reset_subtitle">আপনার অ্যাকাউন্টের জন্য একটি নতুন পাসওয়ার্ড চয়ন করুন</string>
+    <string name="reset_new_password">নতুন পাসওয়ার্ড</string>
+    <string name="reset_new_password_hint">নতুন পাসওয়ার্ড লিখুন</string>
+    <string name="reset_confirm_password">নতুন পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="reset_confirm_password_hint">নতুন পাসওয়ার্ড আবার লিখুন</string>
+    <string name="reset_update_password">পাসওয়ার্ড আপডেট করুন</string>
+    <string name="reset_success">পাসওয়ার্ড সফলভাবে আপডেট হয়েছে। অনুগ্রহ করে সাইন ইন করুন।</string>
+    <string name="reset_error_confirm_required">আপনার নতুন পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="reset_error_confirm_mismatch">পাসওয়ার্ড মেলেনি</string>
+
+    <string name="bottom_nav_home">হোম</string>
+    <string name="bottom_nav_categories">ক্যাটাগরি</string>
+    <string name="bottom_nav_cart">কার্ট</string>
+    <string name="bottom_nav_orders">অর্ডার</string>
+    <string name="bottom_nav_profile">প্রোফাইল</string>
+
+    <string name="language_selector">ভাষা পরিবর্তন করুন</string>
+    <string name="language_selector_title">ভাষা নির্বাচন করুন</string>
+</resources>

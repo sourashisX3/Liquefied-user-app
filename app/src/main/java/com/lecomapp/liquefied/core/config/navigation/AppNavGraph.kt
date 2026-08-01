@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -278,8 +279,8 @@ private fun AppBottomBar(navController: NavHostController) {
     NavigationBar {
         bottomNavItems.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
+                icon = { Icon(item.icon, contentDescription = stringResource(item.labelRes)) },
+                label = { Text(stringResource(item.labelRes)) },
                 selected = currentDestination?.hasRoute(item.route::class) == true,
                 onClick = {
                     navController.navigate(item.route) {
