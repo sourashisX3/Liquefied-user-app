@@ -1,6 +1,14 @@
 <resources>
     <string name="splash_tagline">प्रीमियम स्पिरिट्स और बेहतरीन वाइन</string>
 
+    <string name="onboarding_skip">स्किप करें</string>
+    <string name="onboarding_next">अगला</string>
+    <string name="onboarding_get_started">शुरू करें</string>
+    <string name="onboarding_title_1">Liquefied में आपका स्वागत है</string>
+    <string name="onboarding_subtitle_1">प्रीमियम स्पिरिट्स और बेहतरीन वाइन, सिर्फ आपके लिए</string>
+    <string name="onboarding_title_2">तेज़ डिलीवरी</string>
+    <string name="onboarding_subtitle_2">सुरक्षित डिलीवरी सीधे आपके दरवाजे तक</string>
+
     <string name="login_welcome_back">वापसी पर स्वागत है</string>
     <string name="login_sign_in_continue">जारी रखने के लिए साइन इन करें</string>
     <string name="login_email_or_phone">ईमेल या फ़ोन</string>

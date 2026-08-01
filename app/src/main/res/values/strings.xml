@@ -2,6 +2,14 @@
     <string name="app_name">Liquefied</string>
     <string name="splash_tagline">Premium Spirits &amp; Fine Wines</string>
 
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_title_1">Welcome to Liquefied</string>
+    <string name="onboarding_subtitle_1">Premium spirits &amp; fine wines, curated just for you</string>
+    <string name="onboarding_title_2">Fast Delivery</string>
+    <string name="onboarding_subtitle_2">Quick, secure delivery right to your doorstep</string>
+
     <string name="login_welcome_back">Welcome Back</string>
     <string name="login_sign_in_continue">Sign in to continue</string>
     <string name="login_email_or_phone">Email or Phone</string>

@@ -23,7 +23,9 @@ fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(Unit) {
         anim.animateSequence {
-            navController.navigate(Route.Login) {
+            // TODO(uncomment-on-first-launch-only): read "onboarding_seen" flag and
+            // navigate straight to Login if already seen, otherwise to Onboarding.
+            navController.navigate(Route.Onboarding) {
                 popUpTo(Route.Splash) { inclusive = true }
             }
         }

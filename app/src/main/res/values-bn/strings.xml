@@ -1,6 +1,14 @@
 <resources>
     <string name="splash_tagline">প্রিমিয়াম স্পিরিট এবং সেরা ওয়াইন</string>
 
+    <string name="onboarding_skip">স্কিপ</string>
+    <string name="onboarding_next">পরবর্তী</string>
+    <string name="onboarding_get_started">শুরু করুন</string>
+    <string name="onboarding_title_1">Liquefied-তে স্বাগতম</string>
+    <string name="onboarding_subtitle_1">প্রিমিয়াম স্পিরিট ও সেরা ওয়াইন, শুধু আপনার জন্য</string>
+    <string name="onboarding_title_2">দ্রুত ডেলিভারি</string>
+    <string name="onboarding_subtitle_2">দ্রুত, নিরাপদ ডেলিভারি সরাসরি আপনার দরজায়</string>
+
     <string name="login_welcome_back">ফিরে আসায় স্বাগতম</string>
     <string name="login_sign_in_continue">চালিয়ে যেতে সাইন ইন করুন</string>
     <string name="login_email_or_phone">ইমেইল বা ফোন</string>

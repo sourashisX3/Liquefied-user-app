@@ -50,6 +50,7 @@ import com.lecomapp.liquefied.features.auth.presentation.screens.LoginScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.OtpVerificationScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.RegisterScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.ResetPasswordScreen
+import com.lecomapp.liquefied.features.onboarding.presentation.screens.OnboardingScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
 
 @Composable
@@ -88,6 +89,22 @@ fun AppNavGraph() {
                             exitTransition = { fadeOut(animationSpec = tween(500)) },
                         ) {
                             SplashScreen(navController = navController)
+                        }
+
+                        // Onboarding
+                        composable<Route.Onboarding>(
+                            enterTransition = {
+                                fadeIn(animationSpec = tween(500)) + slideInVertically(animationSpec = tween(500)) { it / 8 }
+                            },
+                            exitTransition = { fadeOut(animationSpec = tween(300)) },
+                        ) {
+                            OnboardingScreen(
+                                onFinish = {
+                                    navController.navigate(Route.Login) {
+                                        popUpTo(Route.Onboarding) { inclusive = true }
+                                    }
+                                },
+                            )
                         }
 
                         // Auth Graph
