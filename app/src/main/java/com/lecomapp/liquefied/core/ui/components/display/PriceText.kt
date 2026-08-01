@@ -1,4 +1,4 @@
-package com.lecomapp.liquefied.core.ui.components
+package com.lecomapp.liquefied.core.ui.components.display
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
-import com.lecomapp.liquefied.core.ui.theme.LiquefiedColors
 
 @Composable
 fun PriceText(

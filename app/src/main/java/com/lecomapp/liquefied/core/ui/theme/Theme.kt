@@ -90,11 +90,11 @@ fun LiquefiedTheme(
         }
     }
 
-    val snackbarColors = if (darkTheme) DarkSnackbarColors else LightSnackbarColors
+    val snackBarColors = if (darkTheme) DarkSnackBarColors else LightSnackBarColors
 
     CompositionLocalProvider(
         LocalDimensionTokens provides DimensionTokens(),
-        LocalSnackbarColors provides snackbarColors,
+        LocalSnackBarColors provides snackBarColors,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

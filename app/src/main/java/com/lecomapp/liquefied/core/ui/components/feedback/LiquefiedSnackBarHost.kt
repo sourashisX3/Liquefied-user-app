@@ -1,11 +1,10 @@
-package com.lecomapp.liquefied.core.ui.components
+package com.lecomapp.liquefied.core.ui.components.feedback
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,17 +16,27 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun LiquefiedSnackbarHost(
+fun LiquefiedSnackBarHost(
     hostState: SnackbarHostState,
-    typeState: TypedSnackbarState,
+    typeState: TypedSnackBarState,
     modifier: Modifier = Modifier,
 ) {
     val currentData = hostState.currentSnackbarData
+
+    LaunchedEffect(currentData) {
+        if (currentData != null) {
+            delay(typeState.currentType.displayDurationMillis().milliseconds)
+            currentData.dismiss()
+        }
+    }
 
     Box(
         modifier = modifier
@@ -39,22 +48,23 @@ fun LiquefiedSnackbarHost(
         AnimatedContent(
             targetState = currentData,
             transitionSpec = {
-                (slideInVertically(animationSpec = tween(250)) { -it } + fadeIn(animationSpec = tween(250)))
-                    .togetherWith(slideOutVertically(animationSpec = tween(250)) { -it } + fadeOut(animationSpec = tween(250)))
+                EnterTransition.None togetherWith
+                    (slideOutVertically(animationSpec = tween(250)) { -it } +
+                        fadeOut(animationSpec = tween(250)))
             },
-            label = "liquefiedSnackbar",
+            label = "liquefiedSnackBar",
         ) { data ->
             if (data != null) {
-                SwipeDismissableSnackbar(data = data, typeState = typeState)
+                SwipeDismissableSnackBar(data = data, typeState = typeState)
             }
         }
     }
 }
 
 @Composable
-private fun SwipeDismissableSnackbar(
+private fun SwipeDismissableSnackBar(
     data: SnackbarData,
-    typeState: TypedSnackbarState,
+    typeState: TypedSnackBarState,
 ) {
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -74,6 +84,6 @@ private fun SwipeDismissableSnackbar(
         enableDismissFromStartToEnd = true,
         enableDismissFromEndToStart = true,
     ) {
-        TypedSnackbar(data = data, typeState = typeState)
+        TypedSnackBar(data = data, typeState = typeState)
     }
 }

@@ -1,9 +1,9 @@
-package com.lecomapp.liquefied.core.ui.components
+package com.lecomapp.liquefied.core.ui.components.inputs
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
-import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 
 @Composable
 fun SearchBar(
@@ -46,7 +45,7 @@ fun SearchBar(
             }
         } else null,
         singleLine = true,
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(AppCornerRadius.full),
+        shape = RoundedCornerShape(AppCornerRadius.full),
         textStyle = MaterialTheme.typography.bodyMedium,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,

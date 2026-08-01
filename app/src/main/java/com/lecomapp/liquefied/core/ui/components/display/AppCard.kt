@@ -1,4 +1,4 @@
-package com.lecomapp.liquefied.core.ui.components
+package com.lecomapp.liquefied.core.ui.components.display
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppElevation
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.ShapeTokens

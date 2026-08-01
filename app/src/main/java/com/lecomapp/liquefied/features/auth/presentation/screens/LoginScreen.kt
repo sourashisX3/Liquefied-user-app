@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,9 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
+import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
-import com.lecomapp.liquefied.core.ui.theme.LocalSnackbarHostState
-import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackbarState
+import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
+import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
 import com.lecomapp.liquefied.features.auth.presentation.animation.rememberLoginAnimState
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginActions
@@ -36,6 +40,7 @@ import com.lecomapp.liquefied.features.auth.presentation.components.LoginHeader
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginSocialButtons
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.LoginScreenViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.AuthenticationEvent
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -45,9 +50,10 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = LocalSnackbarHostState.current
-    val typedSnackbarState = LocalTypedSnackbarState.current
+    val snackbarHostState = LocalSnackBarHostState.current
+    val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val anim = rememberLoginAnimState()
 
@@ -61,9 +67,14 @@ fun LoginScreen(
                 is AuthenticationEvent.NavigateToHome -> onNavigateToHome()
                 is AuthenticationEvent.NavigateToSignUp -> onNavigateToRegister()
                 is AuthenticationEvent.NavigateToForgotPassword -> onNavigateToForgotPassword()
-                is AuthenticationEvent.ShowSnackbar -> {
-                    typedSnackbarState.currentType = event.event.type
-                    snackbarHostState.showSnackbar(event.event.message.asString(context))
+                is AuthenticationEvent.ShowSnackBar -> {
+                    scope.launch {
+                        snackbarHostState.showTypedSnackBar(
+                            event = event.event,
+                            context = context,
+                            typeState = typedSnackBarState,
+                        )
+                    }
                 }
                 else -> {}
             }
@@ -73,6 +84,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
             .background(MaterialTheme.colorScheme.primary),
     ) {
         Box(
@@ -94,6 +106,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(2f)
+                .offset(y = (80 * anim.cardOffsetY.value).dp)
                 .alpha(anim.cardAlpha.value)
                 .clip(RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp))
                 .background(
@@ -113,7 +126,10 @@ fun LoginScreen(
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                LoginHeader(headerAlpha = anim.headerAlpha.value)
+                LoginHeader(
+                    headerAlpha = anim.headerAlpha.value,
+                    modifier = Modifier.offset(y = (24 * anim.headerOffsetY.value).dp),
+                )
 
                 Spacer(modifier = Modifier.height(AppSpacing.lg))
 
@@ -121,6 +137,7 @@ fun LoginScreen(
                     formAlpha = anim.formAlpha.value,
                     state = state,
                     onAction = { viewModel.onAction(it) },
+                    modifier = Modifier.offset(y = (24 * anim.formOffsetY.value).dp),
                 )
 
                 Spacer(modifier = Modifier.height(AppSpacing.lg))
@@ -129,6 +146,7 @@ fun LoginScreen(
                     buttonAlpha = anim.buttonAlpha.value,
                     state = state,
                     onAction = { viewModel.onAction(it) },
+                    modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
                 )
 
                 Spacer(modifier = Modifier.height(AppSpacing.lg))
@@ -136,6 +154,7 @@ fun LoginScreen(
                 LoginSocialButtons(
                     buttonAlpha = anim.buttonAlpha.value,
                     onAction = { viewModel.onAction(it) },
+                    modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
                 )
             }
         }

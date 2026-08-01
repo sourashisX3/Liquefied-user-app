@@ -1,4 +1,4 @@
-package com.lecomapp.liquefied.core.ui.components
+package com.lecomapp.liquefied.core.ui.components.inputs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

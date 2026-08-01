@@ -2,6 +2,9 @@ package com.lecomapp.liquefied.features.auth.presentation.animation
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -10,9 +13,13 @@ import kotlinx.coroutines.launch
 
 class LoginAnimState(
     val cardAlpha: Animatable<Float, AnimationVector1D>,
+    val cardOffsetY: Animatable<Float, AnimationVector1D>,
     val headerAlpha: Animatable<Float, AnimationVector1D>,
+    val headerOffsetY: Animatable<Float, AnimationVector1D>,
     val formAlpha: Animatable<Float, AnimationVector1D>,
+    val formOffsetY: Animatable<Float, AnimationVector1D>,
     val buttonAlpha: Animatable<Float, AnimationVector1D>,
+    val buttonOffsetY: Animatable<Float, AnimationVector1D>,
 )
 
 @Composable
@@ -20,9 +27,13 @@ fun rememberLoginAnimState(): LoginAnimState {
     return remember {
         LoginAnimState(
             cardAlpha = Animatable(0f),
+            cardOffsetY = Animatable(1f),
             headerAlpha = Animatable(0f),
+            headerOffsetY = Animatable(1f),
             formAlpha = Animatable(0f),
+            formOffsetY = Animatable(1f),
             buttonAlpha = Animatable(0f),
+            buttonOffsetY = Animatable(1f),
         )
     }
 }
@@ -35,13 +46,28 @@ suspend fun LoginAnimState.animateSequence() {
                 animationSpec = tween(durationMillis = 600),
             )
         }
+        launch {
+            cardOffsetY.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            )
+        }
     }
 
     coroutineScope {
         launch {
             headerAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(durationMillis = 400),
+                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing),
+            )
+        }
+        launch {
+            headerOffsetY.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
             )
         }
     }
@@ -50,7 +76,13 @@ suspend fun LoginAnimState.animateSequence() {
         launch {
             formAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(durationMillis = 400),
+                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing),
+            )
+        }
+        launch {
+            formOffsetY.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
             )
         }
     }
@@ -59,7 +91,13 @@ suspend fun LoginAnimState.animateSequence() {
         launch {
             buttonAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(durationMillis = 400),
+                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing),
+            )
+        }
+        launch {
+            buttonOffsetY.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
             )
         }
     }

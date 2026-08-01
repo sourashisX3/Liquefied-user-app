@@ -18,6 +18,12 @@ data class Pagination(
     val totalPages: Int = 0,
 )
 
+@Serializable
+data class ApiErrorResponse(
+    val statusCode: Int = 0,
+    val message: String? = null,
+)
+
 sealed class NetworkResult<out T> {
     data class Success<T>(val data: T) : NetworkResult<T>()
     data class Error(val message: String, val code: Int = -1) : NetworkResult<Nothing>()

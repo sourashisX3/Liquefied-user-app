@@ -2,7 +2,7 @@ package com.lecomapp.liquefied.core.config.network
 
 object ApiConstants {
 
-    const val BASE_URL = "http://10.0.2.2:8083/api/v1/"
+    const val BASE_URL = "http://10.102.226.33:8083/api/v1/"
 
     object Auth {
         const val LOGIN = "auth/login"

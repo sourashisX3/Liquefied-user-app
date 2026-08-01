@@ -1,8 +1,8 @@
 package com.lecomapp.liquefied.core.utils
 
-enum class SnackbarType { SUCCESS, ERROR, WARNING, INFO }
+enum class SnackBarType { SUCCESS, ERROR, WARNING, INFO }
 
-data class SnackbarEvent(
+data class SnackBarEvent(
     val message: UiText,
-    val type: SnackbarType = SnackbarType.INFO,
+    val type: SnackBarType = SnackBarType.INFO,
 )

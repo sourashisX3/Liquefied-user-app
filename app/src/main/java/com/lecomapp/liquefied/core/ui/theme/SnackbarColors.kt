@@ -3,7 +3,7 @@ package com.lecomapp.liquefied.core.ui.theme
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-data class SnackbarColors(
+data class SnackBarColors(
     val successContainer: Color,
     val onSuccessContainer: Color,
     val errorContainer: Color,
@@ -14,8 +14,8 @@ data class SnackbarColors(
     val onInfoContainer: Color,
 )
 
-val LocalSnackbarColors = compositionLocalOf {
-    SnackbarColors(
+val LocalSnackBarColors = compositionLocalOf {
+    SnackBarColors(
         successContainer = Color.Unspecified,
         onSuccessContainer = Color.Unspecified,
         errorContainer = Color.Unspecified,
@@ -27,7 +27,7 @@ val LocalSnackbarColors = compositionLocalOf {
     )
 }
 
-val LightSnackbarColors = SnackbarColors(
+val LightSnackBarColors = SnackBarColors(
     successContainer = LiquefiedColors.Success.color,
     onSuccessContainer = LiquefiedColors.Success.onColor,
     errorContainer = LiquefiedColors.Error.error,
@@ -38,7 +38,7 @@ val LightSnackbarColors = SnackbarColors(
     onInfoContainer = LiquefiedColors.Info.onColor,
 )
 
-val DarkSnackbarColors = SnackbarColors(
+val DarkSnackBarColors = SnackBarColors(
     successContainer = LiquefiedColors.SuccessDark.container,
     onSuccessContainer = LiquefiedColors.SuccessDark.onContainer,
     errorContainer = LiquefiedColors.ErrorDark.errorContainer,

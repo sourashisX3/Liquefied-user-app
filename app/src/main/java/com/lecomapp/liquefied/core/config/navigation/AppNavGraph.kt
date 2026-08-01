@@ -7,6 +7,19 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ReceiptLong
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.EditOff
+import androidx.compose.material.icons.outlined.Forum
+import androidx.compose.material.icons.outlined.LocationOff
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Payment
+import androidx.compose.material.icons.outlined.RateReview
+import androidx.compose.material.icons.outlined.ReceiptLong
+import androidx.compose.material.icons.outlined.SearchOff
+import androidx.compose.material.icons.outlined.SmsFailed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -25,12 +38,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.lecomapp.liquefied.core.ui.components.LiquefiedSnackbarHost
-import com.lecomapp.liquefied.core.ui.components.rememberTypedSnackbarState
+import com.lecomapp.liquefied.core.ui.components.feedback.EmptyState
+import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
+import com.lecomapp.liquefied.core.ui.components.feedback.LiquefiedSnackBarHost
+import com.lecomapp.liquefied.core.ui.components.feedback.rememberTypedSnackBarState
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
-import com.lecomapp.liquefied.core.ui.theme.LocalSnackbarHostState
-import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackbarState
+import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
+import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.screens.LoginScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
 
@@ -46,11 +60,11 @@ fun AppNavGraph() {
         }
 
         val snackbarHostState = remember { SnackbarHostState() }
-        val typedSnackbarState = rememberTypedSnackbarState()
+        val typedSnackBarState = rememberTypedSnackBarState()
 
         CompositionLocalProvider(
-            LocalSnackbarHostState provides snackbarHostState,
-            LocalTypedSnackbarState provides typedSnackbarState,
+            LocalSnackBarHostState provides snackbarHostState,
+            LocalTypedSnackBarState provides typedSnackBarState,
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Scaffold(
@@ -85,78 +99,155 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Register> {
-                            Text("Register Screen")
+                            ErrorView(
+                                title = "Registration Unavailable",
+                                subtitle = "Sign-up isn't available yet. Please try again later.",
+                            )
                         }
                         composable<Route.OtpVerification> {
-                            Text("OTP Screen")
+                            ErrorView(
+                                title = "Verification Error",
+                                subtitle = "We couldn't send or verify your OTP. Please try again.",
+                                icon = Icons.Outlined.SmsFailed,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.ForgotPassword> {
-                            Text("Forgot Password Screen")
+                            ErrorView(
+                                title = "Password Reset Unavailable",
+                                subtitle = "Password reset isn't available yet. Please try again later.",
+                            )
                         }
 
                         // Main Graph
                         composable<Route.Home> {
-                            Text("Home Screen")
+                            EmptyState(
+                                title = "Nothing Here Yet",
+                                subtitle = "Your feed is empty. Check back soon!",
+                            )
                         }
-                        composable<Route.ProductDetail> { backStackEntry ->
-                            val route = backStackEntry.toRoute<Route.ProductDetail>()
-                            Text("Product Detail: ${route.uuid}")
+                        composable<Route.ProductDetail> {
+                            ErrorView(
+                                title = "Product Not Found",
+                                subtitle = "The product you're looking for doesn't exist or is no longer available.",
+                            )
                         }
                         composable<Route.ProductSearch> {
-                            Text("Search Screen")
+                            EmptyState(
+                                title = "No Results Found",
+                                subtitle = "Try a different keyword or filter.",
+                                icon = Icons.Outlined.SearchOff,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.Cart> {
-                            Text("Cart Screen")
+                            EmptyState(
+                                title = "Your Cart is Empty",
+                                subtitle = "Add products to your cart to get started.",
+                            )
                         }
                         composable<Route.Checkout> {
-                            Text("Checkout Screen")
+                            ErrorView(
+                                title = "Checkout Unavailable",
+                                subtitle = "We couldn't process your checkout. Please try again later.",
+                                icon = Icons.Outlined.Payment,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.Orders> {
-                            Text("Orders Screen")
+                            EmptyState(
+                                title = "No Orders Yet",
+                                subtitle = "Your orders will appear here once you place one.",
+                                icon = Icons.AutoMirrored.Outlined.ReceiptLong,
+                                lottieRawRes = null,
+                            )
                         }
-                        composable<Route.OrderDetail> { backStackEntry ->
-                            val route = backStackEntry.toRoute<Route.OrderDetail>()
-                            Text("Order Detail: ${route.uuid}")
+                        composable<Route.OrderDetail> {
+                            ErrorView(
+                                title = "Order Not Found",
+                                subtitle = "The order you're looking for doesn't exist.",
+                            )
                         }
                         composable<Route.Wishlist> {
-                            Text("Wishlist Screen")
+                            EmptyState(
+                                title = "Wishlist is Empty",
+                                subtitle = "Save your favourite products to find them here.",
+                            )
                         }
-                        composable<Route.WriteReview> { backStackEntry ->
-                            val route = backStackEntry.toRoute<Route.WriteReview>()
-                            Text("Write Review: ${route.productUuid}")
+                        composable<Route.WriteReview> {
+                            ErrorView(
+                                title = "Review Unavailable",
+                                subtitle = "Something went wrong while loading the review form.",
+                                icon = Icons.Outlined.RateReview,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.AddressList> {
-                            Text("Address List")
+                            EmptyState(
+                                title = "No Saved Addresses",
+                                subtitle = "Add a delivery address to get started.",
+                                icon = Icons.Outlined.LocationOn,
+                                lottieRawRes = null,
+                            )
                         }
-                        composable<Route.AddressForm> { backStackEntry ->
-                            val route = backStackEntry.toRoute<Route.AddressForm>()
-                            Text("Address Form: ${route.uuid}")
+                        composable<Route.AddressForm> {
+                            ErrorView(
+                                title = "Address Unavailable",
+                                subtitle = "We couldn't load the address form. Please try again later.",
+                                icon = Icons.Outlined.LocationOff,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.Wallet> {
-                            Text("Wallet Screen")
+                            EmptyState(
+                                title = "No Transactions Yet",
+                                subtitle = "Your wallet transactions will appear here.",
+                                icon = Icons.Outlined.AccountBalanceWallet,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.Notifications> {
-                            Text("Notifications")
+                            EmptyState(
+                                title = "No Notifications",
+                                subtitle = "You're all caught up!",
+                            )
                         }
                         composable<Route.ChatList> {
-                            Text("Chat List")
+                            EmptyState(
+                                title = "No Conversations",
+                                subtitle = "Start a chat with support whenever you need help.",
+                                icon = Icons.Outlined.ChatBubbleOutline,
+                                lottieRawRes = null,
+                            )
                         }
-                        composable<Route.ChatDetail> { backStackEntry ->
-                            val route = backStackEntry.toRoute<Route.ChatDetail>()
-                            Text("Chat Detail: ${route.roomUuid}")
+                        composable<Route.ChatDetail> {
+                            EmptyState(
+                                title = "No Messages",
+                                subtitle = "Say hello to start the conversation.",
+                                icon = Icons.Outlined.Forum,
+                                lottieRawRes = null,
+                            )
                         }
                         composable<Route.Profile> {
-                            Text("Profile Screen")
+                            ErrorView(
+                                title = "Profile Unavailable",
+                                subtitle = "We couldn't load your profile. Please try again.",
+                            )
                         }
                         composable<Route.EditProfile> {
-                            Text("Edit Profile")
+                            ErrorView(
+                                title = "Edit Unavailable",
+                                subtitle = "Profile editing isn't available yet. Please try again later.",
+                                icon = Icons.Outlined.EditOff,
+                                lottieRawRes = null,
+                            )
                         }
                     }
                 }
 
-                LiquefiedSnackbarHost(
+                LiquefiedSnackBarHost(
                     hostState = snackbarHostState,
-                    typeState = typedSnackbarState,
+                    typeState = typedSnackBarState,
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
             }

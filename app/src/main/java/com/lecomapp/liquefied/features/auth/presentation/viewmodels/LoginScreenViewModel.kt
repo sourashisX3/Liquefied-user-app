@@ -3,8 +3,8 @@ package com.lecomapp.liquefied.features.auth.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lecomapp.liquefied.core.config.network.models.Result
-import com.lecomapp.liquefied.core.utils.SnackbarEvent
-import com.lecomapp.liquefied.core.utils.SnackbarType
+import com.lecomapp.liquefied.core.utils.SnackBarEvent
+import com.lecomapp.liquefied.core.utils.SnackBarType
 import com.lecomapp.liquefied.core.utils.UiText
 import com.lecomapp.liquefied.features.auth.domain.use_cases.LoginUseCase
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.AuthenticationEvent
@@ -67,12 +67,12 @@ class LoginScreenViewModel @Inject constructor(
             }
             is LoginAction.OnGoogleSignIn -> {
                 viewModelScope.launch {
-                    _events.send(AuthenticationEvent.ShowSnackbar(SnackbarEvent(message = UiText.DynamicString("Google Sign-In coming soon"), type = SnackbarType.INFO)))
+                    _events.send(AuthenticationEvent.ShowSnackBar(SnackBarEvent(message = UiText.DynamicString("Google Sign-In coming soon"), type = SnackBarType.INFO)))
                 }
             }
             is LoginAction.OnFacebookSignIn -> {
                 viewModelScope.launch {
-                    _events.send(AuthenticationEvent.ShowSnackbar(SnackbarEvent(message = UiText.DynamicString("Facebook Sign-In coming soon"), type = SnackbarType.INFO)))
+                    _events.send(AuthenticationEvent.ShowSnackBar(SnackBarEvent(message = UiText.DynamicString("Facebook Sign-In coming soon"), type = SnackBarType.INFO)))
                 }
             }
             is LoginAction.DismissError -> {
@@ -99,15 +99,15 @@ class LoginScreenViewModel @Inject constructor(
                     _state.update { LoginReducer.success(it) }
                     _events.send(AuthenticationEvent.LoginSuccess)
                     _events.send(
-                        AuthenticationEvent.ShowSnackbar(
-                            SnackbarEvent(message = UiText.DynamicString(result.data.message), type = SnackbarType.SUCCESS)
+                        AuthenticationEvent.ShowSnackBar(
+                            SnackBarEvent(message = UiText.DynamicString(result.data.message), type = SnackBarType.SUCCESS)
                         )
                     )
                     _events.send(AuthenticationEvent.NavigateToHome)
                 }
                 is Result.Error -> {
                     _state.update { LoginReducer.error(it, result.error) }
-                    _events.send(AuthenticationEvent.ShowSnackbar(SnackbarEvent(message = result.error, type = SnackbarType.ERROR)))
+                    _events.send(AuthenticationEvent.ShowSnackBar(SnackBarEvent(message = result.error, type = SnackBarType.ERROR)))
                 }
                 is Result.Loading -> {
                     _state.update { LoginReducer.loading(it) }

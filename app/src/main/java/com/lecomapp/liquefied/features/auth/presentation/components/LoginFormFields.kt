@@ -19,8 +19,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import com.lecomapp.liquefied.R
-import com.lecomapp.liquefied.core.ui.components.AppPasswordTextField
-import com.lecomapp.liquefied.core.ui.components.AppTextField
+import com.lecomapp.liquefied.core.ui.components.inputs.AppPasswordTextField
+import com.lecomapp.liquefied.core.ui.components.inputs.AppTextField
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.LoginAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.AuthenticationState

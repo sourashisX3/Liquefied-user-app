@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import com.lecomapp.liquefied.R
-import com.lecomapp.liquefied.core.ui.components.AppButton
+import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.LoginAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.AuthenticationState
