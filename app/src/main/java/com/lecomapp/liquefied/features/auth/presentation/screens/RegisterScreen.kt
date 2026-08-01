@@ -2,12 +2,14 @@ package com.lecomapp.liquefied.features.auth.presentation.screens
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
@@ -15,6 +17,8 @@ import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
+import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
+import com.lecomapp.liquefied.features.auth.presentation.animation.rememberAuthAnimState
 import com.lecomapp.liquefied.features.auth.presentation.components.AuthScreenLayout
 import com.lecomapp.liquefied.features.auth.presentation.components.RegisterActions
 import com.lecomapp.liquefied.features.auth.presentation.components.RegisterFormFields
@@ -38,6 +42,12 @@ fun RegisterScreen(
 
     val pickerState = rememberKomposeCountryCodePickerState(defaultCountryCode = "IN")
 
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
+    }
+
     LaunchedEffect(pickerState.countryCode) {
         viewModel.onAction(RegisterAction.OnDialCodeChange(pickerState.getCountryPhoneCode()))
     }
@@ -60,19 +70,25 @@ fun RegisterScreen(
     }
 
     AuthScreenLayout {
-        RegisterHeader()
+        RegisterHeader(
+            headerAlpha = anim.headerAlpha.value,
+            modifier = Modifier.offset(y = (24 * anim.headerOffsetY.value).dp),
+        )
 
         Spacer(modifier = Modifier.height(AppSpacing.lg))
 
         RegisterFormFields(
+            formAlpha = anim.formAlpha.value,
             state = state,
             pickerState = pickerState,
             onAction = viewModel::onAction,
+            modifier = Modifier.offset(y = (24 * anim.formOffsetY.value).dp),
         )
 
         Spacer(modifier = Modifier.height(AppSpacing.lg))
 
         RegisterActions(
+            buttonAlpha = anim.buttonAlpha.value,
             isLoading = state.isLoading,
             isFormValid = state.isFormValid,
             onRegister = {
@@ -84,6 +100,7 @@ fun RegisterScreen(
                 )
             },
             onNavigateToLogin = onNavigateToLogin,
+            modifier = Modifier.offset(y = (24 * anim.buttonOffsetY.value).dp),
         )
     }
 }

@@ -28,12 +28,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
+import com.lecomapp.liquefied.core.ui.components.common.LanguageSelector
 import com.lecomapp.liquefied.core.ui.components.feedback.showTypedSnackBar
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
 import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
-import com.lecomapp.liquefied.features.auth.presentation.animation.rememberLoginAnimState
+import com.lecomapp.liquefied.features.auth.presentation.animation.rememberAuthAnimState
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginActions
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginFormFields
 import com.lecomapp.liquefied.features.auth.presentation.components.LoginHeader
@@ -55,7 +56,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val anim = rememberLoginAnimState()
+    val anim = rememberAuthAnimState()
 
     LaunchedEffect(Unit) {
         anim.animateSequence()
@@ -99,6 +100,11 @@ fun LoginScreen(
                 appNameScale = 1f,
                 taglineAlpha = 1f,
                 taglineOffsetY = 0f,
+            )
+            LanguageSelector(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = AppSpacing.md, end = AppSpacing.md),
             )
         }
 

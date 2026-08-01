@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class LoginAnimState(
+class AuthAnimState(
     val cardAlpha: Animatable<Float, AnimationVector1D>,
     val cardOffsetY: Animatable<Float, AnimationVector1D>,
     val headerAlpha: Animatable<Float, AnimationVector1D>,
@@ -23,9 +23,9 @@ class LoginAnimState(
 )
 
 @Composable
-fun rememberLoginAnimState(): LoginAnimState {
+fun rememberAuthAnimState(): AuthAnimState {
     return remember {
-        LoginAnimState(
+        AuthAnimState(
             cardAlpha = Animatable(0f),
             cardOffsetY = Animatable(1f),
             headerAlpha = Animatable(0f),
@@ -38,7 +38,7 @@ fun rememberLoginAnimState(): LoginAnimState {
     }
 }
 
-suspend fun LoginAnimState.animateSequence() {
+suspend fun AuthAnimState.animateSequence() {
     coroutineScope {
         launch {
             cardAlpha.animateTo(

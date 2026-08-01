@@ -13,6 +13,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
@@ -24,9 +25,10 @@ fun RegisterActions(
     isFormValid: Boolean,
     onRegister: () -> Unit,
     onNavigateToLogin: () -> Unit,
+    buttonAlpha: Float = 1f,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.alpha(buttonAlpha)) {
         AppButton(
             onClick = onRegister,
             enabled = isFormValid && !isLoading,

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,9 +28,10 @@ fun RegisterFormFields(
     state: RegisterState,
     pickerState: CountryCodePicker,
     onAction: (RegisterAction) -> Unit,
+    formAlpha: Float = 1f,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.alpha(formAlpha)) {
         AppTextField(
             value = state.firstName,
             onValueChange = { onAction(RegisterAction.OnFirstNameChange(it)) },

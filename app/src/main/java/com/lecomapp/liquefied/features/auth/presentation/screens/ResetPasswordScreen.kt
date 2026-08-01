@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -14,11 +15,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lecomapp.liquefied.R
@@ -28,6 +31,8 @@ import com.lecomapp.liquefied.core.ui.components.inputs.AppPasswordTextField
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
+import com.lecomapp.liquefied.features.auth.presentation.animation.animateSequence
+import com.lecomapp.liquefied.features.auth.presentation.animation.rememberAuthAnimState
 import com.lecomapp.liquefied.features.auth.presentation.components.AuthScreenLayout
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.ResetPasswordViewModel
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.ResetPasswordAction
@@ -44,6 +49,12 @@ fun ResetPasswordScreen(
     val typedSnackBarState = LocalTypedSnackBarState.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val anim = rememberAuthAnimState()
+
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -63,7 +74,12 @@ fun ResetPasswordScreen(
     }
 
     AuthScreenLayout {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(anim.headerAlpha.value)
+                .offset(y = (24 * anim.headerOffsetY.value).dp),
+        ) {
             Text(
                 text = stringResource(R.string.reset_title),
                 style = MaterialTheme.typography.headlineLarge,
@@ -80,9 +96,16 @@ fun ResetPasswordScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
+        }
 
-            Spacer(modifier = Modifier.height(AppSpacing.xl))
+        Spacer(modifier = Modifier.height(AppSpacing.xl))
 
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(anim.formAlpha.value)
+                .offset(y = (24 * anim.formOffsetY.value).dp),
+        ) {
             AppPasswordTextField(
                 value = state.newPassword,
                 onValueChange = { viewModel.onAction(ResetPasswordAction.OnNewPasswordChange(it)) },
@@ -92,7 +115,9 @@ fun ResetPasswordScreen(
                 isError = state.newPasswordError != null,
                 errorMessage = state.newPasswordError?.asString(),
                 showPassword = state.showNewPassword,
-                onTogglePassword = { viewModel.onAction(ResetPasswordAction.ToggleNewPasswordVisibility) },
+                onTogglePassword = {
+                    viewModel.onAction(ResetPasswordAction.ToggleNewPasswordVisibility)
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next,
@@ -122,9 +147,16 @@ fun ResetPasswordScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+        }
 
-            Spacer(modifier = Modifier.height(AppSpacing.xl))
+        Spacer(modifier = Modifier.height(AppSpacing.xl))
 
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(anim.buttonAlpha.value)
+                .offset(y = (24 * anim.buttonOffsetY.value).dp),
+        ) {
             AppButton(
                 onClick = { viewModel.onAction(ResetPasswordAction.Submit) },
                 enabled = state.isFormValid && !state.isLoading,
