@@ -18,7 +18,7 @@ object ShapeTokens {
     val card: Shape = RoundedCornerShape(AppCornerRadius.large)
     val textField: Shape = RoundedCornerShape(AppCornerRadius.large)
     val chip: Shape = RoundedCornerShape(AppCornerRadius.full)
-    val dialog: Shape = RoundedCornerShape(AppCornerRadius.large)
+    val dialog: Shape = RoundedCornerShape(AppCornerRadius.full)
     val bottomSheet: Shape = RoundedCornerShape(topStart = AppCornerRadius.large, topEnd = AppCornerRadius.large)
     val image: Shape = RoundedCornerShape(AppCornerRadius.medium)
     val badge: Shape = RoundedCornerShape(AppCornerRadius.full)
