@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
@@ -18,13 +19,19 @@ import com.lecomapp.liquefied.features.splash.presentation.animation.animateSequ
 import com.lecomapp.liquefied.features.splash.presentation.animation.rememberSplashAnimState
 
 @Composable
-fun SplashScreen(onFinished: () -> Unit) {
+fun SplashScreen(
+    onFinished: (Boolean) -> Unit,
+    viewModel: SplashViewModel = hiltViewModel(),
+) {
+    SplashScreenContent(onFinished = { onFinished(viewModel.isLoggedIn.value) })
+}
+
+@Composable
+fun SplashScreenContent(onFinished: () -> Unit) {
     val anim = rememberSplashAnimState()
 
     LaunchedEffect(Unit) {
         anim.animateSequence {
-            // TODO(uncomment-on-first-launch-only): read "onboarding_seen" flag and
-            // navigate straight to Login if already seen, otherwise to Onboarding.
             onFinished()
         }
     }
@@ -50,7 +57,7 @@ fun SplashScreen(onFinished: () -> Unit) {
 @Composable
 private fun SplashScreenPreview() {
     LiquefiedTheme {
-        SplashScreen(onFinished = {})
+        SplashScreenContent(onFinished = {})
     }
 }
 
@@ -58,6 +65,6 @@ private fun SplashScreenPreview() {
 @Composable
 private fun SplashScreenDarkPreview() {
     LiquefiedTheme(darkTheme = true) {
-        SplashScreen(onFinished = {})
+        SplashScreenContent(onFinished = {})
     }
 }

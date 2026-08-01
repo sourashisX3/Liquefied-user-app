@@ -17,6 +17,8 @@ import com.lecomapp.liquefied.features.auth.data.mappers.toDomain
 import com.lecomapp.liquefied.features.auth.domain.models.AuthTokens
 import com.lecomapp.liquefied.features.auth.domain.models.LoginResult
 import com.lecomapp.liquefied.features.auth.domain.repository.AuthenticationRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,6 +27,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val api: AuthApiService,
     private val local: AuthLocalDataSource,
 ) : AuthenticationRepository {
+
+    override fun isLoggedIn(): Flow<Boolean> = local.token.map { !it.isNullOrEmpty() }
 
     override suspend fun login(request: LoginRequest): Result<LoginResult> {
         val result = safeApiCall { api.login(request) }

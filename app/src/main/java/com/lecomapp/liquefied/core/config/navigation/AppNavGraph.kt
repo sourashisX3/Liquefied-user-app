@@ -90,8 +90,8 @@ fun AppNavGraph() {
                             exitTransition = { fadeOut(animationSpec = tween(500)) },
                         ) {
                             SplashScreen(
-                                onFinished = {
-                                    navController.navigate(Route.Onboarding) {
+                                onFinished = { isLoggedIn ->
+                                    navController.navigate(if (isLoggedIn) Route.Home else Route.Onboarding) {
                                         popUpTo(Route.Splash) { inclusive = true }
                                     }
                                 },

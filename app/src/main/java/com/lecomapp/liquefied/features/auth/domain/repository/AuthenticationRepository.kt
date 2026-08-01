@@ -7,8 +7,10 @@ import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.Register
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.SendOtpResponse
 import com.lecomapp.liquefied.features.auth.domain.models.AuthTokens
 import com.lecomapp.liquefied.features.auth.domain.models.LoginResult
+import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationRepository {
+    fun isLoggedIn(): Flow<Boolean>
     suspend fun login(request: LoginRequest): Result<LoginResult>
     suspend fun register(request: RegisterRequest): Result<AuthTokens>
     suspend fun refreshToken(request: RefreshTokenRequest): Result<AuthTokens>
