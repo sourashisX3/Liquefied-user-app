@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
-import com.lecomapp.liquefied.core.util.LocaleManager
+import com.lecomapp.liquefied.core.utils.LocaleManager
 
 private tailrec fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this

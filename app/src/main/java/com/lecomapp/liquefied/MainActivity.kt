@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.lecomapp.liquefied.core.config.navigation.AppNavGraph
-import com.lecomapp.liquefied.core.util.LocaleManager
+import com.lecomapp.liquefied.core.utils.LocaleManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
