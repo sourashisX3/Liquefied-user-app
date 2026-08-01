@@ -6,9 +6,9 @@ import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.config.navigation.Route
 
 data class BottomNavItem(
-    @StringRes val labelRes: Int,
-    @DrawableRes val iconRes: Int,
-    @DrawableRes val selectedIconRes: Int,
+    @param:StringRes val labelRes: Int,
+    @param:DrawableRes val iconRes: Int,
+    @param:DrawableRes val selectedIconRes: Int,
     val route: Route,
 )
 
