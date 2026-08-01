@@ -20,20 +20,15 @@ import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.SearchOff
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,6 +37,10 @@ import com.lecomapp.liquefied.core.ui.components.feedback.EmptyState
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.components.feedback.LiquefiedSnackBarHost
 import com.lecomapp.liquefied.core.ui.components.feedback.rememberTypedSnackBarState
+import com.lecomapp.liquefied.core.ui.components.navigation.FloatingBottomNavigation
+import com.lecomapp.liquefied.core.ui.components.navigation.FloatingNavigationDefaults
+import com.lecomapp.liquefied.core.ui.components.navigation.NavigationCapsuleDefaults
+import com.lecomapp.liquefied.core.ui.components.navigation.capsuleNavItems
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
@@ -60,9 +59,9 @@ fun AppNavGraph() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        val showBottomBar = bottomNavItems.any { item ->
+        val showBottomBar = capsuleNavItems.any { item ->
             currentDestination?.hasRoute(item.route::class) == true
-        }
+        } || currentDestination?.hasRoute(Route.Cart::class) == true
 
         val snackbarHostState = remember { SnackbarHostState() }
         val typedSnackBarState = rememberTypedSnackBarState()
@@ -72,17 +71,19 @@ fun AppNavGraph() {
             LocalTypedSnackBarState provides typedSnackBarState,
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                Scaffold(
-                    bottomBar = {
-                        if (showBottomBar) {
-                            AppBottomBar(navController = navController)
-                        }
-                    }
-                ) { innerPadding ->
+                Scaffold { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = Route.Splash,
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .then(
+                                if (showBottomBar) {
+                                    Modifier.padding(bottom = FloatingNavigationDefaults.bottomPadding + NavigationCapsuleDefaults.height)
+                                } else {
+                                    Modifier
+                                },
+                            ),
                     ) {
                         // Splash
                         composable<Route.Splash>(
@@ -284,35 +285,19 @@ fun AppNavGraph() {
                     }
                 }
 
+                if (showBottomBar) {
+                    FloatingBottomNavigation(
+                        navController = navController,
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                    )
+                }
+
                 LiquefiedSnackBarHost(
                     hostState = snackbarHostState,
                     typeState = typedSnackBarState,
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun AppBottomBar(navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
-    NavigationBar {
-        bottomNavItems.forEach { item ->
-            NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = stringResource(item.labelRes)) },
-                label = { Text(stringResource(item.labelRes)) },
-                selected = currentDestination?.hasRoute(item.route::class) == true,
-                onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-            )
         }
     }
 }
