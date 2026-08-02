@@ -41,7 +41,6 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
-import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import kotlinx.coroutines.coroutineScope
@@ -99,8 +98,6 @@ fun OnboardingScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface),
     ) {
-        AnimatedDiamonds(modifier = Modifier.matchParentSize())
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

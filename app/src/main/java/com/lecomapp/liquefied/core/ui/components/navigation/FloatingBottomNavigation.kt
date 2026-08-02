@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -18,7 +19,7 @@ import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 
 object FloatingNavigationDefaults {
-    val bottomPadding: androidx.compose.ui.unit.Dp = AppSpacing.md
+    val bottomPadding: Dp = AppSpacing.md
 }
 
 @Composable
