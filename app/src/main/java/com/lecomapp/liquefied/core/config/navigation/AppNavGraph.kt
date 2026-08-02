@@ -38,8 +38,6 @@ import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.components.feedback.LiquefiedSnackBarHost
 import com.lecomapp.liquefied.core.ui.components.feedback.rememberTypedSnackBarState
 import com.lecomapp.liquefied.core.ui.components.navigation.FloatingBottomNavigation
-import com.lecomapp.liquefied.core.ui.components.navigation.FloatingNavigationDefaults
-import com.lecomapp.liquefied.core.ui.components.navigation.NavigationCapsuleDefaults
 import com.lecomapp.liquefied.core.ui.components.navigation.capsuleNavItems
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
@@ -50,6 +48,7 @@ import com.lecomapp.liquefied.features.auth.presentation.screens.OtpVerification
 import com.lecomapp.liquefied.features.auth.presentation.screens.RegisterScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.ResetPasswordScreen
 import com.lecomapp.liquefied.features.onboarding.presentation.screens.OnboardingScreen
+import com.lecomapp.liquefied.features.home.presentation.screens.HomeScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
 
 @Composable
@@ -76,14 +75,7 @@ fun AppNavGraph() {
                         navController = navController,
                         startDestination = Route.Splash,
                         modifier = Modifier
-                            .padding(innerPadding)
-                            .then(
-                                if (showBottomBar) {
-                                    Modifier.padding(bottom = FloatingNavigationDefaults.bottomPadding + NavigationCapsuleDefaults.height)
-                                } else {
-                                    Modifier
-                                },
-                            ),
+                            .padding(innerPadding),
                     ) {
                         // Splash
                         composable<Route.Splash>(
@@ -161,10 +153,7 @@ fun AppNavGraph() {
 
                         // Main Graph
                         composable<Route.Home> {
-                            EmptyState(
-                                title = "Nothing Here Yet",
-                                subtitle = "Your feed is empty. Check back soon!",
-                            )
+                            HomeScreen()
                         }
                         composable<Route.ProductDetail> {
                             ErrorView(

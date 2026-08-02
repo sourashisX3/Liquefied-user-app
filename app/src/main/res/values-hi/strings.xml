@@ -101,4 +101,15 @@
 
     <string name="language_selector">भाषा बदलें</string>
     <string name="language_selector_title">भाषा चुनें</string>
+
+    <string name="home_search_hint">उत्पाद खोजें...</string>
+    <string name="home_welcome">वापसी पर स्वागत है!</string>
+    <string name="home_categories">श्रेणियाँ</string>
+    <string name="home_brands">ब्रांड से खरीदें</string>
+    <string name="home_new_arrivals">नई आवक</string>
+    <string name="home_featured">विशेष उत्पाद</string>
+    <string name="home_see_all">सभी देखें</string>
+    <string name="home_rating_count">%1$d रेटिंग</string>
+    <string name="home_error_title">आपका फ़ीड लोड नहीं हो सका</string>
+    <string name="home_error_subtitle">अपना कनेक्शन जांचें और फिर से कोशिश करें</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.lecomapp.liquefied.core.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.lecomapp.liquefied.core.config.network.EnvironmentConfig
 import com.lecomapp.liquefied.core.network.AuthInterceptor
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.AuthApiService
+import com.lecomapp.liquefied.features.home.data.datasources.remote.HomeApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +50,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient, json: Json): Retrofit {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(com.lecomapp.liquefied.core.config.network.EnvironmentConfig.baseUrl)
+            .baseUrl(EnvironmentConfig.baseUrl)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
@@ -58,4 +60,9 @@ object NetworkModule {
     @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
         retrofit.create(AuthApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHomeApiService(retrofit: Retrofit): HomeApiService =
+        retrofit.create(HomeApiService::class.java)
 }

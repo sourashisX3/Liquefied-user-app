@@ -102,4 +102,15 @@
 
     <string name="language_selector">Change Language</string>
     <string name="language_selector_title">Select Language</string>
+
+    <string name="home_search_hint">Search products...</string>
+    <string name="home_welcome">Welcome back!</string>
+    <string name="home_categories">Categories</string>
+    <string name="home_brands">Shop by Brand</string>
+    <string name="home_new_arrivals">New Arrivals</string>
+    <string name="home_featured">Featured Products</string>
+    <string name="home_see_all">See all</string>
+    <string name="home_rating_count">%1$d ratings</string>
+    <string name="home_error_title">Couldn\'t load your feed</string>
+    <string name="home_error_subtitle">Check your connection and try again</string>
 </resources>

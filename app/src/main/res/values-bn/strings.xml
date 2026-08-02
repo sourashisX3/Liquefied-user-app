@@ -101,4 +101,15 @@
 
     <string name="language_selector">ভাষা পরিবর্তন করুন</string>
     <string name="language_selector_title">ভাষা নির্বাচন করুন</string>
+
+    <string name="home_search_hint">পণ্য খুঁজুন...</string>
+    <string name="home_welcome">ফিরে আসার জন্য স্বাগতম!</string>
+    <string name="home_categories">ক্যাটাগরি</string>
+    <string name="home_brands">ব্র্যান্ড থেকে কিনুন</string>
+    <string name="home_new_arrivals">নতুন সংযোজন</string>
+    <string name="home_featured">বিশেষ পণ্য</string>
+    <string name="home_see_all">সব দেখুন</string>
+    <string name="home_rating_count">%1$d রেটিং</string>
+    <string name="home_error_title">আপনার ফিড লোড করা যায়নি</string>
+    <string name="home_error_subtitle">আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন</string>
 </resources>
