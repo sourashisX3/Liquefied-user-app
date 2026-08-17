@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
@@ -26,6 +28,9 @@ fun AppLogoSection(
     appNameScale: Float = 1f,
     taglineAlpha: Float = 1f,
     taglineOffsetY: Float = 0f,
+    appNameStyle: TextStyle? = null,
+    appNameMaxLines: Int? = null,
+    appNameSoftWrap: Boolean? = null,
 ) {
     Column(
         horizontalAlignment = horizontalAlignment,
@@ -33,9 +38,12 @@ fun AppLogoSection(
     ) {
         Text(
             text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.displayLarge,
+            style = appNameStyle ?: MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = if (horizontalAlignment == Alignment.CenterHorizontally) TextAlign.Center else TextAlign.Start,
+            maxLines = appNameMaxLines ?: Int.MAX_VALUE,
+            softWrap = appNameSoftWrap ?: true,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .scale(appNameScale)
                 .alpha(appNameAlpha),

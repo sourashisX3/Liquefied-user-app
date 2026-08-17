@@ -7,6 +7,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,14 +17,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import com.lecomapp.liquefied.core.ui.theme.LiquefiedColors
 
 @Composable
 fun ShimmerSkeleton(
     modifier: Modifier = Modifier,
     shape: Shape,
-    baseColor: Color = LiquefiedColors.Utility.skeleton,
-    highlightColor: Color = Color.White.copy(alpha = 0.45f),
+    baseColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    highlightColor: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f),
 ) {
     val transition = rememberInfiniteTransition(label = "shimmer")
     val progress by transition.animateFloat(

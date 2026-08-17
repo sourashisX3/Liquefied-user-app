@@ -1,7 +1,9 @@
 package com.lecomapp.liquefied.core.ui.components.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,6 +33,7 @@ import com.lecomapp.liquefied.features.catalog.domain.models.Brand
 
 private val BrandLogoSize: Dp = 64.dp
 private val BrandShape = RoundedCornerShape(AppCornerRadius.large)
+private val BrandItemHeight: Dp = 116.dp
 
 @Composable
 fun BrandRow(
@@ -52,6 +56,30 @@ fun BrandRow(
 }
 
 @Composable
+fun SkeletonBrandItem(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .width(88.dp)
+            .height(BrandItemHeight),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ShimmerSkeleton(
+            modifier = Modifier.size(BrandLogoSize),
+            shape = BrandShape,
+        )
+        Spacer(modifier = Modifier.height(AppSpacing.sm))
+        ShimmerSkeleton(
+            modifier = Modifier
+                .width(56.dp)
+                .height(18.dp),
+            shape = RoundedCornerShape(AppCornerRadius.small),
+        )
+    }
+}
+
+@Composable
 private fun BrandItem(
     brand: Brand,
     onClick: () -> Unit,
@@ -60,6 +88,7 @@ private fun BrandItem(
     Column(
         modifier = modifier
             .width(88.dp)
+            .height(BrandItemHeight)
             .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -68,14 +97,18 @@ private fun BrandItem(
                 model = brand.logoUrl,
                 contentDescription = brand.name,
                 contentScale = ContentScale.Crop,
+                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(BrandLogoSize)
                     .clip(BrandShape),
             )
         } else {
-            ShimmerSkeleton(
-                modifier = Modifier.size(BrandLogoSize),
-                shape = BrandShape,
+            Box(
+                modifier = Modifier
+                    .size(BrandLogoSize)
+                    .clip(BrandShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             )
         }
         Spacer(modifier = Modifier.height(AppSpacing.sm))

@@ -1,73 +1,53 @@
 package com.lecomapp.liquefied.features.home.presentation.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountBalanceWallet
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.lecomapp.liquefied.R
-import com.lecomapp.liquefied.core.ui.components.common.AppBrandHeader
 import com.lecomapp.liquefied.core.ui.components.common.BannerCarousel
 import com.lecomapp.liquefied.core.ui.components.common.BrandRow
 import com.lecomapp.liquefied.core.ui.components.common.CategoryRow
-import com.lecomapp.liquefied.core.ui.components.common.ProductCard
 import com.lecomapp.liquefied.core.ui.components.common.SectionHeader
-import com.lecomapp.liquefied.core.ui.components.common.ShimmerSkeleton
-import com.lecomapp.liquefied.core.ui.components.common.SkeletonCategoryItem
-import com.lecomapp.liquefied.core.ui.components.common.SkeletonProductCard
-import com.lecomapp.liquefied.core.ui.components.common.SkeletonBannerCarousel
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.components.navigation.FloatingNavigationDefaults
 import com.lecomapp.liquefied.core.ui.components.navigation.NavigationCapsuleDefaults
-import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
+import com.lecomapp.liquefied.core.utils.UiText
 import com.lecomapp.liquefied.features.catalog.domain.models.Brand
 import com.lecomapp.liquefied.features.catalog.domain.models.Category
 import com.lecomapp.liquefied.features.catalog.domain.models.Product
 import com.lecomapp.liquefied.features.home.domain.models.Banner
 import com.lecomapp.liquefied.features.home.domain.models.HomeData
+import com.lecomapp.liquefied.features.home.presentation.components.HomeHeader
+import com.lecomapp.liquefied.features.home.presentation.components.HomeProductRail
+import com.lecomapp.liquefied.features.home.presentation.components.HomeSkeleton
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.HomeViewModel
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.states.HomeAction
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.states.HomeState
-import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -94,6 +74,7 @@ fun HomeScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent(
     state: HomeState,
@@ -106,6 +87,8 @@ fun HomeScreenContent(
     onProductClick: (Product) -> Unit = {},
     onNotificationsClick: () -> Unit = {},
 ) {
+    val safeTopPadding = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
+    val pullToRefreshState = rememberPullToRefreshState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,10 +96,20 @@ fun HomeScreenContent(
     ) {
         when {
             state.homeData != null -> {
-                SwipeRefresh(
-                    state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing),
+                PullToRefreshBox(
+                    isRefreshing = state.isRefreshing,
                     onRefresh = { onAction(HomeAction.Refresh) },
+                    state = pullToRefreshState,
                     modifier = Modifier.fillMaxSize(),
+                    indicator = {
+                        PullToRefreshDefaults.Indicator(
+                            state = pullToRefreshState,
+                            isRefreshing = state.isRefreshing,
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(top = safeTopPadding),
+                        )
+                    },
                 ) {
                     HomeContent(
                         data = state.homeData,
@@ -159,15 +152,14 @@ private fun HomeContent(
     onProductClick: (Product) -> Unit,
     onNotificationsClick: () -> Unit,
 ) {
-    val tagline = stringResource(R.string.home_tagline)
-    val searchLabel = stringResource(R.string.home_search)
-    val chooseYourSpirit = stringResource(R.string.home_choose_your_spirit)
-    val shopByBrand = stringResource(R.string.home_shop_by_brand)
-    val newArrivalsTitle = stringResource(R.string.home_new_arrivals)
-    val featuredTitle = stringResource(R.string.home_featured)
-    val bestSellersTitle = stringResource(R.string.home_best_sellers)
-    val trendingTitle = stringResource(R.string.home_trending)
-    val dealsTitle = stringResource(R.string.home_deals)
+    val tagline = UiText.StringResourceId(R.string.home_tagline)
+    val chooseYourSpirit = UiText.StringResourceId(R.string.home_choose_your_spirit)
+    val shopByBrand = UiText.StringResourceId(R.string.home_shop_by_brand)
+    val newArrivalsTitle = UiText.StringResourceId(R.string.home_new_arrivals)
+    val featuredTitle = UiText.StringResourceId(R.string.home_featured)
+    val bestSellersTitle = UiText.StringResourceId(R.string.home_best_sellers)
+    val trendingTitle = UiText.StringResourceId(R.string.home_trending)
+    val dealsTitle = UiText.StringResourceId(R.string.home_deals)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -177,27 +169,13 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
     ) {
         item(key = "brand_header") {
-            AppBrandHeader(
+            HomeHeader(
                 tagline = tagline,
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    BalancePill(walletBalance = data.walletBalance)
-                    Spacer(modifier = Modifier.width(AppSpacing.sm))
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = searchLabel,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(28.dp)
-                            .clickable(onClick = onSearchClick),
-                    )
-                    Spacer(modifier = Modifier.width(AppSpacing.sm))
-                    NotificationIcon(
-                        unreadCount = data.unreadNotificationCount,
-                        onClick = onNotificationsClick,
-                    )
-                }
-            }
+                walletBalance = data.walletBalance,
+                unreadNotificationCount = data.unreadNotificationCount,
+                onSearchClick = onSearchClick,
+                onNotificationsClick = onNotificationsClick,
+            )
         }
 
         if (data.banners.isNotEmpty()) {
@@ -213,7 +191,7 @@ private fun HomeContent(
             item(key = "categories") {
                 Column {
                     SectionHeader(
-                        title = chooseYourSpirit,
+                        title = chooseYourSpirit.asString(),
                         onAction = onExploreAllClick,
                         modifier = Modifier.padding(horizontal = AppSpacing.lg),
                     )
@@ -230,7 +208,7 @@ private fun HomeContent(
             item(key = "brands") {
                 Column {
                     SectionHeader(
-                        title = shopByBrand,
+                        title = shopByBrand.asString(),
                         onAction = onExploreAllClick,
                         modifier = Modifier.padding(horizontal = AppSpacing.lg),
                     )
@@ -243,35 +221,35 @@ private fun HomeContent(
             }
         }
 
-        ProductRail(
+        HomeProductRail(
             key = "new_arrivals",
             title = newArrivalsTitle,
             products = data.newArrivals,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
         )
-        ProductRail(
+        HomeProductRail(
             key = "featured",
             title = featuredTitle,
             products = data.featuredProducts,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
         )
-        ProductRail(
+        HomeProductRail(
             key = "best_sellers",
             title = bestSellersTitle,
             products = data.bestSellers,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
         )
-        ProductRail(
+        HomeProductRail(
             key = "trending",
             title = trendingTitle,
             products = data.trending,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
         )
-        ProductRail(
+        HomeProductRail(
             key = "deals",
             title = dealsTitle,
             products = data.deals,
@@ -281,178 +259,6 @@ private fun HomeContent(
 
         item(key = "bottom_spacer") {
             Spacer(modifier = Modifier.height(AppSpacing.sm))
-        }
-    }
-}
-
-private fun LazyListScope.ProductRail(
-    key: String,
-    title: String,
-    products: List<Product>,
-    onProductClick: (Product) -> Unit,
-    onExploreAllClick: () -> Unit,
-) {
-    if (products.isEmpty()) return
-    item(key = key) {
-        Column {
-            SectionHeader(
-                title = title,
-                onAction = onExploreAllClick,
-                modifier = Modifier.padding(horizontal = AppSpacing.lg),
-            )
-            Spacer(modifier = Modifier.height(AppSpacing.sm))
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = AppSpacing.lg),
-                horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-            ) {
-                items(products, key = { it.slug }) { product ->
-                    ProductCard(
-                        product = product,
-                        onClick = { onProductClick(product) },
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun NotificationIcon(
-    unreadCount: Long,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier.clickable(onClick = onClick)) {
-        Icon(
-            imageVector = Icons.Outlined.Notifications,
-            contentDescription = stringResource(R.string.home_notifications),
-            tint = Color.White,
-            modifier = Modifier.size(28.dp),
-        )
-        if (unreadCount > 0) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .padding(horizontal = 4.dp, vertical = 1.dp),
-            ) {
-                Text(
-                    text = if (unreadCount > 9) "9+" else unreadCount.toString(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSecondary,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun BalancePill(
-    walletBalance: Double?,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(AppCornerRadius.full))
-            .background(MaterialTheme.colorScheme.secondary)
-            .padding(horizontal = AppSpacing.lg, vertical = AppSpacing.sm),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.AccountBalanceWallet,
-            contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier.size(20.dp),
-        )
-        Spacer(modifier = Modifier.width(AppSpacing.sm))
-        if (walletBalance != null) {
-            Text(
-                text = String.format(Locale.US, "₹%.2f", walletBalance),
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.SemiBold,
-                ),
-                color = Color.White,
-            )
-        } else {
-            ShimmerSkeleton(
-                modifier = Modifier
-                    .width(72.dp)
-                    .height(20.dp),
-                shape = RoundedCornerShape(AppCornerRadius.small),
-            )
-        }
-    }
-}
-
-@Composable
-private fun HomeSkeleton(
-    onSearchClick: () -> Unit,
-    onExploreAllClick: () -> Unit,
-    onNotificationsClick: () -> Unit,
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            bottom = NavigationCapsuleDefaults.height + FloatingNavigationDefaults.bottomPadding,
-        ),
-        verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
-    ) {
-        item(key = "brand_header") {
-            AppBrandHeader {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    BalancePill(walletBalance = null)
-                    Spacer(modifier = Modifier.width(AppSpacing.sm))
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = stringResource(R.string.home_search),
-                        tint = Color.White,
-                        modifier = Modifier.size(28.dp),
-                    )
-                }
-            }
-        }
-        item(key = "banners") {
-            SkeletonBannerCarousel()
-        }
-        item(key = "categories") {
-            Column {
-                SectionHeader(
-                    title = stringResource(R.string.home_choose_your_spirit),
-                    onAction = onExploreAllClick,
-                    modifier = Modifier.padding(horizontal = AppSpacing.lg),
-                )
-                Spacer(modifier = Modifier.height(AppSpacing.sm))
-                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-                    val itemWidth = (maxWidth - AppSpacing.lg * 2 - AppSpacing.sm * 3) / 4
-                    Row(
-                        modifier = Modifier.padding(horizontal = AppSpacing.lg),
-                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-                    ) {
-                        repeat(4) {
-                            SkeletonCategoryItem(modifier = Modifier.width(itemWidth))
-                        }
-                    }
-                }
-            }
-        }
-        item(key = "new_arrivals") {
-            Column {
-                SectionHeader(
-                    title = stringResource(R.string.home_new_arrivals),
-                    onAction = onExploreAllClick,
-                    modifier = Modifier.padding(horizontal = AppSpacing.lg),
-                )
-                Spacer(modifier = Modifier.height(AppSpacing.sm))
-                Row(
-                    modifier = Modifier.padding(horizontal = AppSpacing.lg),
-                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-                ) {
-                    repeat(3) {
-                        SkeletonProductCard()
-                    }
-                }
-            }
         }
     }
 }

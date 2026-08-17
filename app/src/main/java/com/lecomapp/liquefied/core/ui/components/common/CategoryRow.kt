@@ -1,7 +1,9 @@
 package com.lecomapp.liquefied.core.ui.components.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +35,7 @@ import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.features.catalog.domain.models.Category
 
 private val CategoryCircleSize: Dp = 80.dp
+private val CategoryItemHeight: Dp = 132.dp
 
 @Composable
 fun CategoryRow(
@@ -63,7 +67,9 @@ private fun CategoryItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.clickable(onClick = onClick),
+        modifier = modifier
+            .height(CategoryItemHeight)
+            .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (category.imageUrl != null) {
@@ -71,14 +77,18 @@ private fun CategoryItem(
                 model = category.imageUrl,
                 contentDescription = category.name,
                 contentScale = ContentScale.Crop,
+                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(CategoryCircleSize)
                     .clip(CircleShape),
             )
         } else {
-            ShimmerSkeleton(
-                modifier = Modifier.size(CategoryCircleSize),
-                shape = CircleShape,
+            Box(
+                modifier = Modifier
+                    .size(CategoryCircleSize)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             )
         }
         Spacer(modifier = Modifier.height(AppSpacing.sm))
@@ -98,7 +108,7 @@ fun SkeletonCategoryItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.height(CategoryItemHeight),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ShimmerSkeleton(

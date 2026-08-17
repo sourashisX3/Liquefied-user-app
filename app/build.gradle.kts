@@ -99,7 +99,6 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.placeholder)
 
     implementation(libs.kompose.country.code.picker)

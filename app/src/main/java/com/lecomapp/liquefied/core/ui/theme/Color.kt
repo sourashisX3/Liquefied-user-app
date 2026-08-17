@@ -26,8 +26,8 @@ object LiquefiedColors {
     }
 
     object SecondaryDark {
-        val secondary = Color(0xFFC8C5F4)
-        val onSecondary = Color(0xFF1D1B31)
+        val secondary = Color(0xFF545184)
+        val onSecondary = Color(0xFFFFFFFF)
         val secondaryContainer = Color(0xFF2E2D4D)
         val onSecondaryContainer = Color(0xFFDFDEFB)
     }

@@ -37,7 +37,7 @@ fun SectionHeader(
             Text(
                 text = actionLabel.ifBlank { stringResource(R.string.home_explore_all) },
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(start = AppSpacing.md)
                     .clickable(onClick = onAction),
