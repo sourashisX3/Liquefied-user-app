@@ -21,6 +21,7 @@ coroutinesAndroid = "1.9.0"
 lottie = "6.6.2"
 accompanist = "0.36.0"
 komposeCountryCodePicker = "1.2.9"
+playServicesLocation = "21.3.0"
 
 junit = "4.13.2"
 junitExt = "1.2.1"
@@ -68,12 +69,15 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
 
 kompose-country-code-picker = { group = "io.github.joelkanyi", name = "komposecountrycodepicker", version.ref = "komposeCountryCodePicker" }
+
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }

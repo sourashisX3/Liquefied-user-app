@@ -117,6 +117,14 @@
     <string name="home_scroll_to_top">Scroll to top</string>
     <string name="home_error_title">Couldn\'t load your feed</string>
     <string name="home_error_subtitle">Check your connection and try again</string>
+    <string name="home_detect_location">Detect my location</string>
+    <string name="home_locating">Locating…</string>
+    <string name="home_location_error">Couldn\'t detect your location. Try again.</string>
+    <string name="location_permission_title">Location access needed</string>
+    <string name="location_permission_body">Allow location access to detect your area and show your delivery location.</string>
+    <string name="location_permission_allow">Allow</string>
+    <string name="location_permission_manual">Enter manually</string>
+    <string name="location_permission_settings">Open settings</string>
 
     <string name="profile_title">My Profile</string>
     <string name="profile_member_since">Member since</string>

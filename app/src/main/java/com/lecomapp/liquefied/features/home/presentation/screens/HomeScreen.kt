@@ -1,5 +1,15 @@
 package com.lecomapp.liquefied.features.home.presentation.screens
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
@@ -27,9 +37,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -37,18 +50,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import com.lecomapp.liquefied.R
+import com.lecomapp.liquefied.core.animation.RevealSpec
+import com.lecomapp.liquefied.core.animation.rememberStaggeredReveals
 import com.lecomapp.liquefied.core.ui.components.common.BannerCarousel
 import com.lecomapp.liquefied.core.ui.components.common.BrandRow
 import com.lecomapp.liquefied.core.ui.components.common.CategoryRow
@@ -56,16 +75,17 @@ import com.lecomapp.liquefied.core.ui.components.common.SectionHeader
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.components.navigation.FloatingNavigationDefaults
 import com.lecomapp.liquefied.core.ui.components.navigation.NavigationCapsuleDefaults
+import com.lecomapp.liquefied.core.ui.theme.AnimationTokens
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
+import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
+import com.lecomapp.liquefied.core.ui.theme.ShapeTokens
 import com.lecomapp.liquefied.core.utils.UiText
 import com.lecomapp.liquefied.features.catalog.domain.models.Brand
 import com.lecomapp.liquefied.features.catalog.domain.models.Category
 import com.lecomapp.liquefied.features.catalog.domain.models.Product
 import com.lecomapp.liquefied.features.home.domain.models.Banner
 import com.lecomapp.liquefied.features.home.domain.models.HomeData
-import com.lecomapp.liquefied.features.home.presentation.animation.animateSequence
-import com.lecomapp.liquefied.features.home.presentation.animation.rememberHomeAnimState
 import com.lecomapp.liquefied.features.home.presentation.components.HomeHeader
 import com.lecomapp.liquefied.features.home.presentation.components.HomeProductRail
 import com.lecomapp.liquefied.features.home.presentation.components.HomeSkeleton
@@ -83,8 +103,115 @@ fun HomeScreen(
     onBannerClick: (Banner) -> Unit = {},
     onProductClick: (Product) -> Unit = {},
     onNotificationsClick: () -> Unit = {},
+    onAddressClick: () -> Unit = {},
+    onNavigateToAddressForm: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val snackBarHostState = LocalSnackBarHostState.current
+    var showLocationPermissionDialog by remember { mutableStateOf(false) }
+    var permanentlyDenied by remember { mutableStateOf(false) }
+    LaunchedEffect(state.locationError) {
+        state.locationError?.let { error ->
+            snackBarHostState.showSnackbar(error.asString(context))
+        }
+    }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { grants ->
+        if (grants.values.any { it }) {
+            viewModel.onAction(HomeAction.Locate)
+        } else {
+            permanentlyDenied = !grants.keys.any { permission ->
+                context.findActivity()?.shouldShowRequestPermissionRationale(permission) == true
+            }
+            showLocationPermissionDialog = true
+        }
+    }
+    val handleAddressClick: () -> Unit = {
+        val hasLocationPermission =
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                ) == PackageManager.PERMISSION_GRANTED
+        if (hasLocationPermission) {
+            viewModel.onAction(HomeAction.Locate)
+        } else {
+            permissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                ),
+            )
+        }
+    }
+    if (showLocationPermissionDialog) {
+        AlertDialog(
+            onDismissRequest = { showLocationPermissionDialog = false },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = ShapeTokens.dialog,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            title = {
+                Text(
+                    text = stringResource(R.string.location_permission_title),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.location_permission_body),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showLocationPermissionDialog = false
+                        if (permanentlyDenied) {
+                            context.startActivity(
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = Uri.fromParts("package", context.packageName, null)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                },
+                            )
+                        } else {
+                            permissionLauncher.launch(
+                                arrayOf(
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                ),
+                            )
+                        }
+                    },
+                ) {
+                    Text(
+                        text = stringResource(
+                            if (permanentlyDenied) {
+                                R.string.location_permission_settings
+                            } else {
+                                R.string.location_permission_allow
+                            },
+                        ),
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showLocationPermissionDialog = false
+                        onNavigateToAddressForm()
+                    },
+                ) {
+                    Text(text = stringResource(R.string.location_permission_manual))
+                }
+            },
+        )
+    }
     HomeScreenContent(
         state = state,
         onAction = viewModel::onAction,
@@ -95,8 +222,22 @@ fun HomeScreen(
         onBannerClick = onBannerClick,
         onProductClick = onProductClick,
         onNotificationsClick = onNotificationsClick,
+        onAddressClick = handleAddressClick,
     )
 }
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+private const val REVEAL_HEADER_INDEX = 0
+private const val REVEAL_BANNER_INDEX = 1
+private const val REVEAL_CATEGORIES_INDEX = 2
+private const val REVEAL_BRANDS_INDEX = 3
+private const val REVEAL_RAILS_INDEX = 4
+private const val REVEAL_SECTION_COUNT = 5
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,6 +251,7 @@ fun HomeScreenContent(
     onBannerClick: (Banner) -> Unit = {},
     onProductClick: (Product) -> Unit = {},
     onNotificationsClick: () -> Unit = {},
+    onAddressClick: () -> Unit = {},
 ) {
     val safeTopPadding = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val pullToRefreshState = rememberPullToRefreshState()
@@ -142,6 +284,8 @@ fun HomeScreenContent(
                 ) {
                     HomeContent(
                         data = state.homeData,
+                        address = state.userAddress,
+                        isLocating = state.isLocating,
                         listState = listState,
                         onSearchClick = onSearchClick,
                         onExploreAllClick = onExploreAllClick,
@@ -150,6 +294,7 @@ fun HomeScreenContent(
                         onBannerClick = onBannerClick,
                         onProductClick = onProductClick,
                         onNotificationsClick = onNotificationsClick,
+                        onAddressClick = onAddressClick,
                     )
                 }
             }
@@ -203,6 +348,8 @@ fun HomeScreenContent(
 @Composable
 private fun HomeContent(
     data: HomeData,
+    address: String?,
+    isLocating: Boolean,
     listState: LazyListState,
     onSearchClick: () -> Unit,
     onExploreAllClick: () -> Unit,
@@ -211,6 +358,7 @@ private fun HomeContent(
     onBannerClick: (Banner) -> Unit,
     onProductClick: (Product) -> Unit,
     onNotificationsClick: () -> Unit,
+    onAddressClick: () -> Unit,
 ) {
     val tagline = UiText.StringResourceId(R.string.home_tagline)
     val chooseYourSpirit = UiText.StringResourceId(R.string.home_choose_your_spirit)
@@ -221,10 +369,18 @@ private fun HomeContent(
     val trendingTitle = UiText.StringResourceId(R.string.home_trending)
     val dealsTitle = UiText.StringResourceId(R.string.home_deals)
 
-    val anim = rememberHomeAnimState()
-    LaunchedEffect(Unit) {
-        anim.animateSequence()
+    val reveals = rememberStaggeredReveals(REVEAL_SECTION_COUNT) { index ->
+        if (index == REVEAL_HEADER_INDEX) {
+            RevealSpec(offsetSpring = AnimationTokens.Spring.Default)
+        } else {
+            RevealSpec()
+        }
     }
+    val headerAnim = reveals[REVEAL_HEADER_INDEX]
+    val bannerAnim = reveals[REVEAL_BANNER_INDEX]
+    val categoriesAnim = reveals[REVEAL_CATEGORIES_INDEX]
+    val brandsAnim = reveals[REVEAL_BRANDS_INDEX]
+    val railsAnim = reveals[REVEAL_RAILS_INDEX]
 
     LazyColumn(
         state = listState,
@@ -239,11 +395,14 @@ private fun HomeContent(
                 tagline = tagline,
                 walletBalance = data.walletBalance,
                 unreadNotificationCount = data.unreadNotificationCount,
+                address = address,
+                isLocating = isLocating,
                 onSearchClick = onSearchClick,
                 onNotificationsClick = onNotificationsClick,
+                onAddressClick = onAddressClick,
                 modifier = Modifier
-                    .alpha(anim.headerAlpha.value)
-                    .offset(y = (24 * anim.headerOffsetY.value).dp),
+                    .alpha(headerAnim.alpha.value)
+                    .offset(y = (24 * headerAnim.offsetY.value).dp),
             )
         }
 
@@ -253,8 +412,8 @@ private fun HomeContent(
                     banners = data.banners,
                     onBannerClick = onBannerClick,
                     modifier = Modifier
-                        .alpha(anim.bannerAlpha.value)
-                        .offset(y = (24 * anim.bannerOffsetY.value).dp),
+                        .alpha(bannerAnim.alpha.value)
+                        .offset(y = (24 * bannerAnim.offsetY.value).dp),
                 )
             }
         }
@@ -263,8 +422,8 @@ private fun HomeContent(
             item(key = "categories") {
                 Column(
                     modifier = Modifier
-                        .alpha(anim.categoriesAlpha.value)
-                        .offset(y = (24 * anim.categoriesOffsetY.value).dp),
+                        .alpha(categoriesAnim.alpha.value)
+                        .offset(y = (24 * categoriesAnim.offsetY.value).dp),
                 ) {
                     SectionHeader(
                         title = chooseYourSpirit.asString(),
@@ -284,8 +443,8 @@ private fun HomeContent(
             item(key = "brands") {
                 Column(
                     modifier = Modifier
-                        .alpha(anim.brandsAlpha.value)
-                        .offset(y = (24 * anim.brandsOffsetY.value).dp),
+                        .alpha(brandsAnim.alpha.value)
+                        .offset(y = (24 * brandsAnim.offsetY.value).dp),
                 ) {
                     SectionHeader(
                         title = shopByBrand.asString(),
@@ -307,8 +466,8 @@ private fun HomeContent(
             products = data.newArrivals,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
-            alpha = anim.railsAlpha.value,
-            offsetY = anim.railsOffsetY.value,
+            alpha = railsAnim.alpha.value,
+            offsetY = railsAnim.offsetY.value,
         )
         HomeProductRail(
             key = "featured",
@@ -316,8 +475,8 @@ private fun HomeContent(
             products = data.featuredProducts,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
-            alpha = anim.railsAlpha.value,
-            offsetY = anim.railsOffsetY.value,
+            alpha = railsAnim.alpha.value,
+            offsetY = railsAnim.offsetY.value,
         )
         HomeProductRail(
             key = "best_sellers",
@@ -325,8 +484,8 @@ private fun HomeContent(
             products = data.bestSellers,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
-            alpha = anim.railsAlpha.value,
-            offsetY = anim.railsOffsetY.value,
+            alpha = railsAnim.alpha.value,
+            offsetY = railsAnim.offsetY.value,
         )
         HomeProductRail(
             key = "trending",
@@ -334,8 +493,8 @@ private fun HomeContent(
             products = data.trending,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
-            alpha = anim.railsAlpha.value,
-            offsetY = anim.railsOffsetY.value,
+            alpha = railsAnim.alpha.value,
+            offsetY = railsAnim.offsetY.value,
         )
         HomeProductRail(
             key = "deals",
@@ -343,8 +502,8 @@ private fun HomeContent(
             products = data.deals,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
-            alpha = anim.railsAlpha.value,
-            offsetY = anim.railsOffsetY.value,
+            alpha = railsAnim.alpha.value,
+            offsetY = railsAnim.offsetY.value,
         )
 
         item(key = "bottom_spacer") {

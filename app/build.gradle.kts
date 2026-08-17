@@ -24,8 +24,8 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"https://liquefied-backend.onrender.com/api/v1/\"")
-            buildConfigField("String", "WS_URL", "\"wss://liquefied-backend.onrender.com/api/v1/ws\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.3:8083/api/v1/\"")
+            buildConfigField("String", "WS_URL", "\"ws://192.168.1.3:8083/api/v1/ws\"")
         }
         create("staging") {
             dimension = "environment"
@@ -96,12 +96,15 @@ dependencies {
     implementation(libs.datastore.preferences)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     implementation(libs.lottie.compose)
 
     implementation(libs.accompanist.placeholder)
 
     implementation(libs.kompose.country.code.picker)
+
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.android)

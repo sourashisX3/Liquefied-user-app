@@ -265,6 +265,11 @@ fun AppNavGraph() {
                                         launchSingleTop = true
                                     }
                                 },
+                                onNavigateToAddressForm = {
+                                    navController.navigate(Route.AddressForm()) {
+                                        launchSingleTop = true
+                                    }
+                                },
                             )
                         }
                         composable<Route.ProductDetail> {

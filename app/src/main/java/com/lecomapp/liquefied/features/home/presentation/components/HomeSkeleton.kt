@@ -42,8 +42,11 @@ fun HomeSkeleton(
                 tagline = UiText.StringResourceId(R.string.home_tagline),
                 walletBalance = null,
                 unreadNotificationCount = 0,
+                address = null,
+                isLocating = false,
                 onSearchClick = onSearchClick,
                 onNotificationsClick = onNotificationsClick,
+                onAddressClick = {},
             )
         }
         item(key = "banners") {
