@@ -104,6 +104,9 @@
     <string name="language_selector_title">भाषा चुनें</string>
 
     <string name="home_tagline">हर अवसर में खुशी घोलें।</string>
+    <string name="home_quote_1">अच्छे पल योजना से नहीं, ढलते हैं।</string>
+    <string name="home_quote_2">याद रखने लायक पलों का टोस्ट करें।</string>
+    <string name="home_quote_3">धीरे-धीरे चखें। गहराई से आनंद लें। जिम्मेदारी से जश्न मनाएं।</string>
     <string name="home_choose_your_spirit">अपना पसंदीदा स्पिरिट चुनें</string>
     <string name="home_shop_by_brand">ब्रांड से खरीदें</string>
     <string name="home_new_arrivals">नई आवक</string>
@@ -127,14 +130,54 @@
     <string name="location_permission_settings">सेटिंग खोलें</string>
 
     <string name="profile_title">मेरी प्रोफ़ाइल</string>
-    <string name="profile_member_since">सदस्य तब से</string>
-    <string name="profile_theme">रूप-रंग</string>
+    <string name="profile_edit_profile">प्रोफ़ाइल संपादित करें</string>
+    <string name="profile_more_options">अधिक विकल्प</string>
+    <string name="profile_section_account">मेरा खाता</string>
+    <string name="profile_section_settings">सेटिंग्स</string>
+    <string name="profile_my_addresses">मेरे पते</string>
+    <string name="profile_my_orders">मेरे ऑर्डर</string>
+    <string name="profile_wallet">वॉलेट</string>
+    <string name="profile_support">सहायता</string>
+    <string name="profile_change_picture">प्रोफ़ाइल फ़ोटो बदलें</string>
+    <string name="profile_picture_error">आपकी प्रोफ़ाइल फ़ोटो अपडेट नहीं हो सकी। फिर से कोशिश करें।</string>
+    <string name="profile_picture_too_large">इमेज 5 MB से छोटी होनी चाहिए।</string>
+    <string name="profile_picture_source_title">प्रोफ़ाइल फ़ोटो</string>
+    <string name="profile_picture_camera">फ़ोटो लें</string>
+    <string name="profile_picture_gallery">डिवाइस से चुनें</string>
+    <string name="profile_camera_permission_needed">फ़ोटो लेने के लिए कैमरा अनुमति आवश्यक है।</string>
+    <string name="profile_language">भाषा</string>
+    <string name="profile_appearance">रूप-रंग</string>
+    <string name="profile_logout_title">लॉग आउट करें?</string>
+    <string name="profile_logout_message">क्या आप वाकई अपने खाते से लॉग आउट करना चाहते हैं?</string>
+    <string name="profile_logout_confirm">लॉग आउट</string>
+    <string name="common_cancel">रद्द करें</string>
+    <string name="picker_search_hint">खोजें</string>
+    <string name="picker_no_results">कोई विकल्प नहीं मिला</string>
+    <string name="picker_select_country">देश चुनें</string>
+    <string name="profile_member_since_format">सदस्य %1$s से</string>
     <string name="profile_theme_system">सिस्टम</string>
     <string name="profile_theme_light">लाइट</string>
     <string name="profile_theme_dark">डार्क</string>
     <string name="profile_logout">लॉग आउट</string>
     <string name="profile_error_title">आपकी प्रोफ़ाइल लोड नहीं हो सकी</string>
     <string name="profile_error_subtitle">अपना कनेक्शन जांचें और फिर से कोशिश करें</string>
+
+    <string name="edit_profile_title">प्रोफ़ाइल संपादित करें</string>
+    <string name="edit_profile_back">वापस</string>
+    <string name="edit_profile_save">परिवर्तन सहेजें</string>
+    <string name="edit_profile_saved">प्रोफ़ाइल सफलतापूर्वक अपडेट हुई</string>
+    <string name="edit_profile_address_section">पता</string>
+    <string name="edit_profile_personal_section">व्यक्तिगत जानकारी</string>
+    <string name="edit_profile_address_line1">पता पंक्ति 1</string>
+    <string name="edit_profile_address_line2">पता पंक्ति 2</string>
+    <string name="edit_profile_street">सड़क का पता</string>
+    <string name="edit_profile_city">शहर</string>
+    <string name="edit_profile_state">राज्य</string>
+    <string name="edit_profile_country">देश</string>
+    <string name="edit_profile_select_city">शहर चुनें</string>
+    <string name="edit_profile_select_state">राज्य चुनें</string>
+    <string name="edit_profile_select_country">देश चुनें</string>
+    <string name="edit_profile_zip">पिन कोड</string>
 
     <string name="destination_orders_title">ऑर्डर</string>
     <string name="destination_orders_subtitle">अपनी खरीदारी ट्रैक करें और प्रबंधित करें</string>

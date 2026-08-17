@@ -28,8 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.joelkanyi.jcomposecountrycodepicker.annotation.RestrictedApi
 import com.joelkanyi.jcomposecountrycodepicker.component.CountryCodePicker
-import com.joelkanyi.jcomposecountrycodepicker.component.CountrySelectionDialog
 import com.lecomapp.liquefied.R
+import com.lecomapp.liquefied.core.ui.components.feedback.PickerOption
+import com.lecomapp.liquefied.core.ui.components.feedback.SelectionPickerSheet
 import com.lecomapp.liquefied.core.ui.components.inputs.AppTextField
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 
@@ -43,23 +44,30 @@ fun CountryCodePhoneField(
     isError: Boolean = false,
     errorMessage: String? = null,
 ) {
-    var showCountryDialog by remember { mutableStateOf(false) }
+    var showCountrySheet by remember { mutableStateOf(false) }
 
     val selectedCountry = remember(pickerState.countryCode) {
         pickerState.countryList.find { it.code.equals(pickerState.countryCode, ignoreCase = true) }
             ?: pickerState.countryList.first()
     }
 
-    if (showCountryDialog) {
-        CountrySelectionDialog(
-            countryList = pickerState.countryList,
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            onDismissRequest = { showCountryDialog = false },
-            onSelect = { country ->
-                pickerState.setCode(country.code)
-                showCountryDialog = false
+    if (showCountrySheet) {
+        val countries = pickerState.countryList
+        SelectionPickerSheet(
+            title = stringResource(R.string.picker_select_country),
+            options = countries.map { country ->
+                PickerOption(
+                    label = country.name,
+                    searchKeys = listOf(country.phoneNoCode),
+                    flagRes = country.flag,
+                    selected = country.code.equals(pickerState.countryCode, ignoreCase = true),
+                )
             },
+            onSelect = { index ->
+                pickerState.setCode(countries[index].code)
+                showCountrySheet = false
+            },
+            onDismissRequest = { showCountrySheet = false },
         )
     }
 
@@ -77,7 +85,7 @@ fun CountryCodePhoneField(
         leadingContent = {
             Row(
                 modifier = Modifier
-                    .clickable { showCountryDialog = true }
+                    .clickable { showCountrySheet = true }
                     .padding(horizontal = AppSpacing.xs),
                 verticalAlignment = Alignment.CenterVertically,
             ) {

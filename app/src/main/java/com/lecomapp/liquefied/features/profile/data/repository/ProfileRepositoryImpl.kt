@@ -1,13 +1,17 @@
 package com.lecomapp.liquefied.features.profile.data.repository
 
 import com.lecomapp.liquefied.core.config.network.models.Result
-import com.lecomapp.liquefied.core.config.network.models.map
 import com.lecomapp.liquefied.core.config.network.models.safeApiCall
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.UserApiService
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.UpdateProfileRequest
 import com.lecomapp.liquefied.features.profile.data.datasources.local.ProfileLocalDataSource
 import com.lecomapp.liquefied.features.profile.data.mappers.toDomain
 import com.lecomapp.liquefied.features.profile.domain.models.ProfileUser
 import com.lecomapp.liquefied.features.profile.domain.repository.ProfileRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,6 +39,35 @@ class ProfileRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCachedProfile(): ProfileUser? = local.getStaleProfile()?.toDomain()
+
+    override suspend fun updateProfile(request: UpdateProfileRequest): Result<ProfileUser> {
+        return when (val result = safeApiCall { api.updateMe(request) }) {
+            is Result.Success -> {
+                local.saveProfile(result.data)
+                Result.Success(result.data.toDomain())
+            }
+            is Result.Error -> Result.Error(result.error)
+            is Result.Loading -> Result.Loading
+        }
+    }
+
+    override suspend fun uploadProfilePicture(file: File): Result<ProfileUser> {
+        val mimeType = when (file.extension.lowercase()) {
+            "png" -> "image/png"
+            "webp" -> "image/webp"
+            else -> "image/jpeg"
+        }
+        val body = file.asRequestBody(mimeType.toMediaTypeOrNull())
+        val part = MultipartBody.Part.createFormData("file", file.name, body)
+        return when (val result = safeApiCall { api.uploadProfilePicture(part) }) {
+            is Result.Success -> {
+                local.saveProfile(result.data)
+                Result.Success(result.data.toDomain())
+            }
+            is Result.Error -> Result.Error(result.error)
+            is Result.Loading -> Result.Loading
+        }
+    }
 
     companion object {
         private const val PROFILE_TTL_MILLIS = 10 * 60 * 1000L

@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -91,8 +93,8 @@ fun AppButton(
 
     val iconSize = when (size) {
         ButtonSize.SMALL -> 16.dp
-        ButtonSize.MEDIUM -> 18.dp
-        ButtonSize.LARGE -> AppButton.iconSize
+        ButtonSize.MEDIUM -> 20.dp
+        ButtonSize.LARGE -> 22.dp
     }
 
     val disabledBg = if (variant == ButtonVariant.PRIMARY) backgroundColor.copy(alpha = 0.38f) else backgroundColor
@@ -151,6 +153,13 @@ fun AppButton(
                         text = text,
                         style = MaterialTheme.typography.labelLarge,
                         color = contentColor,
+                        modifier = Modifier.offset(
+                            x = when {
+                                leadingIcon != null && trailingIcon == null -> -(iconSize / 2 + AppSpacing.xs / 2)
+                                trailingIcon != null && leadingIcon == null -> iconSize / 2 + AppSpacing.xs / 2
+                                else -> 0.dp
+                            },
+                        ),
                     )
                 }
                 if (trailingIcon != null) {

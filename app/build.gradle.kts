@@ -24,8 +24,8 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"http://192.168.1.3:8083/api/v1/\"")
-            buildConfigField("String", "WS_URL", "\"ws://192.168.1.3:8083/api/v1/ws\"")
+            buildConfigField("String", "BASE_URL", "\"http://10.231.214.33:8083/api/v1/\"")
+            buildConfigField("String", "WS_URL", "\"ws://10.231.214.33:8083/api/v1/ws\"")
         }
         create("staging") {
             dimension = "environment"

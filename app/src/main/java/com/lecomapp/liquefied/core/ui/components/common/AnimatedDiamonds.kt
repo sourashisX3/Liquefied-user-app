@@ -34,6 +34,61 @@ private val defaultAuthDiamonds = listOf(
     DiamondConfig(Offset(0.78f, 0.36f), 70f, 0.06f, 6000, 2600, 250),
 )
 
+val brandHeaderDiamonds = listOf(
+    DiamondConfig(Offset(0.92f, 0.08f), 72f, 0.20f, 5500, 2600, 0),
+    DiamondConfig(Offset(0.80f, 0.22f), 56f, 0.16f, 7200, 3200, 250),
+    DiamondConfig(Offset(0.97f, 0.28f), 44f, 0.14f, 6400, 2800, 120),
+    DiamondConfig(Offset(0.68f, 0.10f), 40f, 0.15f, 8000, 3600, 450),
+    DiamondConfig(Offset(0.86f, 0.44f), 36f, 0.13f, 5800, 3000, 300),
+    DiamondConfig(Offset(0.60f, 0.32f), 34f, 0.12f, 9000, 4000, 600),
+)
+
+private const val MAX_DIAMOND_SCALE = 1.3f
+private const val GOLDEN_ANGLE = 2.399963f
+private const val MAX_PLACEMENT_ATTEMPTS = 80
+
+private fun resolvePlacements(diamonds: List<DiamondConfig>, width: Float, height: Float, density: Float): List<Offset> {
+    val ordered = diamonds.sortedByDescending { it.sizeDp }
+    val placements = mutableListOf<Offset>()
+    val radii = mutableListOf<Float>()
+
+    ordered.forEach { diamond ->
+        val maxRadius = diamond.sizeDp * density * MAX_DIAMOND_SCALE * 0.5f
+        val desired = Offset(diamond.centerFraction.x * width, diamond.centerFraction.y * height)
+        val isFree: (Offset) -> Boolean = { candidate ->
+            radii.indices.none { i ->
+                val dx = candidate.x - placements[i].x
+                val dy = candidate.y - placements[i].y
+                dx * dx + dy * dy < (maxRadius + radii[i]) * (maxRadius + radii[i])
+            }
+        }
+
+        var placement = desired
+        if (!isFree(desired)) {
+            var attempt = 0
+            var angle = 0f
+            var distance = 0f
+            while (attempt < MAX_PLACEMENT_ATTEMPTS) {
+                attempt++
+                angle += GOLDEN_ANGLE
+                distance += maxRadius * 0.35f
+                val candidate = Offset(
+                    x = (desired.x + cos(angle) * distance).coerceIn(maxRadius, width - maxRadius),
+                    y = (desired.y + sin(angle) * distance).coerceIn(maxRadius, height - maxRadius),
+                )
+                if (isFree(candidate)) {
+                    placement = candidate
+                    break
+                }
+            }
+        }
+        placements.add(placement)
+        radii.add(maxRadius)
+    }
+
+    return placements
+}
+
 @Composable
 fun AnimatedDiamonds(
     modifier: Modifier = Modifier,
@@ -56,12 +111,16 @@ fun AnimatedDiamonds(
     val scales = diamonds.map { diamond ->
         infiniteTransition.animateFloat(
             initialValue = 0.5f,
-            targetValue = 1.3f,
+            targetValue = MAX_DIAMOND_SCALE,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = diamond.scaleDurationMs, delayMillis = diamond.delayMs),
                 repeatMode = RepeatMode.Reverse,
             ),
         )
+    }
+
+    val placements = remember(diamonds) {
+        resolvePlacements(diamonds, width = 360f, height = 200f, density = 1f)
     }
 
     Canvas(modifier = modifier) {
@@ -70,10 +129,10 @@ fun AnimatedDiamonds(
         val radiansPerDegree = 0.0174533f
 
         diamonds.forEachIndexed { index, diamond ->
-            val cx = diamond.centerFraction.x * w
-            val cy = diamond.centerFraction.y * h
             val halfSize = diamond.sizeDp * density * scales[index].value * 0.5f
             val angle = rotations[index].value * radiansPerDegree
+            val cx = placements[index].x / 360f * w
+            val cy = placements[index].y / 200f * h
 
             val path = Path().apply {
                 val p1x = cx + halfSize * cos(angle)

@@ -1,6 +1,7 @@
 package com.lecomapp.liquefied.features.profile.data.mappers
 
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.UserResponse
+import com.lecomapp.liquefied.features.catalog.data.mappers.resolveUrl
 import com.lecomapp.liquefied.features.profile.domain.models.ProfileUser
 
 fun UserResponse.toDomain(): ProfileUser = ProfileUser(
@@ -10,8 +11,10 @@ fun UserResponse.toDomain(): ProfileUser = ProfileUser(
     email = email,
     dialCode = dialCode,
     phoneNumber = phoneNumber,
-    profilePictureUrl = profilePictureUrl,
+    profilePictureUrl = resolveUrl(profilePictureUrl),
     streetAddress = streetAddress,
+    addressLine1 = addressLine1,
+    addressLine2 = addressLine2,
     city = city,
     state = state,
     country = country,

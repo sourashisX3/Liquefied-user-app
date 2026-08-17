@@ -1,72 +1,129 @@
 package com.lecomapp.liquefied.features.profile.presentation.screens
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
 import com.lecomapp.liquefied.R
-import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
-import com.lecomapp.liquefied.core.ui.components.buttons.ButtonSize
-import com.lecomapp.liquefied.core.ui.components.buttons.ButtonVariant
-import com.lecomapp.liquefied.core.ui.components.common.AppIcons
-import com.lecomapp.liquefied.core.ui.components.common.DestinationScreen
+import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
+import com.lecomapp.liquefied.core.ui.components.common.AppHeaderContainer
+import com.lecomapp.liquefied.core.ui.components.common.brandHeaderDiamonds
+import com.lecomapp.liquefied.core.ui.components.feedback.ConfirmSheet
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
-import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
-import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.components.feedback.LiquefiedOptionSheet
+import com.lecomapp.liquefied.core.ui.components.feedback.PictureSourceSheet
+import com.lecomapp.liquefied.core.ui.components.feedback.SheetOption
+import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.ThemeMode
+import com.lecomapp.liquefied.core.utils.LocaleManager
+import com.lecomapp.liquefied.features.profile.presentation.components.ProfileErrorSnackbar
+import com.lecomapp.liquefied.features.profile.presentation.components.ProfileIdentityHeader
+import com.lecomapp.liquefied.features.profile.presentation.components.ProfileMenuBody
+import com.lecomapp.liquefied.features.profile.presentation.components.ProfileSkeleton
+import com.lecomapp.liquefied.features.profile.presentation.components.createCameraImageUri
 import com.lecomapp.liquefied.features.profile.presentation.viewmodels.ProfileViewModel
+import kotlinx.coroutines.launch
+
+private enum class ProfileSheet { PICTURE, LANGUAGE, THEME, LOGOUT }
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
+    onEditProfileClick: () -> Unit = {},
+    onAddressesClick: () -> Unit = {},
+    onOrdersClick: () -> Unit = {},
+    onWalletClick: () -> Unit = {},
+    onSupportClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalSnackBarHostState.current
+    var activeSheet by remember { mutableStateOf<ProfileSheet?>(null) }
 
-    val subtitle = state.user?.let { listOfNotNull(it.firstName, it.lastName).joinToString(" ").ifBlank { null } }
+    LaunchedEffect(Unit) {
+        viewModel.loadProfile()
+    }
 
-    DestinationScreen(
-        title = stringResource(R.string.profile_title),
-        subtitle = subtitle,
+    val cameraImageUri = remember { createCameraImageUri(context) }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            if (success) cameraImageUri?.let(viewModel::uploadProfilePicture)
+        },
+    )
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            if (granted) {
+                cameraImageUri?.let(cameraLauncher::launch)
+            } else {
+                val message = context.getString(R.string.profile_camera_permission_needed)
+                scope.launch {
+                    snackbarHostState.showSnackbar(message)
+                }
+            }
+        },
+    )
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> uri?.let(viewModel::uploadProfilePicture) },
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
     ) {
+        AppHeaderContainer(
+            backgroundContent = {
+                AnimatedDiamonds(
+                    modifier = Modifier.matchParentSize(),
+                    baseColor = MaterialTheme.colorScheme.onPrimary,
+                    diamonds = brandHeaderDiamonds,
+                )
+            },
+        ) {
+            ProfileIdentityHeader(
+                user = state.user,
+                isUploading = state.isUploading,
+                onPictureClick = { activeSheet = ProfileSheet.PICTURE },
+                onEditProfileClick = onEditProfileClick,
+            )
+        }
+
         when {
-            state.isLoading -> Unit
-            state.user != null -> ProfileContent(
-                state = state,
-                themeMode = themeMode,
-                onThemeModeChange = viewModel::setThemeMode,
-                onLogout = viewModel::logout,
+            state.isLoading && state.user == null -> ProfileSkeleton()
+            state.user != null -> ProfileMenuBody(
+                onAddressesClick = onAddressesClick,
+                onOrdersClick = onOrdersClick,
+                onWalletClick = onWalletClick,
+                onSupportClick = onSupportClick,
+                onLanguageClick = { activeSheet = ProfileSheet.LANGUAGE },
+                onAppearanceClick = { activeSheet = ProfileSheet.THEME },
+                onLogoutClick = { activeSheet = ProfileSheet.LOGOUT },
             )
             else -> ErrorView(
                 title = stringResource(R.string.profile_error_title),
@@ -75,176 +132,89 @@ fun ProfileScreen(
             )
         }
     }
-}
 
-@Composable
-private fun ProfileContent(
-    state: com.lecomapp.liquefied.features.profile.presentation.viewmodels.ProfileUiState,
-    themeMode: ThemeMode,
-    onThemeModeChange: (ThemeMode) -> Unit,
-    onLogout: () -> Unit,
-) {
-    val user = state.user ?: return
-    val fullName = user.fullName
-    val email = user.email.orEmpty().ifBlank { null }
-    val phone = user.phone
-    val memberSince = user.createdAt.take(10)
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = AppSpacing.lg),
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(AppCornerRadius.large),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-        ) {
-            Row(
-                modifier = Modifier.padding(AppSpacing.lg),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    if (!user.profilePictureUrl.isNullOrBlank()) {
-                        SubcomposeAsyncImage(
-                            model = user.profilePictureUrl,
-                            contentDescription = fullName,
-                            modifier = Modifier.fillMaxSize(),
-                        ) {
-                            when (painter.state) {
-                                is AsyncImagePainter.State.Error -> {
-                                    Text(
-                                        text = fullName.firstOrNull()?.toString()?.uppercase() ?: "U",
-                                        style = MaterialTheme.typography.headlineMedium,
-                                        color = MaterialTheme.colorScheme.onPrimary,
-                                        modifier = Modifier.align(Alignment.Center),
-                                    )
-                                }
-                                else -> SubcomposeAsyncImageContent()
-                            }
-                        }
-                    } else {
-                        Text(
-                            text = fullName.firstOrNull()?.toString()?.uppercase() ?: "U",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
+    when (activeSheet) {
+        ProfileSheet.PICTURE -> PictureSourceSheet(
+            onCamera = {
+                activeSheet = null
+                val granted = ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CAMERA,
+                ) == PackageManager.PERMISSION_GRANTED
+                if (granted) {
+                    cameraImageUri?.let(cameraLauncher::launch)
+                } else {
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                 }
-                Spacer(modifier = Modifier.width(AppSpacing.lg))
-                Column {
-                    Text(
-                        text = fullName,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+            },
+            onGallery = {
+                activeSheet = null
+                galleryLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+                )
+            },
+            onDismissRequest = { activeSheet = null },
+        )
+        ProfileSheet.LANGUAGE -> {
+            val currentCode = LocaleManager.getSelectedLocaleCode(context)
+            LiquefiedOptionSheet(
+                title = stringResource(R.string.profile_language),
+                options = LocaleManager.supportedLocales.map { locale ->
+                    SheetOption(
+                        label = locale.displayName,
+                        selected = currentCode == locale.code,
                     )
-                    email?.let {
-                        Spacer(modifier = Modifier.height(AppSpacing.xxs))
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
+                },
+                onSelect = { index ->
+                    activeSheet = null
+                    val code = LocaleManager.supportedLocales[index].code
+                    context.findActivity()?.let { activity ->
+                        LocaleManager.setLocale(activity, code)
+                        activity.recreate()
                     }
-                    phone?.let {
-                        Spacer(modifier = Modifier.height(AppSpacing.xxs))
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(AppSpacing.xl))
-
-        Text(
-            text = stringResource(R.string.profile_member_since),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(AppSpacing.xxs))
-        Text(
-            text = memberSince,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(AppSpacing.xl))
-
-        Text(
-            text = stringResource(R.string.profile_theme),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Spacer(modifier = Modifier.height(AppSpacing.sm))
-        Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm)) {
-            ThemeChip(
-                label = stringResource(R.string.profile_theme_system),
-                selected = themeMode == ThemeMode.SYSTEM,
-                onClick = { onThemeModeChange(ThemeMode.SYSTEM) },
-            )
-            ThemeChip(
-                label = stringResource(R.string.profile_theme_light),
-                selected = themeMode == ThemeMode.LIGHT,
-                onClick = { onThemeModeChange(ThemeMode.LIGHT) },
-            )
-            ThemeChip(
-                label = stringResource(R.string.profile_theme_dark),
-                selected = themeMode == ThemeMode.DARK,
-                onClick = { onThemeModeChange(ThemeMode.DARK) },
+                },
+                onDismissRequest = { activeSheet = null },
             )
         }
-
-        Spacer(modifier = Modifier.height(AppSpacing.xl))
-
-        AppButton(
-            onClick = onLogout,
-            text = stringResource(R.string.profile_logout),
-            variant = ButtonVariant.DANGER,
-            size = ButtonSize.MEDIUM,
+        ProfileSheet.THEME -> LiquefiedOptionSheet(
+            title = stringResource(R.string.profile_appearance),
+            options = ThemeMode.entries.map { mode ->
+                SheetOption(
+                    label = stringResource(
+                        when (mode) {
+                            ThemeMode.SYSTEM -> R.string.profile_theme_system
+                            ThemeMode.LIGHT -> R.string.profile_theme_light
+                            ThemeMode.DARK -> R.string.profile_theme_dark
+                        },
+                    ),
+                    selected = themeMode == mode,
+                )
+            },
+            onSelect = { index ->
+                activeSheet = null
+                viewModel.setThemeMode(ThemeMode.entries[index])
+            },
+            onDismissRequest = { activeSheet = null },
+        )
+        ProfileSheet.LOGOUT -> ConfirmSheet(
+            title = stringResource(R.string.profile_logout_title),
+            message = stringResource(R.string.profile_logout_message),
+            confirmLabel = stringResource(R.string.profile_logout_confirm),
             isLoading = state.isLoggingOut,
-            leadingIcon = AppIcons.Action.Logout,
+            onConfirm = {
+                activeSheet = null
+                viewModel.logout()
+            },
+            onDismissRequest = { activeSheet = null },
         )
+        null -> Unit
     }
+
+    ProfileErrorSnackbar(error = state.error)
 }
 
-@Composable
-private fun ThemeChip(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = { Text(text = label, style = MaterialTheme.typography.labelLarge) },
-        colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            selectedContainerColor = MaterialTheme.colorScheme.primary,
-            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-        ),
-        border = FilterChipDefaults.filterChipBorder(
-            enabled = true,
-            selected = selected,
-            borderColor = MaterialTheme.colorScheme.outlineVariant,
-            selectedBorderColor = Color.Transparent,
-        ),
-    )
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

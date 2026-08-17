@@ -34,8 +34,8 @@ val LiquefiedTypography = Typography(
         letterSpacing = 0.5.sp,
     ),
     headlineLarge = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 32.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.5.sp,

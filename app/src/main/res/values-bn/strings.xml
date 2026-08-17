@@ -104,6 +104,9 @@
     <string name="language_selector_title">ভাষা নির্বাচন করুন</string>
 
     <string name="home_tagline">প্রতিটি উপলক্ষ্যে আনন্দ ঢালুন।</string>
+    <string name="home_quote_1">ভালো সময় পরিকল্পনা করে আসে না, ঢেলে দেওয়া হয়।</string>
+    <string name="home_quote_2">স্মরণীয় মুহূর্তগুলোর টোস্ট দিন।</string>
+    <string name="home_quote_3">আস্তে চুমুক দিন। গভীরভাবে উপভোগ করুন। দায়িত্ব নিয়ে উদযাপন করুন।</string>
     <string name="home_choose_your_spirit">আপনার পছন্দের পানীয় বেছে নিন</string>
     <string name="home_shop_by_brand">ব্র্যান্ড অনুযায়ী কিনুন</string>
     <string name="home_new_arrivals">নতুন সংযোজন</string>
@@ -127,14 +130,54 @@
     <string name="location_permission_settings">সেটিংস খুলুন</string>
 
     <string name="profile_title">আমার প্রোফাইল</string>
-    <string name="profile_member_since">সদস্য থেকেছেন</string>
-    <string name="profile_theme">চেহারা</string>
+    <string name="profile_edit_profile">প্রোফাইল সম্পাদনা করুন</string>
+    <string name="profile_more_options">আরও বিকল্প</string>
+    <string name="profile_section_account">আমার অ্যাকাউন্ট</string>
+    <string name="profile_section_settings">সেটিংস</string>
+    <string name="profile_my_addresses">আমার ঠিকানা</string>
+    <string name="profile_my_orders">আমার অর্ডার</string>
+    <string name="profile_wallet">ওয়ালেট</string>
+    <string name="profile_support">সহায়তা</string>
+    <string name="profile_change_picture">প্রোফাইল ছবি পরিবর্তন করুন</string>
+    <string name="profile_picture_error">আপনার প্রোফাইল ছবি আপডেট করা যায়নি। আবার চেষ্টা করুন।</string>
+    <string name="profile_picture_too_large">ছবিটি 5 MB-এর কম হতে হবে।</string>
+    <string name="profile_picture_source_title">প্রোফাইল ছবি</string>
+    <string name="profile_picture_camera">ছবি তুলুন</string>
+    <string name="profile_picture_gallery">ডিভাইস থেকে বেছে নিন</string>
+    <string name="profile_camera_permission_needed">ছবি তোলার জন্য ক্যামেরা অনুমতি প্রয়োজন।</string>
+    <string name="profile_language">ভাষা</string>
+    <string name="profile_appearance">চেহারা</string>
+    <string name="profile_logout_title">লগ আউট করবেন?</string>
+    <string name="profile_logout_message">আপনি কি সত্যিই আপনার অ্যাকাউন্ট থেকে লগ আউট করতে চান?</string>
+    <string name="profile_logout_confirm">লগ আউট</string>
+    <string name="common_cancel">বাতিল করুন</string>
+    <string name="picker_search_hint">অনুসন্ধান</string>
+    <string name="picker_no_results">কোনো বিকল্প পাওয়া যায়নি</string>
+    <string name="picker_select_country">দেশ নির্বাচন করুন</string>
+    <string name="profile_member_since_format">%1$s থেকে সদস্য</string>
     <string name="profile_theme_system">সিস্টেম</string>
     <string name="profile_theme_light">লাইট</string>
     <string name="profile_theme_dark">ডার্ক</string>
     <string name="profile_logout">লগ আউট</string>
     <string name="profile_error_title">আপনার প্রোফাইল লোড করা যায়নি</string>
     <string name="profile_error_subtitle">আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন</string>
+
+    <string name="edit_profile_title">প্রোফাইল সম্পাদনা করুন</string>
+    <string name="edit_profile_back">ফিরে যান</string>
+    <string name="edit_profile_save">পরিবর্তন সংরক্ষণ করুন</string>
+    <string name="edit_profile_saved">প্রোফাইল সফলভাবে আপডেট হয়েছে</string>
+    <string name="edit_profile_address_section">ঠিকানা</string>
+    <string name="edit_profile_personal_section">ব্যক্তিগত তথ্য</string>
+    <string name="edit_profile_address_line1">ঠিকানা লাইন ১</string>
+    <string name="edit_profile_address_line2">ঠিকানা লাইন ২</string>
+    <string name="edit_profile_street">রাস্তার ঠিকানা</string>
+    <string name="edit_profile_city">শহর</string>
+    <string name="edit_profile_state">রাজ্য</string>
+    <string name="edit_profile_country">দেশ</string>
+    <string name="edit_profile_select_city">শহর নির্বাচন করুন</string>
+    <string name="edit_profile_select_state">রাজ্য নির্বাচন করুন</string>
+    <string name="edit_profile_select_country">দেশ নির্বাচন করুন</string>
+    <string name="edit_profile_zip">পিন কোড</string>
 
     <string name="destination_orders_title">অর্ডার</string>
     <string name="destination_orders_subtitle">আপনার কেনাকাটা ট্র্যাক ও পরিচালনা করুন</string>

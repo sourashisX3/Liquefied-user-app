@@ -72,6 +72,8 @@ object ApiConstants {
     object Profile {
         const val USER = "users/me"
         const val PASSWORD = "users/me/password"
+        const val PROFILE_PICTURE = "users/me/profile-picture"
+        const val DEACTIVATE = "users/me/deactivate"
     }
 
     object Notifications {

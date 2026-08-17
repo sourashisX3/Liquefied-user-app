@@ -64,6 +64,7 @@ import com.lecomapp.liquefied.features.auth.presentation.screens.RegisterScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.ResetPasswordScreen
 import com.lecomapp.liquefied.features.onboarding.presentation.screens.OnboardingScreen
 import com.lecomapp.liquefied.features.home.presentation.screens.HomeScreen
+import com.lecomapp.liquefied.features.profile.presentation.screens.EditProfileScreen
 import com.lecomapp.liquefied.features.profile.presentation.screens.ProfileScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
 import dagger.hilt.EntryPoint
@@ -405,14 +406,17 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Profile> {
-                            ProfileScreen()
+                            ProfileScreen(
+                                onEditProfileClick = { navController.navigate(Route.EditProfile) },
+                                onAddressesClick = { navController.navigate(Route.AddressList) },
+                                onOrdersClick = { navController.navigate(Route.Orders) },
+                                onWalletClick = { navController.navigate(Route.Wallet) },
+                                onSupportClick = { navController.navigate(Route.ChatList) },
+                            )
                         }
                         composable<Route.EditProfile> {
-                            ErrorView(
-                                title = "Edit Unavailable",
-                                subtitle = "Profile editing isn't available yet. Please try again later.",
-                                icon = Icons.Outlined.EditOff,
-                                lottieRawRes = null,
+                            EditProfileScreen(
+                                onBack = { navController.popBackStack() },
                             )
                         }
                     }

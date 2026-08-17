@@ -23,6 +23,8 @@ data class UserResponse(
     val profilePictureUrl: String? = null,
     val roleName: String,
     val streetAddress: String? = null,
+    val addressLine1: String? = null,
+    val addressLine2: String? = null,
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
@@ -32,6 +34,30 @@ data class UserResponse(
     val isPhoneVerified: Boolean,
     val createdAt: String,
     val updatedAt: String,
+)
+
+@Serializable
+data class UpdateProfileRequest(
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val dialCode: String? = null,
+    val phoneNumber: String? = null,
+    val profilePictureUrl: String? = null,
+    val addressLine1: String? = null,
+    val addressLine2: String? = null,
+    val streetAddress: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zipCode: Long? = null,
+)
+
+@Serializable
+data class ChangePasswordRequest(
+    val emailOrPhone: String,
+    val otp: String,
+    val currentPassword: String,
+    val newPassword: String,
 )
 
 @Serializable

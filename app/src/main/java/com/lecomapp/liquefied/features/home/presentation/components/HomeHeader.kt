@@ -14,29 +14,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.common.AnimatedDiamonds
 import com.lecomapp.liquefied.core.ui.components.common.AppHeaderContainer
 import com.lecomapp.liquefied.core.ui.components.common.AppIcons
 import com.lecomapp.liquefied.core.ui.components.common.AppLogoSection
-import com.lecomapp.liquefied.core.ui.components.common.DiamondConfig
+import com.lecomapp.liquefied.core.ui.components.common.brandHeaderDiamonds
 import com.lecomapp.liquefied.core.ui.theme.AppIconSize
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.utils.UiText
-
-private val homeHeaderDiamonds = listOf(
-    DiamondConfig(Offset(0.92f, 0.08f), 72f, 0.20f, 5500, 2600, 0),
-    DiamondConfig(Offset(0.80f, 0.22f), 56f, 0.16f, 7200, 3200, 250),
-    DiamondConfig(Offset(0.97f, 0.28f), 44f, 0.14f, 6400, 2800, 120),
-    DiamondConfig(Offset(0.68f, 0.10f), 40f, 0.15f, 8000, 3600, 450),
-    DiamondConfig(Offset(0.86f, 0.44f), 36f, 0.13f, 5800, 3000, 300),
-    DiamondConfig(Offset(0.60f, 0.32f), 34f, 0.12f, 9000, 4000, 600),
-)
 
 @Composable
 fun HomeHeader(
@@ -56,7 +47,7 @@ fun HomeHeader(
             AnimatedDiamonds(
                 modifier = Modifier.matchParentSize(),
                 baseColor = MaterialTheme.colorScheme.onPrimary,
-                diamonds = homeHeaderDiamonds,
+                diamonds = brandHeaderDiamonds,
             )
         },
     ) {
@@ -66,7 +57,7 @@ fun HomeHeader(
                     AppLogoSection(
                         horizontalAlignment = Alignment.Start,
                         tagline = tagline.asString(),
-                        appNameStyle = MaterialTheme.typography.headlineLarge,
+                        appNameStyle = MaterialTheme.typography.displayLarge.copy(fontSize = 32.sp),
                         appNameMaxLines = 1,
                         appNameSoftWrap = false,
                     )

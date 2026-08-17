@@ -86,9 +86,11 @@ import com.lecomapp.liquefied.features.catalog.domain.models.Category
 import com.lecomapp.liquefied.features.catalog.domain.models.Product
 import com.lecomapp.liquefied.features.home.domain.models.Banner
 import com.lecomapp.liquefied.features.home.domain.models.HomeData
+import com.lecomapp.liquefied.features.home.presentation.components.HomeDivider
 import com.lecomapp.liquefied.features.home.presentation.components.HomeHeader
 import com.lecomapp.liquefied.features.home.presentation.components.HomeProductRail
 import com.lecomapp.liquefied.features.home.presentation.components.HomeSkeleton
+import com.lecomapp.liquefied.features.home.presentation.components.HomeWatermark
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.HomeViewModel
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.states.HomeAction
 import com.lecomapp.liquefied.features.home.presentation.viewmodels.states.HomeState
@@ -505,6 +507,13 @@ private fun HomeContent(
             alpha = railsAnim.alpha.value,
             offsetY = railsAnim.offsetY.value,
         )
+
+        item(key = "watermark") {
+            Column {
+                HomeDivider()
+                HomeWatermark()
+            }
+        }
 
         item(key = "bottom_spacer") {
             Spacer(modifier = Modifier.height(AppSpacing.sm))
