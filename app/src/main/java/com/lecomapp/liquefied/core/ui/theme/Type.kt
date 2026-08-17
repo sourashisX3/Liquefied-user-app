@@ -8,8 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.lecomapp.liquefied.R
 
-private val LobsterFamily = FontFamily(Font(R.font.lobster_regular))
-private val OutfitFamily = FontFamily(Font(R.font.outfit_regular), Font(R.font.outfit_bold, FontWeight.Bold))
+val LobsterFamily = FontFamily(Font(R.font.lobster_regular))
+val OutfitFamily = FontFamily(Font(R.font.outfit_regular), Font(R.font.outfit_bold, FontWeight.Bold))
 
 val LiquefiedTypography = Typography(
     displayLarge = TextStyle(
@@ -20,15 +20,15 @@ val LiquefiedTypography = Typography(
         letterSpacing = 0.5.sp,
     ),
     displayMedium = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 45.sp,
         lineHeight = 52.sp,
         letterSpacing = 0.5.sp,
     ),
     displaySmall = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 36.sp,
         lineHeight = 44.sp,
         letterSpacing = 0.5.sp,
@@ -41,39 +41,39 @@ val LiquefiedTypography = Typography(
         letterSpacing = 0.5.sp,
     ),
     headlineMedium = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.5.sp,
     ),
     headlineSmall = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         lineHeight = 32.sp,
         letterSpacing = 0.5.sp,
     ),
     titleLarge = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
-        letterSpacing = 1.sp,
+        letterSpacing = 0.5.sp,
     ),
     titleMedium = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 1.sp,
+        letterSpacing = 0.5.sp,
     ),
     titleSmall = TextStyle(
-        fontFamily = LobsterFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = OutfitFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp,
+        letterSpacing = 0.5.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = OutfitFamily,

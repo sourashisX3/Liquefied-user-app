@@ -2,14 +2,14 @@ package com.lecomapp.liquefied.core.config.network
 
 object ApiConstants {
 
-    const val BASE_URL = "http://10.102.226.33:8083/api/v1/"
+    const val BASE_URL = "https://liquefied-backend.onrender.com/api/v1/"
 
     object Auth {
         const val LOGIN = "auth/login"
         const val REGISTER = "auth/register"
         const val REFRESH = "auth/refresh"
-        const val SEND_OTP = "auth/send-otp"
-        const val VERIFY_OTP = "auth/verify-otp"
+        const val SEND_OTP = "otp/send"
+        const val VERIFY_OTP = "otp/verify"
         const val RESET_PASSWORD = "auth/reset-password"
         const val LOGOUT = "auth/logout"
     }

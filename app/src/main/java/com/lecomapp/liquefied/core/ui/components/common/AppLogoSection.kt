@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,20 +20,22 @@ import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 @Composable
 fun AppLogoSection(
     modifier: Modifier = Modifier,
+    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    tagline: String? = null,
     appNameAlpha: Float = 1f,
     appNameScale: Float = 1f,
     taglineAlpha: Float = 1f,
     taglineOffsetY: Float = 0f,
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(horizontal = AppSpacing.lg),
+        horizontalAlignment = horizontalAlignment,
+        modifier = modifier,
     ) {
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onPrimary,
-            textAlign = TextAlign.Center,
+            textAlign = if (horizontalAlignment == Alignment.CenterHorizontally) TextAlign.Center else TextAlign.Start,
             modifier = Modifier
                 .scale(appNameScale)
                 .alpha(appNameAlpha),
@@ -43,10 +44,10 @@ fun AppLogoSection(
         Spacer(modifier = Modifier.height(AppSpacing.sm))
 
         Text(
-            text = stringResource(R.string.splash_tagline),
+            text = tagline ?: stringResource(R.string.splash_tagline),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
-            textAlign = TextAlign.Center,
+            textAlign = if (horizontalAlignment == Alignment.CenterHorizontally) TextAlign.Center else TextAlign.Start,
             modifier = Modifier
                 .alpha(taglineAlpha)
                 .offset(y = (40 * taglineOffsetY).dp),

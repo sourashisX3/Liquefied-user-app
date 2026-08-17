@@ -63,16 +63,14 @@ class ForgotPasswordViewModel @Inject constructor(
             when (val result = sendOtpUseCase(identifier)) {
                 is Result.Success -> {
                     _state.update { it.copy(isLoading = false) }
-                    result.data.otp?.let { otp ->
-                        _events.send(
-                            ForgotPasswordEvent.ShowSnackBar(
-                                SnackBarEvent(
-                                    message = UiText.StringResourceId(R.string.forgot_otp_sent, arrayOf(otp)),
-                                    type = SnackBarType.SUCCESS,
-                                )
+                    _events.send(
+                        ForgotPasswordEvent.ShowSnackBar(
+                            SnackBarEvent(
+                                message = UiText.StringResourceId(R.string.forgot_otp_sent),
+                                type = SnackBarType.SUCCESS,
                             )
                         )
-                    }
+                    )
                     _events.send(ForgotPasswordEvent.NavigateToOtp(identifier))
                 }
                 is Result.Error -> {

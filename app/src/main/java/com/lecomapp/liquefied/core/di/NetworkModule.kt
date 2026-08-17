@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.lecomapp.liquefied.core.config.network.EnvironmentConfig
 import com.lecomapp.liquefied.core.network.AuthInterceptor
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.AuthApiService
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.UserApiService
 import com.lecomapp.liquefied.features.home.data.datasources.remote.HomeApiService
 import dagger.Module
 import dagger.Provides
@@ -65,4 +66,9 @@ object NetworkModule {
     @Singleton
     fun provideHomeApiService(retrofit: Retrofit): HomeApiService =
         retrofit.create(HomeApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApiService =
+        retrofit.create(UserApiService::class.java)
 }

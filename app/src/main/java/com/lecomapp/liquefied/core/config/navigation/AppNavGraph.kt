@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,24 +25,33 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lecomapp.liquefied.R
+import com.lecomapp.liquefied.core.network.AuthEvents
+import com.lecomapp.liquefied.core.ui.components.common.DestinationScreenEmpty
 import com.lecomapp.liquefied.core.ui.components.feedback.EmptyState
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.components.feedback.LiquefiedSnackBarHost
 import com.lecomapp.liquefied.core.ui.components.feedback.rememberTypedSnackBarState
 import com.lecomapp.liquefied.core.ui.components.navigation.FloatingBottomNavigation
 import com.lecomapp.liquefied.core.ui.components.navigation.capsuleNavItems
-import com.lecomapp.liquefied.core.ui.theme.LiquefiedTheme
+import com.lecomapp.liquefied.core.ui.theme.AppTheme
 import com.lecomapp.liquefied.core.ui.theme.LocalSnackBarHostState
 import com.lecomapp.liquefied.core.ui.theme.LocalTypedSnackBarState
+import com.lecomapp.liquefied.core.ui.theme.ThemeManager
+import com.lecomapp.liquefied.core.ui.theme.ThemeMode
 import com.lecomapp.liquefied.features.auth.presentation.screens.ForgotPasswordScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.LoginScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.OtpVerificationScreen
@@ -49,14 +59,45 @@ import com.lecomapp.liquefied.features.auth.presentation.screens.RegisterScreen
 import com.lecomapp.liquefied.features.auth.presentation.screens.ResetPasswordScreen
 import com.lecomapp.liquefied.features.onboarding.presentation.screens.OnboardingScreen
 import com.lecomapp.liquefied.features.home.presentation.screens.HomeScreen
+import com.lecomapp.liquefied.features.profile.presentation.screens.ProfileScreen
 import com.lecomapp.liquefied.features.splash.presentation.SplashScreen
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface AuthEventsEntryPoint {
+    fun authEvents(): AuthEvents
+}
 
 @Composable
 fun AppNavGraph() {
-    LiquefiedTheme {
+    val context = LocalContext.current
+    val themeManager = remember { ThemeManager(context.applicationContext) }
+    val themeMode by themeManager.themeMode.collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
+
+    AppTheme(themeMode = themeMode) {
         val navController = rememberNavController()
+        val context = LocalContext.current
+        val authEvents = remember {
+            EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                AuthEventsEntryPoint::class.java,
+            ).authEvents()
+        }
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
+
+        LaunchedEffect(Unit) {
+            authEvents.events.collect {
+                navController.navigate(Route.Login) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                    launchSingleTop = true
+                }
+            }
+        }
 
         val showBottomBar = capsuleNavItems.any { item ->
             currentDestination?.hasRoute(item.route::class) == true
@@ -70,7 +111,9 @@ fun AppNavGraph() {
             LocalTypedSnackBarState provides typedSnackBarState,
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                Scaffold { innerPadding ->
+                Scaffold(
+                    contentWindowInsets = WindowInsets(0),
+                ) { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = Route.Splash,
@@ -113,14 +156,22 @@ fun AppNavGraph() {
                             },
                         ) {
                             LoginScreen(
-                                onNavigateToHome = { navController.navigate(Route.Home) },
+                                onNavigateToHome = {
+                                    navController.navigate(Route.Home) {
+                                        popUpTo(Route.Login) { inclusive = true }
+                                    }
+                                },
                                 onNavigateToRegister = { navController.navigate(Route.Register) },
                                 onNavigateToForgotPassword = { navController.navigate(Route.ForgotPassword) },
                             )
                         }
                         composable<Route.Register> {
                             RegisterScreen(
-                                onNavigateToHome = { navController.navigate(Route.Home) },
+                                onNavigateToHome = {
+                                    navController.navigate(Route.Home) {
+                                        popUpTo(Route.Register) { inclusive = true }
+                                    }
+                                },
                                 onNavigateToLogin = { navController.popBackStack() },
                             )
                         }
@@ -153,7 +204,43 @@ fun AppNavGraph() {
 
                         // Main Graph
                         composable<Route.Home> {
-                            HomeScreen()
+                            HomeScreen(
+                                onSearchClick = {
+                                    navController.navigate(Route.ProductSearch) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onExploreAllClick = {
+                                    navController.navigate(Route.ProductSearch) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onCategoryClick = {
+                                    navController.navigate(Route.ProductSearch) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onBrandClick = {
+                                    navController.navigate(Route.ProductSearch) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onBannerClick = {
+                                    navController.navigate(Route.ProductSearch) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onProductClick = { product ->
+                                    navController.navigate(Route.ProductDetail(product.uuid)) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                                onNotificationsClick = {
+                                    navController.navigate(Route.Notifications) {
+                                        launchSingleTop = true
+                                    }
+                                },
+                            )
                         }
                         composable<Route.ProductDetail> {
                             ErrorView(
@@ -170,10 +257,15 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Cart> {
-                            EmptyState(
-                                title = "Your Cart is Empty",
-                                subtitle = "Add products to your cart to get started.",
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_cart_title),
+                                subtitle = stringResource(R.string.destination_cart_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "Your Cart is Empty",
+                                    subtitle = "Add products to your cart to get started.",
+                                )
+                            }
                         }
                         composable<Route.Checkout> {
                             ErrorView(
@@ -184,12 +276,17 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Orders> {
-                            EmptyState(
-                                title = "No Orders Yet",
-                                subtitle = "Your orders will appear here once you place one.",
-                                icon = Icons.AutoMirrored.Outlined.ReceiptLong,
-                                lottieRawRes = null,
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_orders_title),
+                                subtitle = stringResource(R.string.destination_orders_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "No Orders Yet",
+                                    subtitle = "Your orders will appear here once you place one.",
+                                    icon = Icons.AutoMirrored.Outlined.ReceiptLong,
+                                    lottieRawRes = null,
+                                )
+                            }
                         }
                         composable<Route.OrderDetail> {
                             ErrorView(
@@ -198,10 +295,15 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Wishlist> {
-                            EmptyState(
-                                title = "Wishlist is Empty",
-                                subtitle = "Save your favourite products to find them here.",
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_wishlist_title),
+                                subtitle = stringResource(R.string.destination_wishlist_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "Wishlist is Empty",
+                                    subtitle = "Save your favourite products to find them here.",
+                                )
+                            }
                         }
                         composable<Route.WriteReview> {
                             ErrorView(
@@ -228,26 +330,41 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Wallet> {
-                            EmptyState(
-                                title = "No Transactions Yet",
-                                subtitle = "Your wallet transactions will appear here.",
-                                icon = Icons.Outlined.AccountBalanceWallet,
-                                lottieRawRes = null,
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_wallet_title),
+                                subtitle = stringResource(R.string.destination_wallet_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "No Transactions Yet",
+                                    subtitle = "Your wallet transactions will appear here.",
+                                    icon = Icons.Outlined.AccountBalanceWallet,
+                                    lottieRawRes = null,
+                                )
+                            }
                         }
                         composable<Route.Notifications> {
-                            EmptyState(
-                                title = "No Notifications",
-                                subtitle = "You're all caught up!",
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_notifications_title),
+                                subtitle = stringResource(R.string.destination_notifications_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "No Notifications",
+                                    subtitle = "You\'re all caught up!",
+                                )
+                            }
                         }
                         composable<Route.ChatList> {
-                            EmptyState(
-                                title = "No Conversations",
-                                subtitle = "Start a chat with support whenever you need help.",
-                                icon = Icons.Outlined.ChatBubbleOutline,
-                                lottieRawRes = null,
-                            )
+                            DestinationScreenEmpty(
+                                title = stringResource(R.string.destination_chat_title),
+                                subtitle = stringResource(R.string.destination_chat_subtitle),
+                            ) {
+                                EmptyState(
+                                    title = "No Conversations",
+                                    subtitle = "Start a chat with support whenever you need help.",
+                                    icon = Icons.Outlined.ChatBubbleOutline,
+                                    lottieRawRes = null,
+                                )
+                            }
                         }
                         composable<Route.ChatDetail> {
                             EmptyState(
@@ -258,10 +375,7 @@ fun AppNavGraph() {
                             )
                         }
                         composable<Route.Profile> {
-                            ErrorView(
-                                title = "Profile Unavailable",
-                                subtitle = "We couldn't load your profile. Please try again.",
-                            )
+                            ProfileScreen()
                         }
                         composable<Route.EditProfile> {
                             ErrorView(

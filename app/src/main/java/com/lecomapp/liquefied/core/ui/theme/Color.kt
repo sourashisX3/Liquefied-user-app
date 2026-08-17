@@ -141,5 +141,6 @@ object LiquefiedColors {
         val semiTransparent = Color(0x80000000)
         val ratingStar = Color(0xFFFFB800)
         val shimmer = Color(0xFFE0E0E0)
+        val skeleton = Color(0xFFD9D9D9)
     }
 }

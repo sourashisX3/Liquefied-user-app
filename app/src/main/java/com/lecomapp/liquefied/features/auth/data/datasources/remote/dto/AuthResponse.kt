@@ -26,7 +26,7 @@ data class UserResponse(
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
-    val zipCode: Int? = null,
+    val zipCode: Long? = null,
     val isActive: Boolean,
     val isEmailVerified: Boolean,
     val isPhoneVerified: Boolean,

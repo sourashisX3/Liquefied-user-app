@@ -24,8 +24,8 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"http://192.168.1.6:8083/api/v1/\"")
-            buildConfigField("String", "WS_URL", "\"ws://192.168.1.6:8083/api/v1/ws\"")
+            buildConfigField("String", "BASE_URL", "\"https://liquefied-backend.onrender.com/api/v1/\"")
+            buildConfigField("String", "WS_URL", "\"wss://liquefied-backend.onrender.com/api/v1/ws\"")
         }
         create("staging") {
             dimension = "environment"
@@ -34,8 +34,8 @@ android {
         }
         create("production") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"https://api.example.com/api/v1/\"")
-            buildConfigField("String", "WS_URL", "\"wss://api.example.com/api/v1/ws\"")
+            buildConfigField("String", "BASE_URL", "\"https://liquefied-backend.onrender.com/api/v1/\"")
+            buildConfigField("String", "WS_URL", "\"wss://liquefied-backend.onrender.com/api/v1/ws\"")
         }
     }
 

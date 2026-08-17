@@ -15,7 +15,7 @@ interface AuthenticationRepository {
     suspend fun register(request: RegisterRequest): Result<AuthTokens>
     suspend fun refreshToken(request: RefreshTokenRequest): Result<AuthTokens>
     suspend fun sendOtp(emailOrPhone: String): Result<SendOtpResponse>
-    suspend fun verifyOtp(emailOrPhone: String, otp: String): Result<AuthTokens>
+    suspend fun verifyOtp(emailOrPhone: String, otp: String): Result<Unit>
     suspend fun resetPassword(emailOrPhone: String, otp: String, newPassword: String): Result<Unit>
     suspend fun logout()
 }

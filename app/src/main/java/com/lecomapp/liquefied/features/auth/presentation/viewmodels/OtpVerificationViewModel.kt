@@ -9,6 +9,7 @@ import com.lecomapp.liquefied.core.utils.SnackBarEvent
 import com.lecomapp.liquefied.core.utils.SnackBarType
 import com.lecomapp.liquefied.core.utils.UiText
 import com.lecomapp.liquefied.features.auth.domain.use_cases.SendOtpUseCase
+import com.lecomapp.liquefied.features.auth.domain.use_cases.VerifyOtpUseCase
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.OtpVerificationAction
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.events.OtpVerificationEvent
 import com.lecomapp.liquefied.features.auth.presentation.viewmodels.states.OtpVerificationState
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class OtpVerificationViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val sendOtpUseCase: SendOtpUseCase,
+    private val verifyOtpUseCase: VerifyOtpUseCase,
 ) : ViewModel() {
 
     private val identifier: String = checkNotNull(savedStateHandle["identifier"])
@@ -66,12 +68,32 @@ class OtpVerificationViewModel @Inject constructor(
         val currentState = _state.value
         if (!currentState.isFormValid) return
 
-        _events.trySend(
-            OtpVerificationEvent.NavigateToResetPassword(
-                identifier = currentState.identifier,
-                otp = currentState.otp,
-            )
-        )
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+
+            when (val result = verifyOtpUseCase(currentState.identifier, currentState.otp)) {
+                is Result.Success -> {
+                    _state.update { it.copy(isLoading = false, isDirty = false) }
+                    _events.send(
+                        OtpVerificationEvent.NavigateToResetPassword(
+                            identifier = currentState.identifier,
+                            otp = currentState.otp,
+                        )
+                    )
+                }
+                is Result.Error -> {
+                    _state.update { it.copy(isLoading = false, error = result.error) }
+                    _events.send(
+                        OtpVerificationEvent.ShowSnackBar(
+                            SnackBarEvent(message = result.error, type = SnackBarType.ERROR)
+                        )
+                    )
+                }
+                is Result.Loading -> {
+                    _state.update { it.copy(isLoading = true) }
+                }
+            }
+        }
     }
 
     private fun resend() {
@@ -84,16 +106,14 @@ class OtpVerificationViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { it.copy(isLoading = false, otp = "", isDirty = false) }
                     startResendCooldown()
-                    result.data.otp?.let { otp ->
-                        _events.send(
-                            OtpVerificationEvent.ShowSnackBar(
-                                SnackBarEvent(
-                                    message = UiText.StringResourceId(R.string.otp_resend_sent, arrayOf(otp)),
-                                    type = SnackBarType.SUCCESS,
-                                )
+                    _events.send(
+                        OtpVerificationEvent.ShowSnackBar(
+                            SnackBarEvent(
+                                message = UiText.StringResourceId(R.string.otp_resend_sent),
+                                type = SnackBarType.SUCCESS,
                             )
                         )
-                    }
+                    )
                 }
                 is Result.Error -> {
                     _state.update { it.copy(isLoading = false, error = result.error) }

@@ -14,7 +14,7 @@ data class User(
     val city: String?,
     val state: String?,
     val country: String?,
-    val zipCode: Int?,
+    val zipCode: Long?,
     val isActive: Boolean,
     val isEmailVerified: Boolean,
     val isPhoneVerified: Boolean,

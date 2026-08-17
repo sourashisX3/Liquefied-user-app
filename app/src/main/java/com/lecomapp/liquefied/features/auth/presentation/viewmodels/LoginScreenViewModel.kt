@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,13 +27,11 @@ class LoginScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthenticationState())
-    val state = _state
-        .onStart { checkStoredSession() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            AuthenticationState(),
-        )
+    val state = _state.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000L),
+        AuthenticationState(),
+    )
 
     private val _events = Channel<AuthenticationEvent>()
     val events = _events.receiveAsFlow()
@@ -78,12 +75,6 @@ class LoginScreenViewModel @Inject constructor(
             is LoginAction.DismissError -> {
                 _state.update { it.copy(error = null) }
             }
-        }
-    }
-
-    private fun checkStoredSession() {
-        viewModelScope.launch {
-            _state.update { LoginReducer.success(it) }
         }
     }
 

@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
     fun onAction(action: HomeAction) {
         when (action) {
             HomeAction.LoadHome, HomeAction.Retry -> loadHome()
+            HomeAction.Refresh -> refresh()
         }
     }
 
@@ -40,6 +41,21 @@ class HomeViewModel @Inject constructor(
                 }
                 is Result.Error -> {
                     _state.update { it.copy(isLoading = false, error = result.error) }
+                }
+                is Result.Loading -> Unit
+            }
+        }
+    }
+
+    private fun refresh() {
+        _state.update { it.copy(isRefreshing = true, error = null) }
+        viewModelScope.launch {
+            when (val result = getHomeUseCase()) {
+                is Result.Success -> {
+                    _state.update { it.copy(isRefreshing = false, homeData = result.data) }
+                }
+                is Result.Error -> {
+                    _state.update { it.copy(isRefreshing = false, error = result.error) }
                 }
                 is Result.Loading -> Unit
             }

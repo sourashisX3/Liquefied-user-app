@@ -76,6 +76,19 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
+fun AppTheme(
+    themeMode: ThemeMode,
+    content: @Composable () -> Unit,
+) {
+    val darkTheme = when (themeMode) {
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+    }
+    LiquefiedTheme(darkTheme = darkTheme, content = content)
+}
+
+@Composable
 fun LiquefiedTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit

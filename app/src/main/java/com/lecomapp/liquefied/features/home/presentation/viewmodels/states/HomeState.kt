@@ -5,6 +5,7 @@ import com.lecomapp.liquefied.features.home.domain.models.HomeData
 
 data class HomeState(
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val homeData: HomeData? = null,
     val error: UiText? = null,
 )
@@ -12,4 +13,5 @@ data class HomeState(
 sealed interface HomeAction {
     data object LoadHome : HomeAction
     data object Retry : HomeAction
+    data object Refresh : HomeAction
 }

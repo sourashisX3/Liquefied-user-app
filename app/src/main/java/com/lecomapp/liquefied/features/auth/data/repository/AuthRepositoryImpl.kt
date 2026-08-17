@@ -63,12 +63,8 @@ class AuthRepositoryImpl @Inject constructor(
         return safeApiCall { api.sendOtp(SendOtpRequest(emailOrPhone)) }
     }
 
-    override suspend fun verifyOtp(emailOrPhone: String, otp: String): Result<AuthTokens> {
-        val result = safeApiCall { api.verifyOtp(VerifyOtpRequest(emailOrPhone, otp)) }
-        if (result is Result.Success) {
-            local.saveTokens(result.data.token, result.data.refreshToken)
-        }
-        return result.map { it.toDomain() }
+    override suspend fun verifyOtp(emailOrPhone: String, otp: String): Result<Unit> {
+        return safeApiCallUnit { api.verifyOtp(VerifyOtpRequest(emailOrPhone, otp)) }
     }
 
     override suspend fun resetPassword(emailOrPhone: String, otp: String, newPassword: String): Result<Unit> {
@@ -76,6 +72,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout() {
+        try {
+            api.logout()
+        } catch (_: Exception) {
+            // Revoking the refresh token is best-effort; always clear local session.
+        }
         local.clear()
     }
 }

@@ -29,7 +29,7 @@ interface AuthApiService {
     suspend fun sendOtp(@Body request: SendOtpRequest): Response<ApiResponse<SendOtpResponse>>
 
     @POST(ApiConstants.Auth.VERIFY_OTP)
-    suspend fun verifyOtp(@Body request: VerifyOtpRequest): Response<ApiResponse<AuthResponse>>
+    suspend fun verifyOtp(@Body request: VerifyOtpRequest): Response<ApiResponse<Unit>>
 
     @POST(ApiConstants.Auth.RESET_PASSWORD)
     suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ApiResponse<Unit>>
