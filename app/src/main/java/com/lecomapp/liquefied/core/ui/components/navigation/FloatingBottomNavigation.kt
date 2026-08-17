@@ -1,5 +1,11 @@
 package com.lecomapp.liquefied.core.ui.components.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +32,7 @@ object FloatingNavigationDefaults {
 fun FloatingBottomNavigation(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    visible: Boolean = true,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -34,37 +41,44 @@ fun FloatingBottomNavigation(
         currentDestination?.hasRoute(item.route::class) == true
     }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = AppSpacing.lg)
-            .padding(bottom = FloatingNavigationDefaults.bottomPadding),
-        horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-        verticalAlignment = Alignment.CenterVertically,
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        enter = slideInVertically(animationSpec = tween(320)) { it } + fadeIn(animationSpec = tween(320)),
+        exit = slideOutVertically(animationSpec = tween(240)) { it } + fadeOut(animationSpec = tween(240)),
     ) {
-        NavigationCapsule(
-            items = capsuleNavItems,
-            selectedItem = selectedItem,
-            onItemClick = { item ->
-                navController.navigate(item.route) {
-                    popUpTo(navController.graph.startDestinationId) { saveState = true }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            },
-            modifier = Modifier.weight(1f),
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = AppSpacing.lg)
+                .padding(bottom = FloatingNavigationDefaults.bottomPadding),
+            horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            NavigationCapsule(
+                items = capsuleNavItems,
+                selectedItem = selectedItem,
+                onItemClick = { item ->
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                modifier = Modifier.weight(1f),
+            )
 
-        CartFloatingButton(
-            onClick = {
-                navController.navigate(Route.Cart) {
-                    popUpTo(navController.graph.startDestinationId) { saveState = true }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            },
-        )
+            CartFloatingButton(
+                onClick = {
+                    navController.navigate(Route.Cart) {
+                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+            )
+        }
     }
 }
 

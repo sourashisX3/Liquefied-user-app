@@ -2,6 +2,7 @@ package com.lecomapp.liquefied.core.ui.components.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -23,6 +24,7 @@ import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 @Composable
 fun AppHeaderContainer(
     modifier: Modifier = Modifier,
+    backgroundContent: @Composable BoxScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Box(
@@ -38,6 +40,7 @@ fun AppHeaderContainer(
             )
             .background(MaterialTheme.colorScheme.primary),
     ) {
+        backgroundContent()
         Column(
             modifier = Modifier
                 .fillMaxWidth()

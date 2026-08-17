@@ -12,11 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import kotlin.math.cos
 import kotlin.math.sin
 
-private data class DiamondConfig(
+data class DiamondConfig(
     val centerFraction: Offset,
     val sizeDp: Float,
     val alpha: Float,
@@ -25,20 +26,21 @@ private data class DiamondConfig(
     val delayMs: Int,
 )
 
-@Composable
-fun AnimatedDiamonds(modifier: Modifier = Modifier) {
-    val baseColor = MaterialTheme.colorScheme.secondaryContainer
-    val infiniteTransition = rememberInfiniteTransition()
+private val defaultAuthDiamonds = listOf(
+    DiamondConfig(Offset(0.08f, 0.06f), 60f, 0.10f, 5500, 2500, 0),
+    DiamondConfig(Offset(0.88f, 0.12f), 75f, 0.05f, 7500, 3000, 350),
+    DiamondConfig(Offset(0.50f, 0.08f), 65f, 0.08f, 6500, 2800, 150),
+    DiamondConfig(Offset(0.22f, 0.42f), 55f, 0.12f, 8000, 3200, 500),
+    DiamondConfig(Offset(0.78f, 0.36f), 70f, 0.06f, 6000, 2600, 250),
+)
 
-    val diamonds = remember {
-        listOf(
-            DiamondConfig(Offset(0.08f, 0.06f), 60f, 0.10f, 5500, 2500, 0),
-            DiamondConfig(Offset(0.88f, 0.12f), 75f, 0.05f, 7500, 3000, 350),
-            DiamondConfig(Offset(0.50f, 0.08f), 65f, 0.08f, 6500, 2800, 150),
-            DiamondConfig(Offset(0.22f, 0.42f), 55f, 0.12f, 8000, 3200, 500),
-            DiamondConfig(Offset(0.78f, 0.36f), 70f, 0.06f, 6000, 2600, 250),
-        )
-    }
+@Composable
+fun AnimatedDiamonds(
+    modifier: Modifier = Modifier,
+    baseColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    diamonds: List<DiamondConfig> = defaultAuthDiamonds,
+) {
+    val infiniteTransition = rememberInfiniteTransition()
 
     val rotations = diamonds.map { diamond ->
         infiniteTransition.animateFloat(

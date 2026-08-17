@@ -44,7 +44,7 @@ fun CategoryRow(
     onCategoryClick: ((Category) -> Unit)? = null,
 ) {
     BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
-        val itemWidth = (maxWidth - AppSpacing.lg * 2 - AppSpacing.sm * 3) / 4
+        val itemWidth = (this.maxWidth - AppSpacing.lg * 2 - AppSpacing.sm * 3) / 4
         LazyRow(
             contentPadding = PaddingValues(horizontal = AppSpacing.lg),
             horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
@@ -69,6 +69,7 @@ private fun CategoryItem(
     Column(
         modifier = modifier
             .height(CategoryItemHeight)
+            .clip(RoundedCornerShape(AppCornerRadius.medium))
             .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

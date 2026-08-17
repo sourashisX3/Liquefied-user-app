@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.Spacing
 import com.lecomapp.liquefied.features.catalog.domain.models.Brand
 
 private val BrandLogoSize: Dp = 64.dp
@@ -89,6 +90,7 @@ private fun BrandItem(
         modifier = modifier
             .width(88.dp)
             .height(BrandItemHeight)
+            .clip(RoundedCornerShape(AppCornerRadius.medium))
             .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

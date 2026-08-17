@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.core.ui.components.common.ProductCard
 import com.lecomapp.liquefied.core.ui.components.common.ProductCardDefaults
 import com.lecomapp.liquefied.core.ui.components.common.SectionHeader
@@ -23,10 +26,16 @@ fun LazyListScope.HomeProductRail(
     products: List<Product>,
     onProductClick: (Product) -> Unit,
     onExploreAllClick: () -> Unit,
+    alpha: Float = 1f,
+    offsetY: Float = 0f,
 ) {
     if (products.isEmpty()) return
     item(key = key) {
-        Column {
+        Column(
+            modifier = Modifier
+                .alpha(alpha)
+                .offset(y = (24 * offsetY).dp),
+        ) {
             SectionHeader(
                 title = title.asString(),
                 onAction = onExploreAllClick,

@@ -27,9 +27,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -106,11 +111,31 @@ fun AppNavGraph() {
         val snackbarHostState = remember { SnackbarHostState() }
         val typedSnackBarState = rememberTypedSnackBarState()
 
+        val navBarVisible = remember { mutableStateOf(true) }
+        val navBarScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    if (source == NestedScrollSource.Drag && available.y != 0f) {
+                        navBarVisible.value = available.y > 0f
+                    }
+                    return Offset.Zero
+                }
+            }
+        }
+
+        LaunchedEffect(currentDestination) {
+            navBarVisible.value = true
+        }
+
         CompositionLocalProvider(
             LocalSnackBarHostState provides snackbarHostState,
             LocalTypedSnackBarState provides typedSnackBarState,
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(navBarScrollConnection),
+            ) {
                 Scaffold(
                     contentWindowInsets = WindowInsets(0),
                 ) { innerPadding ->
@@ -392,6 +417,7 @@ fun AppNavGraph() {
                     FloatingBottomNavigation(
                         navController = navController,
                         modifier = Modifier.align(Alignment.BottomCenter),
+                        visible = navBarVisible.value,
                     )
                 }
 

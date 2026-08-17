@@ -114,6 +114,7 @@
     <string name="home_explore_all">Explore All</string>
     <string name="home_search">Search</string>
     <string name="home_notifications">Notifications</string>
+    <string name="home_scroll_to_top">Scroll to top</string>
     <string name="home_error_title">Couldn\'t load your feed</string>
     <string name="home_error_subtitle">Check your connection and try again</string>
 

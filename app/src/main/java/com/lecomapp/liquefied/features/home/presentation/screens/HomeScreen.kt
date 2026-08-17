@@ -1,5 +1,11 @@
 package com.lecomapp.liquefied.features.home.presentation.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,22 +16,38 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.common.BannerCarousel
 import com.lecomapp.liquefied.core.ui.components.common.BrandRow
@@ -42,6 +64,8 @@ import com.lecomapp.liquefied.features.catalog.domain.models.Category
 import com.lecomapp.liquefied.features.catalog.domain.models.Product
 import com.lecomapp.liquefied.features.home.domain.models.Banner
 import com.lecomapp.liquefied.features.home.domain.models.HomeData
+import com.lecomapp.liquefied.features.home.presentation.animation.animateSequence
+import com.lecomapp.liquefied.features.home.presentation.animation.rememberHomeAnimState
 import com.lecomapp.liquefied.features.home.presentation.components.HomeHeader
 import com.lecomapp.liquefied.features.home.presentation.components.HomeProductRail
 import com.lecomapp.liquefied.features.home.presentation.components.HomeSkeleton
@@ -89,6 +113,11 @@ fun HomeScreenContent(
 ) {
     val safeTopPadding = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val pullToRefreshState = rememberPullToRefreshState()
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val showScrollTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex >= 1 }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,6 +142,7 @@ fun HomeScreenContent(
                 ) {
                     HomeContent(
                         data = state.homeData,
+                        listState = listState,
                         onSearchClick = onSearchClick,
                         onExploreAllClick = onExploreAllClick,
                         onCategoryClick = onCategoryClick,
@@ -138,12 +168,42 @@ fun HomeScreenContent(
                 )
             }
         }
+
+        AnimatedVisibility(
+            visible = showScrollTop,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = AppSpacing.lg)
+                .padding(
+                    bottom = NavigationCapsuleDefaults.height
+                        + FloatingNavigationDefaults.bottomPadding
+                        + AppSpacing.md,
+                ),
+            enter = scaleIn(animationSpec = spring(dampingRatio = 0.8f)) + fadeIn(),
+            exit = scaleOut(animationSpec = spring(dampingRatio = 0.8f)) + fadeOut(),
+        ) {
+            FloatingActionButton(
+                onClick = { scope.launch { listState.animateScrollToItem(0) } },
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowUp,
+                    contentDescription = stringResource(R.string.home_scroll_to_top),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun HomeContent(
     data: HomeData,
+    listState: LazyListState,
     onSearchClick: () -> Unit,
     onExploreAllClick: () -> Unit,
     onCategoryClick: (Category) -> Unit,
@@ -161,7 +221,13 @@ private fun HomeContent(
     val trendingTitle = UiText.StringResourceId(R.string.home_trending)
     val dealsTitle = UiText.StringResourceId(R.string.home_deals)
 
+    val anim = rememberHomeAnimState()
+    LaunchedEffect(Unit) {
+        anim.animateSequence()
+    }
+
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             bottom = NavigationCapsuleDefaults.height + FloatingNavigationDefaults.bottomPadding,
@@ -175,6 +241,9 @@ private fun HomeContent(
                 unreadNotificationCount = data.unreadNotificationCount,
                 onSearchClick = onSearchClick,
                 onNotificationsClick = onNotificationsClick,
+                modifier = Modifier
+                    .alpha(anim.headerAlpha.value)
+                    .offset(y = (24 * anim.headerOffsetY.value).dp),
             )
         }
 
@@ -183,13 +252,20 @@ private fun HomeContent(
                 BannerCarousel(
                     banners = data.banners,
                     onBannerClick = onBannerClick,
+                    modifier = Modifier
+                        .alpha(anim.bannerAlpha.value)
+                        .offset(y = (24 * anim.bannerOffsetY.value).dp),
                 )
             }
         }
 
         if (data.categories.isNotEmpty()) {
             item(key = "categories") {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .alpha(anim.categoriesAlpha.value)
+                        .offset(y = (24 * anim.categoriesOffsetY.value).dp),
+                ) {
                     SectionHeader(
                         title = chooseYourSpirit.asString(),
                         onAction = onExploreAllClick,
@@ -206,7 +282,11 @@ private fun HomeContent(
 
         if (data.brands.isNotEmpty()) {
             item(key = "brands") {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .alpha(anim.brandsAlpha.value)
+                        .offset(y = (24 * anim.brandsOffsetY.value).dp),
+                ) {
                     SectionHeader(
                         title = shopByBrand.asString(),
                         onAction = onExploreAllClick,
@@ -227,6 +307,8 @@ private fun HomeContent(
             products = data.newArrivals,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
+            alpha = anim.railsAlpha.value,
+            offsetY = anim.railsOffsetY.value,
         )
         HomeProductRail(
             key = "featured",
@@ -234,6 +316,8 @@ private fun HomeContent(
             products = data.featuredProducts,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
+            alpha = anim.railsAlpha.value,
+            offsetY = anim.railsOffsetY.value,
         )
         HomeProductRail(
             key = "best_sellers",
@@ -241,6 +325,8 @@ private fun HomeContent(
             products = data.bestSellers,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
+            alpha = anim.railsAlpha.value,
+            offsetY = anim.railsOffsetY.value,
         )
         HomeProductRail(
             key = "trending",
@@ -248,6 +334,8 @@ private fun HomeContent(
             products = data.trending,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
+            alpha = anim.railsAlpha.value,
+            offsetY = anim.railsOffsetY.value,
         )
         HomeProductRail(
             key = "deals",
@@ -255,6 +343,8 @@ private fun HomeContent(
             products = data.deals,
             onProductClick = onProductClick,
             onExploreAllClick = onExploreAllClick,
+            alpha = anim.railsAlpha.value,
+            offsetY = anim.railsOffsetY.value,
         )
 
         item(key = "bottom_spacer") {
