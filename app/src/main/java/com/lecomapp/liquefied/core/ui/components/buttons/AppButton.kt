@@ -2,13 +2,10 @@ package com.lecomapp.liquefied.core.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -134,32 +131,24 @@ fun AppButton(
                 strokeWidth = 2.dp,
             )
         } else {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (leadingIcon != null) {
-                    Icon(
-                        imageVector = leadingIcon,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(iconSize)
-                            .padding(end = if (text != null) AppSpacing.xs else 0.dp),
-                        tint = contentColor,
-                    )
-                }
+            Box(modifier = Modifier.fillMaxWidth()) {
                 if (!text.isNullOrEmpty()) {
                     Text(
                         text = text,
                         style = MaterialTheme.typography.labelLarge,
                         color = contentColor,
-                        modifier = Modifier.offset(
-                            x = when {
-                                leadingIcon != null && trailingIcon == null -> -(iconSize / 2 + AppSpacing.xs / 2)
-                                trailingIcon != null && leadingIcon == null -> iconSize / 2 + AppSpacing.xs / 2
-                                else -> 0.dp
-                            },
-                        ),
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+                if (leadingIcon != null) {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = AppSpacing.xl)
+                            .size(iconSize),
+                        tint = contentColor,
                     )
                 }
                 if (trailingIcon != null) {
@@ -167,8 +156,9 @@ fun AppButton(
                         imageVector = trailingIcon,
                         contentDescription = null,
                         modifier = Modifier
-                            .size(iconSize)
-                            .padding(start = if (text != null) AppSpacing.xs else 0.dp),
+                            .align(Alignment.CenterEnd)
+                            .padding(end = AppSpacing.xl)
+                            .size(iconSize),
                         tint = contentColor,
                     )
                 }
