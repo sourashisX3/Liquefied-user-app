@@ -1,5 +1,9 @@
 package com.lecomapp.liquefied.core.ui.theme
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
@@ -63,6 +67,9 @@ object AppIconSize {
     val medium: Dp = 24.dp
     val large: Dp = 32.dp
     val extraLarge: Dp = 40.dp
+    val navItem: Dp = 22.dp
+    val headerAction: Dp = 28.dp
+    val cardAction: Dp = 20.dp
 }
 
 object AppButton {
@@ -134,3 +141,39 @@ data class IconSizeTokens(
 )
 
 val LocalDimensionTokens = staticCompositionLocalOf { DimensionTokens() }
+
+object AnimationTokens {
+    object Duration {
+        const val Instant: Int = 150
+        const val Short: Int = 250
+        const val Medium: Int = 350
+        const val Long: Int = 500
+        const val ExtraLong: Int = 700
+        const val Shimmer: Int = 1400
+        const val CarouselDelay: Int = 4000
+        const val SnackBar: Int = 320
+    }
+
+    object Spring {
+        val Default = spring<Float>(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
+            stiffness = androidx.compose.animation.core.Spring.StiffnessMedium,
+        )
+        val Gentle = spring<Float>(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioHighBouncy,
+            stiffness = androidx.compose.animation.core.Spring.StiffnessLow,
+        )
+        val Stiff = spring<Float>(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
+            stiffness = androidx.compose.animation.core.Spring.StiffnessHigh,
+        )
+    }
+
+    object Tween {
+        val Standard = tween<Float>(Duration.Medium, easing = FastOutSlowInEasing)
+        val Quick = tween<Float>(Duration.Short, easing = FastOutSlowInEasing)
+        val Slower = tween<Float>(Duration.Long, easing = FastOutSlowInEasing)
+    }
+
+    const val StaggerDelay: Int = 100
+}

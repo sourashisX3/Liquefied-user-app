@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
@@ -34,11 +32,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import com.lecomapp.liquefied.R
 import com.lecomapp.liquefied.core.ui.components.buttons.AppButton
 import com.lecomapp.liquefied.core.ui.components.buttons.ButtonSize
 import com.lecomapp.liquefied.core.ui.components.buttons.ButtonVariant
+import com.lecomapp.liquefied.core.ui.components.common.AppIcons
 import com.lecomapp.liquefied.core.ui.components.common.DestinationScreen
 import com.lecomapp.liquefied.core.ui.components.feedback.ErrorView
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
@@ -84,9 +85,9 @@ private fun ProfileContent(
     onLogout: () -> Unit,
 ) {
     val user = state.user ?: return
-    val fullName = listOfNotNull(user.firstName, user.lastName).joinToString(" ").ifBlank { "—" }
+    val fullName = user.fullName
     val email = user.email.orEmpty().ifBlank { null }
-    val phone = listOfNotNull(user.dialCode, user.phoneNumber).joinToString(" ").ifBlank { null }
+    val phone = user.phone
     val memberSince = user.createdAt.take(10)
 
     Column(
@@ -114,11 +115,23 @@ private fun ProfileContent(
                     contentAlignment = Alignment.Center,
                 ) {
                     if (!user.profilePictureUrl.isNullOrBlank()) {
-                        AsyncImage(
+                        SubcomposeAsyncImage(
                             model = user.profilePictureUrl,
                             contentDescription = fullName,
                             modifier = Modifier.fillMaxSize(),
-                        )
+                        ) {
+                            when (painter.state) {
+                                is AsyncImagePainter.State.Error -> {
+                                    Text(
+                                        text = fullName.firstOrNull()?.toString()?.uppercase() ?: "U",
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = MaterialTheme.colorScheme.onPrimary,
+                                        modifier = Modifier.align(Alignment.Center),
+                                    )
+                                }
+                                else -> SubcomposeAsyncImageContent()
+                            }
+                        }
                     } else {
                         Text(
                             text = fullName.firstOrNull()?.toString()?.uppercase() ?: "U",
@@ -206,7 +219,7 @@ private fun ProfileContent(
             variant = ButtonVariant.DANGER,
             size = ButtonSize.MEDIUM,
             isLoading = state.isLoggingOut,
-            leadingIcon = Icons.AutoMirrored.Outlined.Logout,
+            leadingIcon = AppIcons.Action.Logout,
         )
     }
 }

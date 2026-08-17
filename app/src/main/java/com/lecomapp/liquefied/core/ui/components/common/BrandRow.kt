@@ -30,6 +30,7 @@ import coil.compose.AsyncImage
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
 import com.lecomapp.liquefied.core.ui.theme.Spacing
+import com.lecomapp.liquefied.core.ui.theme.rememberImagePlaceholderColor
 import com.lecomapp.liquefied.features.catalog.domain.models.Brand
 
 private val BrandLogoSize: Dp = 64.dp
@@ -99,8 +100,8 @@ private fun BrandItem(
                 model = brand.logoUrl,
                 contentDescription = brand.name,
                 contentScale = ContentScale.Crop,
-                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
-                error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                placeholder = ColorPainter(rememberImagePlaceholderColor()),
+                error = ColorPainter(rememberImagePlaceholderColor()),
                 modifier = Modifier
                     .size(BrandLogoSize)
                     .clip(BrandShape),
@@ -110,7 +111,7 @@ private fun BrandItem(
                 modifier = Modifier
                     .size(BrandLogoSize)
                     .clip(BrandShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                    .background(rememberImagePlaceholderColor()),
             )
         }
         Spacer(modifier = Modifier.height(AppSpacing.sm))

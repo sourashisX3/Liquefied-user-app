@@ -96,7 +96,7 @@ fun ResetPasswordScreenContent(
         ) {
             Text(
                 text = stringResource(R.string.reset_title),
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )

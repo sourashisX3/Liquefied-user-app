@@ -67,6 +67,7 @@ object LiquefiedColors {
         val onSurface = Color(0xFF1C1B1F)
         val surfaceVariant = Color(0xFFE7E0EC)
         val onSurfaceVariant = Color(0xFF666666)
+        val surfacePlaceholder = Color(0xFFE9E9E9)
         val outline = Color(0xFF79747E)
         val outlineVariant = Color(0xFFCAC4D0)
         val inverseSurface = Color(0xFF313033)
@@ -83,6 +84,7 @@ object LiquefiedColors {
         val onSurface = Color(0xFFE6E1E5)
         val surfaceVariant = Color(0xFF1E1E1E)
         val onSurfaceVariant = Color(0xFF999999)
+        val surfacePlaceholder = Color(0xFF3A3A40)
         val outline = Color(0xFF938F99)
         val outlineVariant = Color(0xFF49454F)
         val inverseSurface = Color(0xFFE6E1E5)
@@ -104,6 +106,16 @@ object LiquefiedColors {
         val onColor = Color(0xFF003917)
         val container = Color(0xFF1B6D34)
         val onContainer = Color(0xFFCEEAD6)
+    }
+
+    object Skeleton {
+        val base = Color(0xFFE8E8E8)
+        val highlight = Color(0xFFF2F2F2)
+    }
+
+    object SkeletonDark {
+        val base = Color(0xFF2E2E34)
+        val highlight = Color(0xFF3C3C44)
     }
 
     object Warning {
@@ -134,13 +146,11 @@ object LiquefiedColors {
         val onContainer = Color(0xFFD6E3FF)
     }
 
-    object Utility {
+object Utility {
         val black = Color(0xFF000000)
         val white = Color(0xFFFFFFFF)
         val transparent = Color(0x00000000)
         val semiTransparent = Color(0x80000000)
         val ratingStar = Color(0xFFFFB800)
-        val shimmer = Color(0xFFE0E0E0)
-        val skeleton = Color(0xFFD9D9D9)
     }
 }

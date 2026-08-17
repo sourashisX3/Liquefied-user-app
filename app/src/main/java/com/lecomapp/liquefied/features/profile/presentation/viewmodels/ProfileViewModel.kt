@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lecomapp.liquefied.core.config.network.models.Result
-import com.lecomapp.liquefied.core.config.network.models.safeApiCall
 import com.lecomapp.liquefied.core.network.AuthEvents
 import com.lecomapp.liquefied.core.ui.theme.ThemeManager
 import com.lecomapp.liquefied.core.ui.theme.ThemeMode
 import com.lecomapp.liquefied.core.utils.UiText
-import com.lecomapp.liquefied.features.auth.data.datasources.remote.UserApiService
-import com.lecomapp.liquefied.features.auth.data.datasources.remote.dto.UserResponse
 import com.lecomapp.liquefied.features.auth.domain.use_cases.LogoutUseCase
+import com.lecomapp.liquefied.features.profile.domain.models.ProfileUser
+import com.lecomapp.liquefied.features.profile.domain.repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,7 @@ import javax.inject.Inject
 
 data class ProfileUiState(
     val isLoading: Boolean = true,
-    val user: UserResponse? = null,
+    val user: ProfileUser? = null,
     val error: UiText? = null,
     val isLoggingOut: Boolean = false,
 )
@@ -33,7 +32,7 @@ data class ProfileUiState(
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val userApiService: UserApiService,
+    private val profileRepository: ProfileRepository,
     private val logoutUseCase: LogoutUseCase,
     private val authEvents: AuthEvents,
 ) : ViewModel() {
@@ -56,7 +55,7 @@ class ProfileViewModel @Inject constructor(
     fun loadProfile() {
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            when (val result = safeApiCall { userApiService.getMe() }) {
+            when (val result = profileRepository.getProfile()) {
                 is Result.Success -> {
                     _state.update { it.copy(isLoading = false, user = result.data) }
                 }

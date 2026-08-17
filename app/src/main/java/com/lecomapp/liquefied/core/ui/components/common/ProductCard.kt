@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import com.lecomapp.liquefied.core.ui.components.display.RatingBar
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.rememberImagePlaceholderColor
 import com.lecomapp.liquefied.features.catalog.domain.models.Product
 import java.util.Locale
 
@@ -173,8 +174,8 @@ internal fun ProductImagePlaceholder(
                 model = imageUrl,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop,
-                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
-                error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                placeholder = ColorPainter(rememberImagePlaceholderColor()),
+                error = ColorPainter(rememberImagePlaceholderColor()),
                 modifier = Modifier.fillMaxSize(),
             )
         }

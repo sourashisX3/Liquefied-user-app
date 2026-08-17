@@ -4,9 +4,14 @@ import com.lecomapp.liquefied.features.auth.data.datasources.local.AuthLocalData
 import com.lecomapp.liquefied.features.auth.data.datasources.remote.AuthApiService
 import com.lecomapp.liquefied.features.auth.data.repository.AuthRepositoryImpl
 import com.lecomapp.liquefied.features.auth.domain.repository.AuthenticationRepository
+import com.lecomapp.liquefied.features.home.data.datasources.local.HomeLocalDataSource
 import com.lecomapp.liquefied.features.home.data.datasources.remote.HomeApiService
 import com.lecomapp.liquefied.features.home.data.repository.HomeRepositoryImpl
 import com.lecomapp.liquefied.features.home.domain.repository.HomeRepository
+import com.lecomapp.liquefied.features.profile.data.datasources.local.ProfileLocalDataSource
+import com.lecomapp.liquefied.features.profile.data.repository.ProfileRepositoryImpl
+import com.lecomapp.liquefied.features.profile.domain.repository.ProfileRepository
+import com.lecomapp.liquefied.features.auth.data.datasources.remote.UserApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,5 +33,13 @@ object RepositoryModule {
     @Singleton
     fun provideHomeRepository(
         api: HomeApiService,
-    ): HomeRepository = HomeRepositoryImpl(api)
+        local: HomeLocalDataSource,
+    ): HomeRepository = HomeRepositoryImpl(api, local)
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(
+        api: UserApiService,
+        local: ProfileLocalDataSource,
+    ): ProfileRepository = ProfileRepositoryImpl(api, local)
 }

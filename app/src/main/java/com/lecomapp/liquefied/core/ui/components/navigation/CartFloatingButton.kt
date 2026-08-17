@@ -7,14 +7,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.R
+import com.lecomapp.liquefied.core.ui.components.common.AppIcons
 
 object CartFloatingButtonDefaults {
     val size: Dp = 56.dp
+    val iconSize: Dp = 26.dp
 }
 
 @Composable
@@ -30,10 +31,10 @@ fun CartFloatingButton(
         modifier = modifier.size(CartFloatingButtonDefaults.size),
     ) {
         Icon(
-            painter = painterResource(R.drawable.cart_selected),
+            imageVector = AppIcons.Action.Cart.second,
             contentDescription = stringResource(R.string.bottom_nav_cart),
             tint = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.size(26.dp),
+            modifier = Modifier.size(CartFloatingButtonDefaults.iconSize),
         )
     }
 }

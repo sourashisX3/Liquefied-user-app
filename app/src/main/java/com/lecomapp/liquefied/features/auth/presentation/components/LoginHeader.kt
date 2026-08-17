@@ -19,7 +19,7 @@ fun LoginHeader(
 ) {
     Text(
         text = stringResource(R.string.login_welcome_back),
-        style = MaterialTheme.typography.headlineLarge,
+        style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Center,
         modifier = modifier.alpha(headerAlpha),
     )

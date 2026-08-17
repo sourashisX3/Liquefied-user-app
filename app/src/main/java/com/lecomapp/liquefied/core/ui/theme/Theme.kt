@@ -104,10 +104,14 @@ fun LiquefiedTheme(
     }
 
     val snackBarColors = if (darkTheme) DarkSnackBarColors else LightSnackBarColors
+    val skeletonColors = if (darkTheme) DarkSkeletonColors else LightSkeletonColors
+    val imageOverlayColors = if (darkTheme) DarkImageOverlayColors else LightImageOverlayColors
 
     CompositionLocalProvider(
         LocalDimensionTokens provides DimensionTokens(),
         LocalSnackBarColors provides snackBarColors,
+        LocalSkeletonColors provides skeletonColors,
+        LocalImageOverlayColors provides imageOverlayColors,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

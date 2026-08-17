@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lecomapp.liquefied.core.ui.theme.AppCornerRadius
 import com.lecomapp.liquefied.core.ui.theme.AppSpacing
+import com.lecomapp.liquefied.core.ui.theme.rememberImagePlaceholderColor
 import com.lecomapp.liquefied.features.catalog.domain.models.Category
 
 private val CategoryCircleSize: Dp = 80.dp
@@ -78,8 +79,8 @@ private fun CategoryItem(
                 model = category.imageUrl,
                 contentDescription = category.name,
                 contentScale = ContentScale.Crop,
-                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
-                error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                placeholder = ColorPainter(rememberImagePlaceholderColor()),
+                error = ColorPainter(rememberImagePlaceholderColor()),
                 modifier = Modifier
                     .size(CategoryCircleSize)
                     .clip(CircleShape),
@@ -89,7 +90,7 @@ private fun CategoryItem(
                 modifier = Modifier
                     .size(CategoryCircleSize)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                    .background(rememberImagePlaceholderColor()),
             )
         }
         Spacer(modifier = Modifier.height(AppSpacing.sm))

@@ -17,20 +17,22 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import com.lecomapp.liquefied.core.ui.theme.AnimationTokens
+import com.lecomapp.liquefied.core.ui.theme.LocalSkeletonColors
 
 @Composable
 fun ShimmerSkeleton(
     modifier: Modifier = Modifier,
     shape: Shape,
-    baseColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    highlightColor: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f),
+    baseColor: Color = LocalSkeletonColors.current.base,
+    highlightColor: Color = LocalSkeletonColors.current.highlight,
 ) {
     val transition = rememberInfiniteTransition(label = "shimmer")
     val progress by transition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1400, easing = LinearEasing),
+            animation = tween(durationMillis = AnimationTokens.Duration.Shimmer, easing = LinearEasing),
         ),
         label = "shimmerProgress",
     )
