@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -15,12 +16,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.lecomapp.liquefied.core.ui.theme.AppButton
@@ -131,13 +137,25 @@ fun AppButton(
                 strokeWidth = 2.dp,
             )
         } else {
+            val density = LocalDensity.current
+            var textWidth by remember { mutableStateOf(0) }
+            val hasText = !text.isNullOrEmpty()
+            val iconSideOffset = if (hasText && textWidth > 0) {
+                with(density) {
+                    (textWidth / 2f + iconSize.toPx() / 2f + AppSpacing.xs.toPx()).toDp()
+                }
+            } else {
+                0.dp
+            }
             Box(modifier = Modifier.fillMaxWidth()) {
-                if (!text.isNullOrEmpty()) {
+                if (hasText) {
                     Text(
                         text = text,
                         style = MaterialTheme.typography.labelLarge,
                         color = contentColor,
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .onSizeChanged { textWidth = it.width },
                     )
                 }
                 if (leadingIcon != null) {
@@ -145,8 +163,8 @@ fun AppButton(
                         imageVector = leadingIcon,
                         contentDescription = null,
                         modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(start = AppSpacing.xl)
+                            .align(Alignment.Center)
+                            .offset(x = -iconSideOffset)
                             .size(iconSize),
                         tint = contentColor,
                     )
@@ -156,8 +174,8 @@ fun AppButton(
                         imageVector = trailingIcon,
                         contentDescription = null,
                         modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .padding(end = AppSpacing.xl)
+                            .align(Alignment.Center)
+                            .offset(x = iconSideOffset)
                             .size(iconSize),
                         tint = contentColor,
                     )
